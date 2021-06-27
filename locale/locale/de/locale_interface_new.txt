@@ -1,0 +1,69 @@
+PICKUP_FILTER_TITLE	Dropeinstellungen
+PICKUP_FILTER_MODE_LABEL	Modus:
+PICKUP_FILTER_MODE_SINGLE_LABEL	Einzeln einsammeln
+PICKUP_FILTER_MODE_ALL_LABEL	Alles einsammeln
+PICKUP_FILTER_IGNORE_LABEL	Ignorieren:
+PICKUP_FILTER_IGNORE_WEAPON_LABEL	Waffen
+PICKUP_FILTER_IGNORE_ARMOR_LABEL	Rüstungen
+PICKUP_FILTER_IGNORE_HEAD_LABEL	Helme
+PICKUP_FILTER_IGNORE_SHIELD_LABEL	Schilder
+PICKUP_FILTER_IGNORE_WRIST_LABEL	Armbänder
+PICKUP_FILTER_IGNORE_FOOTS_LABEL	Schuhe
+PICKUP_FILTER_IGNORE_NECK_LABEL	Halsketten
+PICKUP_FILTER_IGNORE_EAR_LABEL	Ohrringe
+PICKUP_FILTER_IGNORE_ETC_LABEL	Sonstiges
+DESTROY	Zerstören
+AUTOREFINE	Fenster offen lassen
+OPTION_TILING	Grafikspeicher
+OPTION_TILING_APPLY	Anwenden
+OPTION_TILING_CPU	CPU
+OPTION_TILING_GPU	GPU
+INVENTORY_SORT	Inventar sortieren
+SPECIAL_INVENTORY_SKILLBOOK_TITLE	Shinings
+SPECIAL_INVENTORY_STONE_TITLE	Steine
+SPECIAL_INVENTORY_MATERIAL_TITLE	Upp-Items
+PINCODE_CREATE	Erstelle dein eigenen Pincode!
+PINCODE_CONFIRM	bestätige
+PINCODE_CANCEL	abbrechen
+PINCODE_GO	weiter
+PINCODE_INSERT	Bitte gib deinen Pincode ein!
+PINCODE_INPUT_MIN	Dein Pincode benötigt 4 Zahlen.
+PINCODE_NOINPUT	Du hast keinen Pincode eingegeben.
+PINCODE_NOINPUT_BOTH	In einem von den beiden Feldern wurde nichts angegeben.
+PINCODE_INPUT_NEQUAL	Die Felder stimmen nicht überein!
+OPTION_MOB_EFFECTS	Mob-Effekte
+OPTION_SKILL_EFFECTS	Skill-Effekte
+OPTION_BUFF_EFFECTS	Buff-Effekte
+OPTION_RENDER_PREVIEW	Vorschau
+skillchoose_text	Wähle deine Lehre
+skillchoose_cancel	Abbruch
+skillchoose_warrior1	Körper
+skillchoose_warrior2	Mental
+skillchoose_ninja1	Nahkampf
+skillchoose_ninja2	Fernkampf
+skillchoose_sura1	Waffensura
+skillchoose_sura2	Magiesura
+skillchoose_shaman1	Drachenschami
+skillchoose_shaman2	Heilschami
+skillchoose_wolfman1	Instinkt
+dynastyduell_title	Dynasty Duellstatus System
+dynastyduell_choosetext	Setze deinen Status:
+dynastyduell_choosebutton	Setzen
+dynastyduell_previewbutton	Vorschau
+dynastyduell_cancelbutton	Abbruch
+dynastyduell_needtext	Wird benötigt
+dynastyduell_settings_title	Dyn.Status
+dynastyduell_settings_hide	ausblenden
+dynastyduell_settings_show	einblenden
+LOGIN_INTERFACE_NOSAVED_ACC	In diesem Slot ist kein Account gespeichert!
+LOGIN_INTERFACE_FREE_SPACE	Freier Speicherplatz
+LOGIN_INTERFACE_PASTE_ID	Bitte gib eine ID ein!
+LOGIN_INTERFACE_PASTE_PW	Bitte gib ein PW ein!
+LOGIN_INTERFACE_NO_SLOT_FREE	Es ist kein Slot zum speichern frei!
+LOGIN_INTERFACE_SAVED	Deine Login-Daten wurden gespeichert!
+LOGIN_INTERFACE_DELETED	gelöscht.
+LOGIN_INTERFACE_ALREADY_EMPTY	ist bereits leer!
+SYSTEM_SWITCH_CHANNEL	Wechsel Channel 
+SHOW_COSTUME	Einblenden
+HIDE_COSTUME	Verbergen
+OPTION_MODDEDSKILLS	Modded-Skills

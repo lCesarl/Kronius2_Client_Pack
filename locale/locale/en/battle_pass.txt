@@ -1,0 +1,18 @@
+1	Töte das Monster	Verbleibende Monster: %s	Monster: |cffff9d9d|H|h%s|h|r	Töte |cffff9d9d|H|h%s|h|r	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+2	Töte Spieler	Verbleibende Spieler: %s	Mindestlevel: |cffff9d9d|H|h%s|h|r	Töte Spieler mit dem Level |cffff9d9d|H|h%s|h|r	oder höher, um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+3	Füge Monstern Schaden zu	Verbleibender Schaden: %s	Monster: |cffff9d9d|H|h%s|h|r	Füge |cffff9d9d|H|h%s|h|r Schaden zu,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+4	Füge Spielern Schaden zu	Verbleibender Schaden: %s	Mindestlevel: |cffff9d9d|H|h%s|h|r	Füge Spielern mit dem Level |cffff9d9d|H|h%s|h|r	oder höher Schaden zu,	um die Mission abzuschließen.
+5	Benutze das Item 	Benutzte Items: %s	Item: |cffff9d9d|H|h%s|h|r	Verwende |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+6	Verkaufe das Item	Verkaufte Items: %s	Item: |cffff9d9d|H|h%s|h|r	Verkaufe |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+7	Crafte das Item	gecraftete Items: %s	Item: |cffff9d9d|H|h%s|h|r	Crafte |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+8	Verstärke Items	verstärkte Items: %s	Item: |cffff9d9d|H|h%s|h|r	Verstärke |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+9	Zerstöre Items	zerstörte Items: %s	Item: |cffff9d9d|H|h%s|h|r	Zerstöre |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+10	Sammle Items	gesammelte Items: %s	Item: |cffff9d9d|H|h%s|h|r	Sammle |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+11	Brate Fische	gebratene Fische: %s	anbratbare Fische: Alle Fische	Brate Fische an,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+12	Fange Fische	geangelte Fische: %s	angelbare Fische: Alle Fische	Fange Fische,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+13	Geh Angeln	geangelte Fische: %s	angelbare Fische: Alle Fische	Fange Fische,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+14	Gebe Yang aus	ausgegebenes Yang: %s	gebe Yang aus für: jedes Item	Gebe Yang aus,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+15	Farme Yang	erfarmtes Yang: %s	erfarmbar durch: jedes Monster	Farme Yang,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+16	Absolviere Dungeons	absolvierte Dungeons: %s	zu absolvierende Dungeon: Alle	Schließe Dungeons ab,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+17	Minigame	absolvierte Dungeons: %s	zu absolvierende Dungeon: Alle	Schließe Dungeons ab,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+18	Shoutbox	absolvierte Dungeons: %s	zu absolvierende Dungeon: Alle	Schließe Dungeons ab,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.

@@ -1,0 +1,85 @@
+1	Dreiwege-Schnitt	1	1	1	0	HP	-(1.1*atk + (0.3*atk +  1.5 * str)*k)	100+200*k			12	-(1.1*atk + (0.3*atk +  1.5 * str)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	5	1	0	200
+2	Schwertwirbel	1	1	1	0	HP	-(2*atk + (2*atk + str*5 + dex*3 +con)*k)	50+130*k			15	-(2*atk + (2*atk + str*5 + dex*3 +con)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	12	1	0	200
+3	Kampfrausch	1	1	1	0	ATT_SPEED	50*k	50+140*k	86400		0	50*k		SELFONLY,TOGGLE	JEONGWIHON	MOV_SPEED	20*k	86400		0	0	NORMAL	1	1	0	0
+4	Aura des Schwertes	1	1	1	0	ATT_GRADE	(100 + str + lv * 3)*k	100+200*k	86400		0	(100 + str + lv * 3)*k		SELFONLY,TOGGLE	GEOMGYEONG	MOB_ATT	120*k	86400		0	0	NORMAL	1	1	0	0
+5	Sausen	1	1	1	0	HP	-(2.3*atk + (1*atk + dex*3 + str*7 + con)*k)	60+120*k			12	-(2.3*atk + (1*atk + dex*3 + str*7 + con)*k)		ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH		MOV_SPEED	150	3		0	0	MELEE	4	1	0	200
+16	Durchschlag	1	1	1	0	HP	-(3*atk + (4*atk  + str*4 + con)*k)	60+120*k			15	-(3*atk + (4*atk  + str*4 + con)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	4	1	0	100
+17	Heftiges Schlagen	1	1	1	0	HP	-(2.4*atk + (3*atk + str*4 + con*3)*k)	60+150*k			15	-(2.4*atk + (3*atk + str*4 + con*3)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	8	1	0	200
+18	Stampfer	1	1	1	0	HP	-(2*atk + (2.1*atk + 2*dex + 2*con + str*4)*k)	50+140*k			25	-(2*atk + (2.1*atk + 2*dex + 2*con + str*4)*k)		ATTACK,USE_MELEE_DAMAGE,SELFONLY,SPLASH,ATTACK_STUN		NONE	100+k*1000/6	2		0	0	MELEE	10	1	0	400
+19	Starker Koerper	1	1	1	0	DEF_GRADE	(200 + str*0.2 + con*0.5 ) *k	80+220*k	86400		0	(200 + str*0.2 + con*0.5 ) *k		SELFONLY,TOGGLE	CHEONGEUN	MOV_SPEED	-(1+9*k)	86400		0	0	NORMAL	1	1	0	0
+20	Schwertschlag	1	1	1	0	HP	-(2*atk + (2.1*atk + dex*3 + str*5 + con)*k)	40+120*k			20	-(2*atk + (2.1*atk + dex*3 + str*5 + con)*k)		ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH		NONE				0	0	MELEE	10	1	1200	200
+31	Hinterhalt	2	1	1	0	HP	-(1.7*atk+(1.5*atk+number(500,700)+dex*4+str*4)*k)	40+160*k			17	-(1.7*atk + (1.5 * atk + number(500, 700) + dex*4+ str*4 )*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	6	1	0	0
+32	Blitzangriff	2	1	1	0	HP	-(1.5*atk + (1.7* atk + number(200,300) + dex*7 + str*7)*k)	40+160*k			17	-(1.5*atk + (1.7* atk + number(100,300) + dex*7 + str*7)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	6	1	800	0
+33	Degenwirbel	2	1	1	0	HP	-(1.8*atk + (0.8*atk + dex*9 + str*7)*k)	50+140*k			19	-(1.8*atk + (0.8*atk + dex*9 + str*7)*k)		ATTACK,USE_MELEE_DAMAGE,ATTACK_POISON		NONE	40*k			0	0	MELEE	12	1	0	0
+34	Tarnung	2	1	1	0	NONE		30+60*k	15+30*k		10			SELFONLY	EUNHYUNG	NONE				0	0	NORMAL	1	1	0	0
+35	Giftwolke	2	1	1	0	HP	-(0.3*atk + (0.2*atk + (0.3 * dex) + (0.3*str))*k)	40+130*k			25	-(0.3*atk + (0.2*atk + (0.3 * dex) + (0.3*str))*k)		ATTACK,USE_MELEE_DAMAGE,SPLASH,ATTACK_POISON		NONE	60*k	5+25*k		0	0	MAGIC	0	1	800	200
+46	Wiederholter Schuss	2	1	1	0	HP	-(atk + 0.6*atk*floor(2+k*6)+ (0.8*atk+dex*8*ar) *k)	40+130*k			15	-(atk + 0.6*atk*floor(2+k*6)+ (0.8*atk+dex*8*ar) *k)*0.9		ATTACK,USE_ARROW_DAMAGE		NONE				0	0	RANGE	1	1	2500	0
+47	Pfeilregen	2	1	1	0	HP	-(atk + (3.3*atk + dex*2+ str*2)*k)	30+130*k			12	-(atk + (3.3*atk + dex*2+ str*2)*k)*1.2		ATTACK,USE_ARROW_DAMAGE		NONE				0	0	RANGE	8	0.6	2500	200
+48	Feuerpfeil	2	1	1	0	HP	-(3.3*atk + (2.5*atk + number(100, 300))*k)	50+130*k			25	-(3.4*atk + (2.6*atk + number(100, 300))*k)*1.10		ATTACK,SPLASH,USE_ARROW_DAMAGE		NONE				0	0	RANGE	12	1	2500	300
+49	Federschreiten	2	1	1	0	MOV_SPEED	60*k	30+40*k	86400		0	60*k		SELFONLY,TOGGLE	GYEONGGONG	NONE				0	0	NORMAL	1	1	0	0
+50	Giftpfeil	2	1	1	0	HP	-(atk + (2.2*atk + number(100, 200)+dex*6+str*2)*k)	40+160*k			25	-(atk + (2.2*atk + number(100, 200)+dex*6+str*2)*k)*1.55		ATTACK,SPLASH,USE_ARROW_DAMAGE,CRUSH,ATTACK_POISON		NONE	80*k	15+30*k		0	0	RANGE	12	1	2500	600
+61	Fingerschlag	3	1	1	0	HP	-(atk + 1.5*lv + iq*2 + ( 3*atk + str*4 + iq*14) * k)	30+140*k			10	-(atk + 1.5*lv + iq*1 + ( 3*atk + str*4 + iq*14) * k)		ATTACK,USE_MELEE_DAMAGE,PENETRATE		NONE	1+k*9			0	0	MELEE	4	1	0	0
+62	Drachenwirbel	3	1	1	0	HP	-(2.7 * atk + 2*lv + iq*2+(1*atk + str + iq*12) * k)	50+350*k			15	-(2.7 * atk + 2*lv + iq*2+(1*atk + str + iq*12) * k)		ATTACK,USE_MELEE_DAMAGE,SELFONLY,SPLASH,IGNORE_TARGET_RATING		NONE	1+k*9			0	0	MELEE	12	1	0	500
+63	Verzauberte Klinge	3	1	1	0	ATT_GRADE	(3 * iq + 2 * lv)*k	20+240*k	86400	2+23*k	0	(5 * iq + 2 * lv)*k		SELFONLY,TOGGLE	GWIGUM	HIT_HP_RECOVER	10*k	86400		0	0	NORMAL	1	1	0	0
+64	Furcht	3	1	1	0	DODGE	1 + 29 * k	60+120*k	86400		0	1 + 29 * k		SELFONLY,TOGGLE	TERROR	NONE				0	0	NORMAL	1	1	0	0
+65	Verzauberte Ruestung	3	1	1	0	DEF_GRADE	(iq+30)*k	70+170*k	86400		0	(iq+30)*k		SELFONLY,TOGGLE	JUMAGAP	REFLECT_MELEE	(iq/4+10)*k	86400		0	0	NORMAL	1	1	0	0
+66	Zauber aufheben	3	1	1	0	HP	-(100 +10*lv + 8*iq +(93*iq + 6*mwep + number(50,100) )*ar*k)	30+120*k			12	-(100 +10*lv + 8*iq +(93*iq + 6*mwep + number(50,100) )*ar*k)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH,REMOVE_GOOD_AFFECT		NONE	10+40*k	7+23*k		0	0	NORMAL	5	1	1800	200
+76	Dunkler Schlag	3	1	1	0	HP	-(35 +5*lv + 2*iq +(14*iq + 6*mwep + number(50,100) )*ar*k)	10+14*k			9	-((35 +5*lv + 2*iq +(14*iq + 6*mwep + number(50,100) )*ar*k)*0.7)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH		NONE				0	0	MAGIC	5	1	1500	200
+77	Flammenschlag	3	1	1	0	HP	-(5*lv + 10*iq+(10*iq + 6*mwep + str*4 + con*2 + number(180,200) )*k)	60+140*k			12	-((5*lv + 10*iq+(10*iq + 6*mwep + str*4 + con*2 + number(180,200) )*k)*1.45)*0.725)		ATTACK,SELFONLY,COMPUTE_MAGIC_DAMAGE,SPLASH		NONE				0	0	MAGIC	15	0.8	0	500
+78	Geist der Flamme	3	1	1	0	HP	-(30+ 2*lv + 2*iq+(7*iq + 6*mwep + number(200,500))*ar*k)	20+30*k	86400	5+40*k	0	-((1+ 2*lv + 2*iq+(2*iq + 2*mwep + number(100,50))*ar*k)*1.80)*0.6)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH,TOGGLE		NONE				0	0	MAGIC	1	1	800	100
+79	Dunkler Schutz	3	1	1	0	DEF_GRADE	(0.5*iq+15)*k	20+30*k	86400	5+10*k	0	(0.5*iq+15)*k		SELFONLY,TOGGLE	MANASHIELD	MANASHIELD	100-((iq*0.84)*k)	86400		0	0	MAGIC	1	1	0	0
+80	Geisterschlag	3	1	1	0	HP	-(20 + 1* lv + 1.5*iq +(1 * con + 2 * dex + 13*iq + 6*mwep + number(180, 200))*ar*k)	40+120*k			12	-((20 + 1* lv + 1.5*iq +(1 * con + 2 * dex + 13*iq + 6*mwep + number(180, 200))*ar*k)*1.45)*0.5)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH,ATTACK_SLOW		NONE	333+300*k	10+10*k		0	0	MAGIC	9	1	1200	400
+81	Dunkler Stein	3	1	1	0	HP	-(120 + 3*lv + (5 * con + 5 * dex + 50*iq + 9*mwep)*ar*k)*1.5	80+220*k			17	-((120 + 3*lv + (5 * con + 5 * dex + 50*iq + 9*mwep)*ar*k)*1.5)*0.55)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH		NONE				0	0	MAGIC	9	1	1500	200
+91	Fliegender Talisman	4	1	1	0	HP	-(80 + 4*lv + (55*iq+5*mwep+50)*ar*k)	30+160*k			13	-(70 + 4*lv + (55*iq+5*mwep+50)*ar*k)		ATTACK,COMPUTE_MAGIC_DAMAGE,SPLASH		NONE				0	0	MAGIC	5	1	1800	400
+92	Drachenschie�en	4	1	1	0	HP	-(70 + 5*lv + (55*iq + 6*mwep + 120)*ar*k)	50+160*k			15	-(70 + 5*lv + (55*iq + 6*mwep + 120)*ar*k)		ATTACK,ATTACK_FIRE_CONT		NONE	lv+20*iq *k	iq*5*k		0	0	MAGIC	10	1	800	0
+93	Drachengebruell	4	1	1	0	HP	-(80 + 3*lv + (65*iq+13*mwep+100)*ar*k)	50+160*k			22	-(80 + 3*lv + (65*iq+13*mwep+1000)*ar*k)		ATTACK,SPLASH,ATTACK_FIRE_CONT		NONE	lv+20*iq *k	iq*5*k		0	0	MAGIC	15	1	2500	500
+94	Segen	4	1	1	0	RESIST_NORMAL	(iq*0.3+5)*(2*k+0.5)/(k+1.5)	40+160*k	86400		10	(iq*0.3+5)*(2*k+0.5)/(k+1.5)		PARTY	HOSIN	NONE				0	0	NORMAL	1	1	2000	0
+95	Reflektieren	4	1	1	0	REFLECT_MELEE	5+(iq*0.3 + 5)*k	40+160*k	86400		10	5+(iq*0.3 + 5)*k		PARTY	BOHO	NONE				0	0	NORMAL	1	1	2000	0
+96	Hilfe des Drachen	4	1	1	0	CRITICAL	(iq*0.3+5)*(2*k+0.5)/(k+1.5)	40+160*k	86400		10	(iq*0.3+5)*(2*k+0.5)/(k+1.5)		PARTY	GICHEON	NONE				0	0	NORMAL	1	1	2000	0
+106	Blitzwurf	4	1	1	0	HP	-(75 + 4*lv + (35*iq+6*mwep+number(iq*5,iq*15))*ar*k)	30+150*k			7	-(75 + 4*lv + (35*iq+6*mwep+number(iq*5,iq*15))*ar*k)		ATTACK,SPLASH		NONE				0	0	MAGIC	5	1	1800	400
+107	Blitz heraufbeschwoeren	4	1	1	0	HP	-(40 + 4*lv + (65*iq+7*mwep+number(iq*5,iq*16))*ar*k)	50+150*k			15	-(40 + 4*lv + (65*iq+7*mwep+number(iq*5,iq*16))*ar*k)*1.25		ATTACK,SPLASH,ATTACK_STUN		NONE	50+1000*k/6	5		0	0	MAGIC	15	1	1500	400
+108	Blitzkralle	4	1	1	0	HP	-(50 + 5*lv + (35*iq+6*mwep+number(1,800))*ar*k) * (1-chain*0.13)	40+180*k			10	-(50 + 5*lv + (35*iq+6*mwep+number(1,800))*ar*k) * (1-chain*0.13)*1.5		ATTACK		NONE				0	0	MAGIC	7	1	2500	100
+109	Kurieren	4	1	1	0	HP	1200+15*lv+(30*iq+6*mwep+number(1000,1500))*k*1.65	40+200*k			10	1200+15*lv+(30*iq+6*mwep+number(1000,1500))*k*1.65		REMOVE_BAD_AFFECT		NONE	20+80*k	86400		0	0	NORMAL	1	1	1000	0
+110	Schnelligkeit	4	1	1	0	MOV_SPEED	5 + 35*k	60+120*k	86400		10	5 + 35*k		PARTY	KWAESOK	CASTING_SPEED	3+33*k	86400		0	0	NORMAL	1	1	2000	0
+111	Angriff+	4	1	1	0	ATT_GRADE	5+(iq*0.2 +15)*k	60+120*k	86400		10	5+(iq*0.2 +15)*k		PARTY	JEUNGRYEOK	NONE				0	0	NORMAL	1	1	2000	0
+121	Fuehrung	0	1	40	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+122	Combo	0	1	2	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+124	Bergbau	0	1	40	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+125	Herstellung von Gegenstaenden	0	1	40	0	NONE			10+1000*k					DISABLE_BY_POINT_UP	YMIR	NONE			YMIR	0	0	NORMAL	0	1	1000	0
+126	Shinsoo	0	1	20	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+127	Chunjo	0	1	20	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+128	Jinno	0	1	20	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+129	Verwandlung	0	1	40	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+130	Reiten	0	1	1	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+131	Pferd rufen	0	1	10	0	NONE								DISABLE_BY_POINT_UP		NONE				0	0	NORMAL	0	1	0	0
+137	Kampf vom Pferderuecken	5	1	1	50	HP	-(atk+(2*atk*k))	60+80*k			5-(4*k)			ATTACK,USE_MELEE_DAMAGE,CRUSH		NONE				0	0	MELEE	10	1	300	0
+138	Pferdestampfer	5	1	1	52	HP	-(2.4*(200+1.5*lv)+(3*200*k))	60+120*k			15			ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH_LONG		MOV_SPEED	50	5		0	0	MELEE	6	1	400	100
+139	Kraftwelle	5	1	1	55	HP	-(2*(200+1.5*lv)+(3*200*k))	60+160*k			20			ATTACK,USE_MELEE_DAMAGE,SELFONLY,SPLASH,CRUSH		NONE				0	0	MELEE	12	1	400	250
+140	Pfeilhagel	5	1	1	50	HP	-(atk+(2*atk*k))	60+80*k			10			ATTACK,USE_ARROW_DAMAGE,CRUSH		NONE				0	0		5	1	2500	0
+151	Drachenaugen	0	1	7	0	NONE										NONE				0	0	NORMAL	0	1	0	0
+152	Blut des Drachengotts	0	1	7	0	MAX_HP	maxhp*0.2*k	150+150*k	300		600					NONE				0	0	NORMAL	0	1	0	0
+153	Segnung des Drachengotts	0	1	7	0	MAX_SP	maxsp*0.2*k	150+150*k	300		600					NONE				0	0	NORMAL	0	1	0	0
+154	Heilige Ruestung	0	1	7	0	DEF_GRADE	odef*0.1*k	150+150*k	180		480					NONE				0	0	NORMAL	0	1	0	0
+155	Beschleunigung	0	1	7	0	MOV_SPEED	15*k	150+150*k	180		480					ATT_SPEED	15*k	180		0	0	NORMAL	0	1	0	0
+156	Wut des Drachengottes	0	1	7	0	CRITICAL	50*k	150+150*k	180		480			SELFONLY		NONE				0	0	NORMAL	0	1	0	0
+157	Zauberhilfe	0	1	7	0	CASTING_SPEED	50*k	150+150*k	180		480			SELFONLY		NONE				0	0	NORMAL	0	1	0	0
+158	����̵�	0	1	3	0	NONE								SELFONLY		NONE				0	0	NORMAL	0	1	0	0
+159	�����ǹ�	0	1	5	0	NONE								SELFONLY		NONE				0	0	NORMAL	0	1	0	0
+160	����ȭ	0	1	5	0	NONE	3*k	80-12*k	300					SELFONLY		NONE				0	0	NORMAL	0	1	0	0
+161	�����ǹ�	0	1	2	0	NONE		50								NONE				0	0	NORMAL	0	1	0	0
+162	�����̵�	0	1	2	0	NONE		20								NONE				0	0	NORMAL	0	1	0	0
+256	CRUSH200��ų	0	1	1	0	HP	-5*k*atk				2			ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH		NONE				0	0	MELEE	0	1	0	300
+257	�Ϲݹ���350��ų	0	1	1	0	HP	-5*k*atk				5			ATTACK,USE_MELEE_DAMAGE,SPLASH		NONE				0	0	MELEE	0	1	0	525
+258	CRUSH300��ų	0	1	1	0	HP	-5*k*atk				7			ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH		NONE				0	0	MELEE	0	1	0	450
+259	�Ϲݹ���200��ų	0	1	1	0	HP	-5*k*atk				9			ATTACK,USE_MELEE_DAMAGE,SPLASH		NONE				0	0	MELEE	0	1	0	300
+260	CURSH400��ų	0	1	1	0	HP	-5*k*atk				10			ATTACK,USE_MELEE_DAMAGE,SPLASH,CRUSH		NONE				0	0	MELEE	0	1	0	600
+261	��250��ų	0	1	1	0	HP	-5*k*atk				9			ATTACK,USE_MELEE_DAMAGE,SPLASH,ATTACK_POISON		NONE	80			0	0	MELEE	0	1	0	375
+262	SLOW300��ų	0	1	1	0	HP	-5*k*atk				12			ATTACK,USE_MELEE_DAMAGE,SPLASH		MOV_SPEED	-20	10		0	0	MELEE	0	1	0	450
+141	����	0	1	40	0	NONE	1333.3*k									NONE				0	0	NORMAL	0	1	0	0
+142	ö��	0	1	40	0	NONE	20*k									NONE				0	0	NORMAL	0	1	0	0
+170	Zerrei�en	7	1	1	0	HP	-(1.1*atk+(0.3*atk+1.5*str)*k)	40+100*k			12	-(1.1*atk+(0.3*atk+1.5*str)*k)		ATTACK,USE_MELEE_DAMAGE,SPLASH		NONE	60*k	5+25*k		0	0	MELEE	5	1	300	200
+171	Atem des Wolfes	7	1	1	0	HP	-(2*atk+(atk+dex*3+str*5+con)*k)	40+120*k			20	-(2*atk+(atk+dex*3+str*5+con)*k)		ATTACK,USE_MELEE_DAMAGE,SPLASH,ATTACK_STUN,CRUSH		NONE	100+k*1000/6	2		0	0	MELEE	10	1	1000	200
+172	Wolfssprung	7	1	1	0	HP	-(atk+(1.6*atk+200+dex*7+str*7)*k)	40+100*k			12	-(atk+(1.6*atk+200+dex*7+str*7)*k)		ATTACK,USE_MELEE_DAMAGE		NONE				0	0	MELEE	5	1	800	100
+173	Wolfsklaue	7	1	1	0	HP	-(3*atk+(0.8*atk+str*6+dex*2+con)*k)	40+100*k			12	-(3*atk+(0.8*atk+str*6+dex*2+con)*k)		ATTACK,USE_MELEE_DAMAGE		DEF_GRADE	-30*k	5		0	0	MELEE	10	1	800	100
+174	Purpurwolfseele	7	1	1	0	ATT_GRADE	7+(4*iq+13)*k	20+240*k	50+100*k	2+23*k	0	7+(4*iq+13)*k		SELFONLY,TOGGLE	RED_POSSESSION	DEF_GRADE	-30*k	50+100*k		0	0	NORMAL	1	1	0	0
+175	Indigowolfseele	7	1	1	0	ATT_SPEED	20*k	80+220*k	200	2+20*k	0	20*k		SELFONLY,TOGGLE	BLUE_POSSESSION	DODGE	1+10*k	200		0	0	NORMAL	1	1	1000	0

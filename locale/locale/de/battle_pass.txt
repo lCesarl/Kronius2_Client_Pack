@@ -1,0 +1,18 @@
+1	Töte das Monster	Verbleibende Monster: %s	Monster: |cffff9d9d|H|h%s|h|r	Töte |cffff9d9d|H|h%s|h|r	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+2	Töte Spieler	Verbleibende Spieler: %s	Mindestlevel: |cffff9d9d|H|h%s|h|r	Töte Spieler mit dem Level |cffff9d9d|H|h%s|h|r	oder höher, um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+3	Füge Monstern Schaden zu	Verbleibender Schaden: %s	Monster: |cffff9d9d|H|h%s|h|r	Füge |cffff9d9d|H|h%s|h|r Schaden zu,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+4	Füge Spielern Schaden zu	Verbleibender Schaden: %s	Mindestlevel: |cffff9d9d|H|h%s|h|r	Füge Spielern mit dem Level |cffff9d9d|H|h%s|h|r	oder höher Schaden zu,	um die Mission abzuschließen.
+5	Benutze das Item 	Benutzte noch: %s	Item: |cffff9d9d|H|h%s|h|r	Verwende |cffff9d9d|H|h%s|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+6	Verkaufe Items	Verkaufte noch: %s	Item: |cffff9d9d|H|hAlle Items|h|r	Verkaufe Items,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+7	Crafte Items	Crafte noch: %s	Item: |cffff9d9d|H|hAlle Items|h|r	Crafte Items,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+8	Verstärke Items	Vertärke noch: %s	Item: |cffff9d9d|H|hAlle Items|h|r	Verstärke Items,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+9	Zerstöre Items	Zerstörte noch: %s	Item: |cffff9d9d|H|hAlle Items|h|r	Zerstöre Items,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+10	Sammle Items	Sammle noch: %s	Item: |cffff9d9d|H|hAlle Items|h|r	Sammle Items,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+11	Fische braten	Brate noch: %s	Brate Fische: |cffff9d9d|H|hAlle Fische|h|r	Brate Fische,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+12	Fische fangen	Fange noch: %s	Angel Fische: |cffff9d9d|H|hAlle Fische|h|r	Fange Fische,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+13	Angeln gehen	Angel noch: %s	Angeln: |cffff9d9d|H|hüberall|h|r	Angel,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+14	Gebe Yang aus	Yang ausgeben noch: %s	gebe Yang aus für: |cffff9d9d|H|hAlles|h|r	Gebe Yang aus,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+15	Yang farmen	Farme noch: %s	erfarmbar durch: |cffff9d9d|H|hüberall|h|r	Farme Yang,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+16	Absolviere Dungeons	absolvierte Dungeons: %s	zu absolvierende Dungeon: |cffff9d9d|H|hAlle|h|r	Schließe Dungeons ab,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+17	Minigame	absolvierte Dungeons: %s	zu absolvierende Dungeon: |cffff9d9d|H|hAlle|h|r	Schließe Dungeons ab,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
+18	Schreibe in den Chat	Schreibe noch: %s	Chatart: |cffff9d9d|H|hRufchat|h|r	Schreibe in den |cffff9d9d|H|hRufchat|h|r,	um die Mission abzuschließen	und die Belohnung(en) zu erhalten.
