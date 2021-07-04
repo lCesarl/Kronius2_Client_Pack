@@ -36,7 +36,6 @@ import uiRefine
 import uiEquipmentDialog
 import uiGameButton
 import uiTip
-import uiCube
 import miniMap
 # ACCESSORY_REFINE_ADD_METIN_STONE
 import uiselectitem
@@ -335,16 +334,6 @@ class Interface(object):
 			self.wndWeb.LoadWindow()
 			self.wndWeb.Hide()
 
-	def __MakeCubeWindow(self):
-		self.wndCube = uiCube.CubeWindow()
-		self.wndCube.LoadWindow()
-		self.wndCube.Hide()
-
-	def __MakeCubeResultWindow(self):
-		self.wndCubeResult = uiCube.CubeResultWindow()
-		self.wndCubeResult.LoadWindow()
-		self.wndCubeResult.Hide()
-
 	def __MakeItemFinder(self):
 		self.wndItemFinder = uiitemfinder.ItemFinder()
 		self.wndItemFinder.LoadWindow()
@@ -378,9 +367,6 @@ class Interface(object):
 		self.__MakeWebWindow()
 		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
 			self.__MakeCubeRenewal()
-		self.__MakeCubeWindow()
-		self.__MakeCubeResultWindow()
-
 		self.__MakeItemFinder()
 		
 		
@@ -397,8 +383,6 @@ class Interface(object):
 		self.wndDragonSoul.SetItemToolTip(self.tooltipItem)
 		self.wndDragonSoulRefine.SetItemToolTip(self.tooltipItem)
 		self.wndSafebox.SetItemToolTip(self.tooltipItem)
-		self.wndCube.SetItemToolTip(self.tooltipItem)
-		self.wndCubeResult.SetItemToolTip(self.tooltipItem)
 
 		if app.ENABLE_SWITCHBOT:
 			self.wndSwitchbot.SetItemToolTip(self.tooltipItem)
@@ -514,12 +498,6 @@ class Interface(object):
 		if self.wndHelp:
 			self.wndHelp.Destroy()
 
-		if self.wndCube:
-			self.wndCube.Destroy()
-			
-		if self.wndCubeResult:
-			self.wndCubeResult.Destroy()
-
 		if self.wndMessenger:
 			self.wndMessenger.Destroy()
 
@@ -623,8 +601,6 @@ class Interface(object):
 		del self.wndMall
 		del self.wndParty
 		del self.wndHelp
-		del self.wndCube
-		del self.wndCubeResult
 		del self.privateShopBuilder
 		del self.inputDialog
 		del self.wndChatLog
@@ -1394,12 +1370,6 @@ class Interface(object):
 	def CloseWbWindow(self):
 		self.wndWeb.Close()
 
-	def OpenCubeWindow(self):
-		self.wndCube.Open()
-
-		if FALSE == self.wndInventory.IsShow():
-			self.wndInventory.Show()
-
 	def ShowItemFinder(self):
 		if self.wndItemFinder.IsShow():
 			self.wndItemFinder.Close()
@@ -1408,26 +1378,6 @@ class Interface(object):
 
 	def AppendInfoFinder(self, index, name_monster, prob, activi, vnum, count, name_item):
 		self.wndItemFinder.AppendInfo(index, name_monster, prob, activi, vnum, count, name_item)
-
-	def UpdateCubeInfo(self, gold, itemVnum, count):
-		self.wndCube.UpdateInfo(gold, itemVnum, count)
-
-	def CloseCubeWindow(self):
-		self.wndCube.Close()
-
-	def FailedCubeWork(self):
-		self.wndCube.Refresh()
-
-	def SucceedCubeWork(self, itemVnum, count):
-		self.wndCube.Clear()
-		
-		print "ť�� ���� ����! [%d:%d]" % (itemVnum, count)
-
-		if 0: # ��� �޽��� ����� ���� �Ѵ�
-			self.wndCubeResult.SetPosition(*self.wndCube.GetGlobalPosition())
-			self.wndCubeResult.SetCubeResultItem(itemVnum, count)
-			self.wndCubeResult.Open()
-			self.wndCubeResult.SetTop()
 
 	def __HideWindows(self):
 		hideWindows = self.wndTaskBar,\

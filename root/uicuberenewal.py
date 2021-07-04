@@ -326,7 +326,7 @@ class CubeRenewalWindows(ui.ScriptWindow):
 		self.categoria = [
 			[1,"WEAPON","Armas"],
 			[2,"ETC","Varios"],
-			[999,"WORLDARD", "Otros"]
+			[999,"WORLDARD", "No Category"]
 		]
 
 		self.showingItemList = []
