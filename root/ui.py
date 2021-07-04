@@ -1163,6 +1163,7 @@ class EditLine(TextLine):
 		self.eventTab = None
 		self.numberMode = FALSE
 		self.useIME = TRUE
+		self.canEdit = TRUE
 
 		self.bCodePage = FALSE
 
@@ -1180,6 +1181,8 @@ class EditLine(TextLine):
 		self.eventEscape = Window.NoneMethod
 		self.eventTab = None
 
+	def CanEdit(self, value):
+		self.canEdit = value
 
 	def SetCodePage(self, codePage):
 		candidateWindowClass=EditLine.candidateWindowClassDict.get(codePage, EmptyCandidateWindow)
@@ -1232,6 +1235,9 @@ class EditLine(TextLine):
 		self.useIME = flag
 
 	def SetText(self, text):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		wndMgr.SetText(self.hWnd, text)
 
 		if self.IsFocus():
@@ -1247,6 +1253,9 @@ class EditLine(TextLine):
 		ime.MoveEnd()
 
 	def OnSetFocus(self):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		Text = self.GetText()
 		ime.SetText(Text)
 		ime.SetMax(self.max)
@@ -1308,10 +1317,16 @@ class EditLine(TextLine):
 		return TRUE
 
 	def OnIMEUpdate(self):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		snd.PlaySound("sound/ui/type.wav")
 		TextLine.SetText(self, ime.GetText(self.bCodePage))
 
 	def OnIMETab(self):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		if self.eventTab:
 			self.eventTab()
 			return TRUE
@@ -1319,6 +1334,9 @@ class EditLine(TextLine):
 		return FALSE
 
 	def OnIMEReturn(self):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		snd.PlaySound("sound/ui/click.wav")
 		self.eventReturn()
 
@@ -1329,6 +1347,9 @@ class EditLine(TextLine):
 		return TRUE
 
 	def OnKeyDown(self, key):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		if app.DIK_F1 == key:
 			return FALSE
 		if app.DIK_F2 == key:
@@ -1354,6 +1375,9 @@ class EditLine(TextLine):
 		return TRUE
 
 	def OnKeyUp(self, key):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		if app.DIK_F1 == key:
 			return FALSE
 		if app.DIK_F2 == key:
@@ -1371,7 +1395,10 @@ class EditLine(TextLine):
 
 		return TRUE
 
-	def OnIMEKeyDown(self, key):		
+	def OnIMEKeyDown(self, key):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		# Left
 		if app.VK_LEFT == key:
 			ime.MoveLeft()
@@ -1401,6 +1428,9 @@ class EditLine(TextLine):
 	#def OnMouseLeftButtonDown(self):
 	#	self.SetFocus()
 	def OnMouseLeftButtonDown(self):
+		if self.canEdit == FALSE:
+			return FALSE
+
 		if FALSE == self.IsIn():
 			return FALSE
 

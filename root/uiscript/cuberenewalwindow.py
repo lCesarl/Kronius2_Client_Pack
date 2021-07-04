@@ -144,7 +144,7 @@ window = {
 							"image" : PATTERN_PATH + "border_A_center.tga",
 							"rect" : (0.0, 0.0, LIST_WINDOW_PATTERN_X_COUNT, LIST_WINDOW_PATTERN_Y_COUNT),
 						},
-						## ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+						## °£°Ý Ã³¸®¸¦ À§ÇÑ ¾È¿¡ ÀÖ´Â À©µµ¿ì
 						{
 							"name" : "item_list_window",
 							"type" : "window",
@@ -399,43 +399,6 @@ window = {
 					(
 						{
 							"name" : "yang_text",
-							"type" : "text",
-
-							"x" : 7,
-							"y" : 3,
-
-							"horizontal_align" : "right",
-							"text_horizontal_align" : "right",
-
-							"text" : "",
-						},
-					),
-				},
-				
-				## Gem
-				{
-					"name" : "gem_icon",
-					"type" : "image",
-					"style" : ("ltr", ),
-					"x" : 106,
-					"y" : 430,
-					
-					"image" : ROOT_PATH + "cube_gem_icon.sub",
-				},
-				
-				{
-					"name" : "gem_textbg",
-					"type" : "image",
-					"style" : ("ltr", ),
-					"x" : 123,
-					"y" : 427,
-					
-					"image" : ROOT_PATH + "cube_yang_textbg.sub",
-					
-					"children" :
-					(
-						{
-							"name" : "gem_text",
 							"type" : "text",
 
 							"x" : 7,

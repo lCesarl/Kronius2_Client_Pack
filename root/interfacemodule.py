@@ -86,6 +86,9 @@ class Interface(object):
 		self.mallPageDlg = None
 		# END_OF_ITEM_MALL
 
+		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+			self.wndCubeRenewal = None
+
 		self.wndWeb = None
 		self.wndTaskBar = None
 		self.wndCharacter = None
@@ -352,6 +355,12 @@ class Interface(object):
 		self.wndItemSelect = uiselectitem.SelectItemWindow()
 		self.wndItemSelect.Hide()
 	# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+
+	if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+		def __MakeCubeRenewal(self):
+			import uicuberenewal
+			self.wndCubeRenewal = uicuberenewal.CubeRenewalWindows()
+			self.wndCubeRenewal.Hide()
 				
 	def MakeInterface(self):
 		self.__MakeMessengerWindow()
@@ -367,6 +376,8 @@ class Interface(object):
 		self.__MakeHelpWindow()
 		self.__MakeTipBoard()
 		self.__MakeWebWindow()
+		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+			self.__MakeCubeRenewal()
 		self.__MakeCubeWindow()
 		self.__MakeCubeResultWindow()
 
@@ -564,6 +575,10 @@ class Interface(object):
 			self.changechannel.Destroy()
 					
 		self.wndChatLog.Destroy()
+		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+			if self.wndCubeRenewal:
+				self.wndCubeRenewal.Destroy()
+				self.wndCubeRenewal.Close()
 		for btn in self.questButtonList:
 			btn.SetEvent(0)
 		for btn in self.whisperButtonList:
@@ -584,6 +599,8 @@ class Interface(object):
 		del self.wndUICurtain
 		del self.wndChat
 		del self.wndTaskBar
+		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+			del self.wndCubeRenewal
 		if self.wndExpandedTaskBar:
 			del self.wndExpandedTaskBar
 		del self.wndCharacter
@@ -1369,6 +1386,10 @@ class Interface(object):
 	# show GIFT
 	def ShowGift(self):
 		self.wndTaskBar.ShowGift()
+
+	if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+		def BINARY_CUBE_RENEWAL_OPEN(self):
+			self.wndCubeRenewal.Show()
 	    	
 	def CloseWbWindow(self):
 		self.wndWeb.Close()

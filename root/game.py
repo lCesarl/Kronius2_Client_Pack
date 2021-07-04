@@ -2214,6 +2214,11 @@ class GameWindow(ui.ScriptWindow):
 			import net
 			net.SendChatPacket("/channel_switch %d" % (int(channel)))
 
+	if app.ENABLE_CUBE_RENEWAL_WORLDARD:
+		def BINARY_CUBE_RENEWAL_OPEN(self):
+			if self.interface:
+				self.interface.BINARY_CUBE_RENEWAL_OPEN()
+
 	def BINARY_ServerCommand_Run(self, line):
 		#dbg.TraceError(line)
 		try:
