@@ -130,18 +130,32 @@ window = {
 									),
 						},
 						## Dragon Soul Button
+						# {
+						# 	"name" : "DSSButton",
+						# 	"type" : "button",
+ 
+						# 	"x" : 114+10,
+						# 	"y" : 107,
+ 
+						# 	"tooltip_text" : uiScriptlocale.TASKBAR_DRAGON_SOUL,
+ 
+						# 	"default_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_01.tga",
+						# 	"over_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_02.tga",
+						# 	"down_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_03.tga",
+						# },
+						## RuneButton
 						{
-							"name" : "DSSButton",
+							"name" : "RuneButton",
 							"type" : "button",
- 
-							"x" : 114+10,
+
+							"x" : 114+13,
 							"y" : 107,
- 
-							"tooltip_text" : uiScriptlocale.TASKBAR_DRAGON_SOUL,
- 
-							"default_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_01.tga",
-							"over_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_02.tga",
-							"down_image" : "d:/ymir work/ui/dragonsoul/dss_inventory_button_03.tga",
+
+							"tooltip_text" : "Runen",
+
+							"default_image" : "locale/common/ui/runes_01.tga",
+							"over_image" : "locale/common/ui/runes_03.tga",
+							"down_image" : "locale/common/ui/runes_02.tga",
 						},
 						## MallButton
 						{

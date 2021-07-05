@@ -1313,6 +1313,13 @@ class ItemToolTip(ToolTip):
 		self.AppendDescription(itemDesc, 26)
 		self.AppendDescription(itemSummary, 26, self.CONDITION_COLOR)
 
+		### Runen ###
+		if app.ENABLE_SYSTEM_RUNE:
+			if itemType >= item.ITEM_TYPE_RUNE and itemType <= item.ITEM_TYPE_RUNE_GREEN:
+				self.AppendDescription("Runen-Item", 26, self.CRAFT_ITEM_COLOR)
+				self.__AppendAffectInformation()
+				self.__AppendAttributeInformation(attrSlot)
+
 		### Shining ###
 		if item.ITEM_TYPE_SHINING == itemType:
 			GetColor = item.GetValue(0)

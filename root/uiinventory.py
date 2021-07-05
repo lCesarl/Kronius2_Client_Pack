@@ -27,7 +27,74 @@ if app.__ENABLE_NEW_OFFLINESHOP__:
 ITEM_MALL_BUTTON_ENABLE = TRUE
 ITEM_FLAG_APPLICABLE = 1 << 14
 
-		
+if app.ENABLE_SYSTEM_RUNE:
+	class RuneWindow(ui.ScriptWindow):
+
+		def __init__(self, wndInventory):				
+					
+			ui.ScriptWindow.__init__(self)
+
+			self.isLoaded = 0
+			self.wndInventory = wndInventory;
+
+			self.__LoadWindow()
+
+		def __del__(self):
+			ui.ScriptWindow.__del__(self)
+
+		def Show(self):
+			self.__LoadWindow()
+			self.RefreshEquipSlotWindow()
+			self.SetCenterPosition()
+
+			ui.ScriptWindow.Show(self)
+
+		def Close(self):
+			self.Hide()
+
+		def __LoadWindow(self):
+			if self.isLoaded == 1:
+				return
+
+			self.isLoaded = 1
+
+			try:
+				pyScrLoader = ui.PythonScriptLoader()
+				pyScrLoader.LoadScriptFile(self, "UIScript/RuneWindow.py")
+			except:
+				import exception
+				exception.Abort("CostumeWindow.LoadWindow.LoadObject")
+
+			try:
+				wndEquip = self.GetChild("RuneSlot")
+				self.GetChild("TitleBar").SetCloseEvent(ui.__mem_func__(self.Close))
+				
+			except:
+				import exception
+				exception.Abort("CostumeWindow.LoadWindow.BindObject")
+
+			## Equipment
+			wndEquip.SetOverInItemEvent(ui.__mem_func__(self.wndInventory.OverInItem))
+			wndEquip.SetOverOutItemEvent(ui.__mem_func__(self.wndInventory.OverOutItem))
+			wndEquip.SetUnselectItemSlotEvent(ui.__mem_func__(self.wndInventory.UseItemSlot))
+			wndEquip.SetUseSlotEvent(ui.__mem_func__(self.wndInventory.UseItemSlot))						
+			wndEquip.SetSelectEmptySlotEvent(ui.__mem_func__(self.wndInventory.SelectEmptySlot))
+			wndEquip.SetSelectItemSlotEvent(ui.__mem_func__(self.wndInventory.SelectItemSlot))
+
+			self.wndEquip = wndEquip
+
+		def RefreshEquipSlotWindow(self):
+			getItemVNum=player.GetItemIndex
+			getItemCount=player.GetItemCount
+			setItemVNum=self.wndEquip.SetItemSlot
+			for i in xrange(item.EQUIPMENT_RUNE_COUNT):
+				slotNumber = item.EQUIPMENT_RUNE_START + i
+				itemCount = getItemCount(slotNumber)
+				if itemCount <= 1:
+					itemCount = 0
+				setItemVNum(slotNumber, getItemVNum(slotNumber), itemCount)
+
+			self.wndEquip.RefreshSlot()
 class BeltInventoryWindow(ui.ScriptWindow):
 
 	def __init__(self, wndInventory):
@@ -389,6 +456,8 @@ class InventoryWindow(ui.ScriptWindow):
 	wndEquipmentTypeTab = None
 	equipmentTypeIndex = 0
 	dlgPickMoney = None
+	if app.ENABLE_SYSTEM_RUNE:
+		wndRune = None
 
 	if app.ENABLE_SPECIAL_INVENTORY:
 		wndInventoryTypeTab = None
@@ -476,6 +545,7 @@ class InventoryWindow(ui.ScriptWindow):
 			self.wndMoneySlot = self.GetChild("Money_Slot")
 			self.mallButton = self.GetChild2("MallButton")
 			self.DSSButton = self.GetChild2("DSSButton")
+			self.runeButton = self.GetChild2("RuneButton")
 
 			self.inventoryTab = []
 			self.inventoryTab.append(self.GetChild("Inventory_Tab_01"))
@@ -647,6 +717,9 @@ class InventoryWindow(ui.ScriptWindow):
 			self.DSSButton.SetEvent(ui.__mem_func__(self.ClickDSSButton)) 
  		#####
 
+		if self.runeButton:
+			self.runeButton.SetEvent(ui.__mem_func__(self.ClickRuneButton))
+
 		## Refresh
 		self.SetInventoryPage(0)
 		self.SetEquipmentPage(0)
@@ -722,6 +795,11 @@ class InventoryWindow(ui.ScriptWindow):
 			self.wndInventoryTypeTab.Destroy()
 			self.wndInventoryTypeTab = None
 
+		if app.ENABLE_SYSTEM_RUNE:
+			if self.wndRune:
+				self.wndRune.Destroy()
+				self.wndRune = 0
+
 		self.inventoryTab = []
 		self.equipmentTab = []
 
@@ -770,6 +848,18 @@ class InventoryWindow(ui.ScriptWindow):
 		self.equipmentPageIndex = page
 		self.equipmentTab[1-page].SetUp()
 		self.RefreshEquipSlotWindow()
+
+	if app.ENABLE_SYSTEM_RUNE:
+		def ClickRuneButton(self):
+			print "Click Rune Button"
+			if self.wndRune:
+				if self.wndRune.IsShow(): 
+					self.wndRune.Hide()
+				else:
+					self.wndRune.Show()
+			else:
+				self.wndRune = RuneWindow(self)
+				self.wndRune.Show()
 
 	if app.ENABLE_SPECIAL_INVENTORY:
 		def SetInventoryType(self, type):
@@ -1120,6 +1210,10 @@ class InventoryWindow(ui.ScriptWindow):
 				slotNumber = item.TEST_SLOT_START + i
 				self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
 			self.wndEquip.RefreshSlot()
+
+		if app.ENABLE_SYSTEM_RUNE:
+			if self.wndRune:
+				self.wndRune.RefreshEquipSlotWindow()
 
 	def RefreshItemSlot(self):
 		self.RefreshEquipSlotWindow()
