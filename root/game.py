@@ -261,6 +261,12 @@ class GameWindow(ui.ScriptWindow):
 		# ex) cubeInformation[20383] = [ {"rewordVNUM": 72723, "rewordCount": 1, "materialInfo": "101,1&102,2", "price": 999 }, ... ]
 		self.cubeInformation = {}
 		self.currentCubeNPC = 0
+
+		if app.INGAME_WIKI:
+			import inGameWiki
+			self.wndWiki = inGameWiki.InGameWiki()
+			self.interface.dlgSystem.wikiWnd = proxy(self.wndWiki)
+
 		if systemSetting.IsFogMode():
 			background.SetEnvironmentFog(True)
 		else:
@@ -311,6 +317,12 @@ class GameWindow(ui.ScriptWindow):
 		self.guildInviteQuestionDialog = None
 		self.guildWarQuestionDialog = None
 		self.messengerAddFriendQuestion = None
+
+		if app.INGAME_WIKI:
+			if self.wndWiki:
+				self.wndWiki.Hide()
+				self.wndWiki = None
+
 		if app.__ENABLE_NEW_OFFLINESHOP__:
 			if self.Offlineshop:
 				self.Offlineshop.Destroy()
@@ -391,6 +403,8 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F5]	= lambda : self.ToggleSwitchbot()
 		onPressKeyDict[app.DIK_F6] 	= lambda : self.ToggleItemfinder()
 		onPressKeyDict[app.DIK_F7] 	= lambda : self.ToggleChannelChanger()
+		if app.INGAME_WIKI:
+			onPressKeyDict[app.DIK_F8] 	= lambda : self.ToggleWikiWindow()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda : self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda : self.ShowMouseImage()
@@ -481,6 +495,17 @@ class GameWindow(ui.ScriptWindow):
 		#	onClickKeyDict[app.DIK_B] = lambda: self.ChangePKMode()
 
 		self.onClickKeyDict=onClickKeyDict
+
+	if app.INGAME_WIKI:
+		def ToggleWikiWindow(self):
+			if not self.wndWiki:
+				return
+			
+			if self.wndWiki.IsShow():
+				self.wndWiki.Hide()
+			else:
+				self.wndWiki.Show()
+				self.wndWiki.SetTop()
 
 	if app.__ENABLE_NEW_OFFLINESHOP__:
 		def __PressYKey(self):

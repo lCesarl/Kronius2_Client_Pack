@@ -1932,6 +1932,11 @@ class Interface(object):
 	def EmptyFunction(self):
 		pass
 
+	if app.INGAME_WIKI:
+		def ToggleWikiNew(self):
+			import net
+			net.ToggleWikiWindow()
+
 	def GetInventoryPageIndex(self):
 		if self.wndInventory:
 			return self.wndInventory.GetInventoryPageIndex()

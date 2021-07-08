@@ -85,6 +85,8 @@ class pack_file(object):
 		return [x for x in self]
 
 __builtins__.pack_open = pack_open = pack_file
+__builtins__.open = open
+__builtins__.new_open = open
 
 _ModuleType = type(sys)
 

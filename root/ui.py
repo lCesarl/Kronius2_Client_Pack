@@ -180,6 +180,16 @@ class Window(object):
 
 		self.Hide()
 
+		if app.INGAME_WIKI:
+			self.mouseLeftButtonDownEvent = None
+			self.mouseLeftButtonDownArgs = None
+			self.overInEvent = None
+			self.overInArgs = None
+			self.overOutEvent = None
+			self.overOutArgs = None
+			
+			self.SetWindowName("NONAME_Window")
+
 	def __del__(self):
 		wndMgr.Destroy(self.hWnd)
 
@@ -348,8 +358,51 @@ class Window(object):
 	def GetChildCount(self):
 		return wndMgr.GetChildCount(self.hWnd)
 
-	def IsIn(self):
-		return wndMgr.IsIn(self.hWnd)
+	if app.INGAME_WIKI:
+		def IsIn(self, checkChilds = False):
+			return wndMgr.IsIn(self.hWnd, checkChilds)
+		
+		def GetRenderBox(self):
+			return wndMgr.GetRenderBox(self.hWnd)
+		
+		def SetInsideRender(self, val):
+			wndMgr.SetInsideRender(self.hWnd, val)
+		
+		def IsInPosition(self):
+			xMouse, yMouse = wndMgr.GetMousePosition()
+			x, y = self.GetGlobalPosition()
+			return xMouse >= x and xMouse < x + self.GetWidth() and yMouse >= y and yMouse < y + self.GetHeight()
+		
+		def SetMouseLeftButtonDownEvent(self, event, *args):
+			self.mouseLeftButtonDownEvent = event
+			self.mouseLeftButtonDownArgs = args
+
+		def OnMouseLeftButtonDown(self):
+			if self.mouseLeftButtonDownEvent:
+				apply(self.mouseLeftButtonDownEvent, self.mouseLeftButtonDownArgs)
+		
+		def SAFE_SetOverInEvent(self, func, *args):
+			self.overInEvent = __mem_func__(func)
+			self.overInArgs = args
+		
+		def SAFE_SetOverOutEvent(self, func, *args):
+			self.overOutEvent = __mem_func__(func)
+			self.overOutArgs = args
+		
+		def OnMouseOverIn(self):
+			if self.overInEvent:
+				apply(self.overInEvent, self.overInArgs)
+		
+		def OnMouseOverOut(self):
+			if self.overOutEvent:
+				apply(self.overOutEvent, self.overOutArgs)
+		
+		def AdjustSize(self):
+			x, y = self.GetTextSize()
+			wndMgr.SetWindowSize(self.hWnd, x, y)
+	else:
+		def IsIn(self):
+			return wndMgr.IsIn(self.hWnd)
 
 	if app.ENABLE_TARGET_INFO:
 		def SetMouseLeftButtonUpEvent(self, event, *args):
@@ -598,6 +651,10 @@ class ListBoxEx(Window):
 
 	def __GetItemCount(self):
 		return len(self.itemList)
+
+	if app.INGAME_WIKI:
+		def GetItemCount(self):
+			return len(self.itemList)
 
 	def GetItemViewCoord(self, pos, itemWidth):
 		return (0, (pos-self.basePos)*self.itemStep)
@@ -1053,6 +1110,13 @@ class TextLine(Window):
 	def RegisterWindow(self, layer):
 		self.hWnd = wndMgr.RegisterTextLine(self, layer)
 
+	if app.INGAME_WIKI:
+		def GetRenderPos(self):
+			return wndMgr.GetRenderPos(self.hWnd)
+
+		def SetFixedRenderPos(self, startPos, endPos):
+			wndMgr.SetFixedRenderPos(self.hWnd, startPos, endPos)
+
 	def SetMax(self, max):
 		wndMgr.SetMax(self.hWnd, max)
 
@@ -1174,6 +1238,15 @@ class EditLine(TextLine):
 		self.readingWnd = ReadingWnd()
 		self.readingWnd.Hide()
 
+		if app.INGAME_WIKI:
+			self.eventUpdate = None
+			
+			self.overLay = TextLine()
+			self.overLay.SetParent(self)
+			self.overLay.SetPosition(0, 0)
+			self.overLay.SetPackedFontColor(WHITE_COLOR)
+			self.overLay.Hide()
+
 	def __del__(self):
 		TextLine.__del__(self)
 
@@ -1212,6 +1285,32 @@ class EditLine(TextLine):
 	def SetTabEvent(self, event):
 		self.eventTab = event
 
+	if app.INGAME_WIKI:
+		def SetOverlayText(self, text):
+			self.overLay.SetText(text)
+			self.__RefreshOverlay()
+		
+		def GetOverlayText(self):
+			return self.overLay.GetText()
+		
+		def SetUpdateEvent(self, event):
+			self.eventUpdate = event
+		
+		def GetDisplayText(self):
+			if len(self.GetText()):
+				return self.GetText()
+			else:
+				return self.overLay.GetText()
+		
+		def __RefreshOverlay(self):
+			if len(self.GetText()):
+				self.overLay.Hide()
+			else:
+				self.overLay.Show()
+		
+		def IsShowCursor(self):
+			return wndMgr.IsShowCursor(self.hWnd)
+
 	def SetMax(self, max):
 		self.max = max
 		wndMgr.SetMax(self.hWnd, self.max)
@@ -1242,6 +1341,9 @@ class EditLine(TextLine):
 
 		if self.IsFocus():
 			ime.SetText(text)
+
+		if app.INGAME_WIKI:
+			self.__RefreshOverlay()
 
 	def Enable(self):
 		wndMgr.ShowCursor(self.hWnd)
@@ -1322,6 +1424,12 @@ class EditLine(TextLine):
 
 		snd.PlaySound("sound/ui/type.wav")
 		TextLine.SetText(self, ime.GetText(self.bCodePage))
+
+		if app.INGAME_WIKI:
+			self.__RefreshOverlay()
+			
+			if self.eventUpdate:
+				self.eventUpdate()
 
 	def OnIMETab(self):
 		if self.canEdit == FALSE:
@@ -1541,6 +1649,10 @@ class ImageBox(Window):
 		if len(self.eventDict)!=0:
 			print "LOAD IMAGE", self, self.eventDict
 
+	if app.INGAME_WIKI:
+		def UnloadImage(self):
+			wndMgr.UnloadImage(self.hWnd)
+
 	def SetAlpha(self, alpha):
 		wndMgr.SetDiffuseColor(self.hWnd, 1.0, 1.0, 1.0, alpha)
 
@@ -1550,25 +1662,48 @@ class ImageBox(Window):
 	def GetHeight(self):
 		return wndMgr.GetHeight(self.hWnd)
 
-	def OnMouseOverIn(self):
-		try:
-			args = self.eventArgs.get("MOUSE_OVER_IN", None)
-			if not args:
-				self.eventDict["MOUSE_OVER_IN"]()
-			else:
-				apply(self.eventDict["MOUSE_OVER_IN"], args)
-		except KeyError:
-			pass
+	if app.INGAME_WIKI:
+		def OnMouseOverIn(self):
+			self.__OnMouseOverIn()
+		
+		def OnMouseOverOut(self):
+			self.__OnMouseOverOut()
+		
+		def __OnMouseOverIn(self):
+			try:
+				apply(self.eventDict["MOUSE_OVER_IN"], self.argDict["MOUSE_OVER_IN"])
+			except KeyError:
+				pass
+		
+		def __OnMouseOverOut(self):
+			try:
+				apply(self.eventDict["MOUSE_OVER_OUT"], self.argDict["MOUSE_OVER_OUT"])
+			except KeyError:
+				pass
+		
+		def OnMouseLeftButtonDown(self):
+			if self.eventDict.has_key("MOUSE_LEFT_DOWN"):
+				apply(self.eventDict["MOUSE_LEFT_DOWN"], self.argDict["MOUSE_LEFT_DOWN"])
+	else:
+		def OnMouseOverIn(self):
+			try:
+				args = self.eventArgs.get("MOUSE_OVER_IN", None)
+				if not args:
+					self.eventDict["MOUSE_OVER_IN"]()
+				else:
+					apply(self.eventDict["MOUSE_OVER_IN"], args)
+			except KeyError:
+				pass
 
-	def OnMouseOverOut(self):
-		try:
-			args = self.eventArgs.get("MOUSE_OVER_OUT", None)
-			if not args:
-				self.eventDict["MOUSE_OVER_OUT"]()
-			else:
-				apply(self.eventDict["MOUSE_OVER_OUT"], args)
-		except KeyError:
-			pass
+		def OnMouseOverOut(self):
+			try:
+				args = self.eventArgs.get("MOUSE_OVER_OUT", None)
+				if not args:
+					self.eventDict["MOUSE_OVER_OUT"]()
+				else:
+					apply(self.eventDict["MOUSE_OVER_OUT"], args)
+			except KeyError:
+				pass
 
 	def SAFE_SetStringEvent(self, event, func):
 		self.eventDict[event]=__mem_func__(func)
@@ -1685,6 +1820,8 @@ class ImageBox2(Window):
 class ExpandedImageBox(ImageBox):
 	def __init__(self, layer = "UI"):
 		ImageBox.__init__(self, layer)
+		self.eventDict={}
+		self.argDict={}
 
 	def __del__(self):
 		ImageBox.__del__(self)
@@ -1725,6 +1862,14 @@ class ExpandedImageBox(ImageBox):
 
 	def SetMoveAll(self, flag):
 		wndMgr.SetMoveAll(self.hWnd, flag)
+
+	def SAFE_SetStringEvent(self, event, func, *args):
+		self.eventDict[event]=__mem_func__(func)
+		self.argDict[event]=args
+
+	def SetStringEvent(self, event, func, *args):
+		self.eventDict[event]=func
+		self.argDict[event]=args
 
 class ExpandedImageBox2(ImageBox2):
 	def __init__(self, layer = "UI"):
@@ -8441,6 +8586,102 @@ if app.__ENABLE_NEW_OFFLINESHOP__:
 
 			self.SetScrollBarLength(self.__GetElementLength(self.baseImage))
 
+if app.INGAME_WIKI:
+	class WikiRenderTarget(Window):
+		def __init__(self):
+			Window.__init__(self)
+		
+		def __del__(self):
+			Window.__del__(self)
+		
+		def RegisterWindow(self, layer):
+			self.hWnd = wndMgr.RegisterWikiRenderTarget(self, layer)
+	
+	class InGameWikiCheckBox(Window):
+		def __init__(self):
+			Window.__init__(self)
+			
+			self.backgroundImage = None
+			self.checkImage = None
+			
+			self.eventFunc = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
+			self.eventArgs = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
+			
+			self.CreateElements()
+		
+		def __del__(self):
+			Window.__del__(self)
+			
+			self.backgroundImage = None
+			self.checkImage = None
+			
+			self.eventFunc = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
+			self.eventArgs = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
+		
+		def CreateElements(self):
+			self.backgroundImage = ImageBox()
+			self.backgroundImage.SetParent(self)
+			self.backgroundImage.AddFlag("not_pick")
+			self.backgroundImage.LoadImage("d:/ymir work/ui/wiki/wiki_check_box_clean.tga")
+			self.backgroundImage.Show()
+			
+			self.checkImage = ImageBox()
+			self.checkImage.SetParent(self)
+			self.checkImage.AddFlag("not_pick")
+			self.checkImage.LoadImage("d:/ymir work/ui/wiki/wiki_check_box_checked.tga")
+			self.checkImage.Hide()
+			
+			self.textInfo = TextLine()
+			self.textInfo.SetParent(self)
+			self.textInfo.SetPosition(20, 0)
+			self.textInfo.Show()
+			
+			self.SetSize(self.backgroundImage.GetWidth() + self.textInfo.GetTextSize()[0], self.backgroundImage.GetHeight() + self.textInfo.GetTextSize()[1])
+		
+		def SetTextInfo(self, info):
+			if self.textInfo:
+				self.textInfo.SetText(info)
+			
+			self.SetSize(self.backgroundImage.GetWidth() + self.textInfo.GetTextSize()[0], self.backgroundImage.GetHeight() + self.textInfo.GetTextSize()[1])
+		
+		def SetCheckStatus(self, flag):
+			if flag:
+				self.checkImage.Show()
+			else:
+				self.checkImage.Hide()
+		
+		def GetCheckStatus(self):
+			if self.checkImage:
+				return self.checkImage.IsShow()
+			
+			return False
+		
+		def SetEvent(self, func, *args) :
+			result = self.eventFunc.has_key(args[0])
+			if result:
+				self.eventFunc[args[0]] = func
+				self.eventArgs[args[0]] = args
+			else:
+				print "[ERROR] ui.py SetEvent, Can`t Find has_key : %s" % args[0]
+		
+		def SetBaseCheckImage(self, image):
+			if not self.backgroundImage:
+				return
+			
+			self.backgroundImage.LoadImage(image)
+		
+		def OnMouseLeftButtonUp(self):
+			if self.checkImage:
+				if self.checkImage.IsShow():
+					self.checkImage.Hide()
+					
+					if self.eventFunc["ON_UNCKECK"]:
+						apply(self.eventFunc["ON_UNCKECK"], self.eventArgs["ON_UNCKECK"])
+				else:
+					self.checkImage.Show()
+					
+					if self.eventFunc["ON_CHECK"]:
+						apply(self.eventFunc["ON_CHECK"], self.eventArgs["ON_CHECK"])
 
 RegisterToolTipWindow("TEXT", TextLine)
 

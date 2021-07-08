@@ -35,6 +35,23 @@ DESC_WESTERN_MAX_WIDTH = 220
 def chop(n):
 	return round(n - 0.5, 1)
 
+if app.INGAME_WIKI:
+	def GET_AFFECT_STRING(affType, affValue):
+		if 0 == affType:
+			return None
+		
+		try:
+			affectString = ItemToolTip.AFFECT_DICT[affType]
+			if type(affectString) != str:
+				return affectString(affValue)
+
+			if affectString.find("%d") != -1:
+				return affectString % affValue
+			else:
+				return affectString
+		except KeyError:
+			return "UNKNOWN_TYPE[%s] %s" % (affType, affValue)
+
 def SplitDescription(desc, limit):
 	total_tokens = desc.split()
 	line_tokens = []
@@ -134,6 +151,11 @@ class ToolTip(ui.ThinBoard):
 	def AppendSpace(self, size):
 		self.toolTipHeight += size
 		self.ResizeToolTip()
+
+	if app.INGAME_WIKI:
+		def SetThinBoardSize(self, width, height = 12):
+			self.toolTipWidth = width 
+			self.toolTipHeight = height
 
 	def AppendHorizontalLine(self):
 
