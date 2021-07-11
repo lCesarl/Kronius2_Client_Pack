@@ -1,7 +1,8 @@
 import uiScriptLocale
 import item
 import app
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 BOARD_WIDTH = 200
 BOARD_HIGHT = 520

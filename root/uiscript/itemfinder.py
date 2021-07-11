@@ -1,5 +1,6 @@
 import uiScriptLocale
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 LOCALE_PATH = "d:/ymir work/ui/itemfinder/"
 window = {
 	"name" : "ItemFinder",

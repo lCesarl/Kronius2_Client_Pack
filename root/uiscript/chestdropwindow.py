@@ -1,5 +1,6 @@
 import uiScriptLocale
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 BUTTON_ROOT = "d:/ymir work/ui/public/"
 

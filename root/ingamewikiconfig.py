@@ -1,4 +1,6 @@
-import localeInfo, app, player
+import app, player
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 #/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
 #/!\/!\/!\ CATEGORIES && SUB CATEGORIES MANAGEMENTS /!\/!\/!\

@@ -1,4 +1,5 @@
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 ROOT_PATH = "d:/ymir work/ui/game/12zi/timer/"
 

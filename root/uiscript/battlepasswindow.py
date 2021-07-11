@@ -1,5 +1,6 @@
 import uiScriptLocale
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 WINDOW_WIDTH = 537
 WINDOW_HEIGHT = 297

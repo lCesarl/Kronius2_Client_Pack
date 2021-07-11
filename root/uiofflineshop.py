@@ -6,7 +6,8 @@ import player
 import dbg
 import uicommon
 import uitooltip
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 import ime
 import snd
 import uipickmoney

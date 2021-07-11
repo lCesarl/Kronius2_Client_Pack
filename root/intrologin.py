@@ -1,7 +1,9 @@
 ######################################## AICI INCEPE TREABA ######################################## ORA: 21:36
 import app, net, ui, snd, wndMgr, dbg, os
 import musicInfo, systemSetting
-import localeInfo, constinfo, uiScriptLocale, uicommon
+import constinfo, uiScriptLocale, uicommon
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 import ime
 import serverInfo
 import serverCommandParser

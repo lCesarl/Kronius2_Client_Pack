@@ -134,6 +134,23 @@ class localeInfo(object):
 
 		return globals()[name]
 
+init = False
+class localeInfo(object):
+	def __init__(self):
+		global init
+
+		if not init:
+			net.SetLocaleinfoHandler(self)
+			init = True
+
+	def __getattribute__(self, name):
+		if not globals().has_key(name):
+			import dbg
+			dbg.TraceError("LanguageError: Key {} not found.".format(name))
+			return "Translate-Me"
+
+		return globals()[name]
+
 dictSingleWord = {
 	"m":1, "n":1, "r":1, "M":1, "N":1, "R":1, "l":1, "L":1, "1":1, "3":1, "6":1, "7":1, "8":1, "0":1,
 }

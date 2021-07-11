@@ -1,7 +1,8 @@
 import ui
 import chat
 import item
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 import uiToolTip
 import player
 import grp

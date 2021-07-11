@@ -10,7 +10,7 @@ import uiCandidate
 import constInfo
 import musicInfo
 import stringCommander
-
+import net
 
 
 #bind_me(locals().values())
@@ -48,6 +48,7 @@ def RunApp():
 	mainStream.Create()	
 	#mainStream.SetLogoPhase()
 	mainStream.SetLoginPhase()
+	net.LoadResourcesInCache()
 	app.Loop()
 
 	mainStream.Destroy()

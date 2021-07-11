@@ -5,7 +5,8 @@ import snd
 import wndMgr
 import item
 import skill
-import localeInfo as locale
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 import constInfo
 import os
 # MARK_BUG_FIX
@@ -76,7 +77,7 @@ def RegisterCandidateWindowClass(codePage, candidateWindowClass):
 def RegisterToolTipWindow(type, createToolTipWindow):
 	createToolTipWindowDict[type]=createToolTipWindow
 
-app.SetDefaultFontName(locale.UI_DEF_FONT)
+app.SetDefaultFontName(_localeInfo.UI_DEF_FONT)
 
 ## Window Manager Event List##
 ##############################
@@ -1102,7 +1103,7 @@ class TextLine(Window):
 	def __init__(self):
 		Window.__init__(self)
 		self.max = 0
-		self.SetFontName(locale.UI_DEF_FONT)
+		self.SetFontName(_localeInfo.UI_DEF_FONT)
 
 	def __del__(self):
 		Window.__del__(self)
@@ -1160,7 +1161,7 @@ class TextLine(Window):
 		wndMgr.SetFontName(self.hWnd, fontName)
 
 	def SetDefaultFontName(self):
-		wndMgr.SetFontName(self.hWnd, locale.UI_DEF_FONT)
+		wndMgr.SetFontName(self.hWnd, _localeInfo.UI_DEF_FONT)
 
 	def SetFontColor(self, red, green, blue):
 		wndMgr.SetFontColor(self.hWnd, red, green, blue)
@@ -3106,7 +3107,7 @@ class TitleBar(Window):
 		btnClose.SetUpVisual("d:/ymir work/ui/public/close_button_01.sub")
 		btnClose.SetOverVisual("d:/ymir work/ui/public/close_button_02.sub")
 		btnClose.SetDownVisual("d:/ymir work/ui/public/close_button_03.sub")
-		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -23)
+		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -23)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
@@ -3841,7 +3842,7 @@ class TitleBar(Window):
 		btnClose.SetUpVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_normal.tga")
 		btnClose.SetOverVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_hover.tga")
 		btnClose.SetDownVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_pressed.tga")
-		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -11)
+		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -11)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
@@ -3942,7 +3943,7 @@ class TitleBar2(Window):
 		btnClose.SetUpVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_normal.tga")
 		btnClose.SetOverVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_hover.tga")
 		btnClose.SetDownVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_pressed.tga")
-		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -11)
+		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -11)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
@@ -6046,7 +6047,7 @@ class ComboBox(Window):
 		self.enable = TRUE
 
 		self.textLine = MakeTextLine(self)
-		self.textLine.SetText(locale.UI_ITEM)
+		self.textLine.SetText(_localeInfo.UI_ITEM)
 
 		self.listBox = self.ListBoxWithBoard("TOP_MOST")
 		self.listBox.SetPickAlways()
@@ -6422,7 +6423,7 @@ class NewComboBox(Window):
 		self.enable = TRUE
 
 		self.textLine = MakeTextLine(self)
-		self.textLine.SetText(locale.UI_ITEM)
+		self.textLine.SetText(_localeInfo.UI_ITEM)
 		
 		self.listBox = self.ListBoxWithBoard("TOP_MOST")
 		self.listBox.SetPickAlways()
@@ -7254,7 +7255,7 @@ class PythonScriptLoader(object):
 			fontSize = value["fontsize"]
 
 			if "LARGE" == fontSize:
-				window.SetFontName(locale.UI_DEF_FONT_LARGE)
+				window.SetFontName(_localeInfo.UI_DEF_FONT_LARGE)
 
 		elif value.has_key("fontname"):
 			fontName = value["fontname"]

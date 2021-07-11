@@ -1,7 +1,8 @@
 import uiScriptLocale
 import item
 import app
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 LOCALE_PATH = "d:/ymir work/ui/privatesearch/"
 GOLD_COLOR	= 0xFFFEE3AE

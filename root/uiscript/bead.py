@@ -1,5 +1,6 @@
 import app
-import localeInfo
+import localeInfo as _localeInfo
+localeInfo = _localeInfo.localeInfo()
 
 ROOT = "d:/ymir work/ui/game/12zi/bead/"
 
