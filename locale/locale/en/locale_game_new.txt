@@ -289,7 +289,7 @@ SIDE_BAR_CHANNELSWITCHER	Channel-Switcher
 ITEM_PERMANENT	Permanent
 BLEND_ITEM_TOOLTIP_APPLY	Effect activated
 BLEND_ITEM_TOOLTIP_UNAPPLIED	Effect not activated
-LOGIN_FAILURE_MAINTANENCE	Kuba2 is currently in maintanence mode.
+LOGIN_FAILURE_MAINTANENCE	Kronius2 is currently in maintanence mode.
 SKILL_GRADE_NAME_SAGE_MASTER	%s Kuba Perfekt Master
 BP_STATUS	Status:
 BP_COMPLETE	|cff82ff7d|H|hAbgeschlossen|h|r

@@ -288,7 +288,7 @@ BLEND_ITEM_TOOLTIP_APPLY	Effekt aktiv
 BLEND_ITEM_TOOLTIP_UNAPPLIED	Effekt nicht aktiv
 SHOW_COSTUME	Einblenden
 HIDE_COSTUME	Verbergen
-LOGIN_FAILURE_MAINTANENCE	Kuba2 ist gerade im Wartungsmodus.
+LOGIN_FAILURE_MAINTANENCE	Kronius2 ist gerade im Wartungsmodus.
 SKILL_GRADE_NAME_SAGE_MASTER	%s Kuba Perfekt Master
 BP_STATUS	Status:
 BP_COMPLETE	|cff82ff7d|H|hAbgeschlossen|h|r

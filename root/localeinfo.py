@@ -12,7 +12,7 @@ BLEND_POTION_NO_TIME = "BLEND_POTION_NO_TIME"
 BLEND_POTION_NO_INFO = "BLEND_POTION_NO_INFO"
 
 TITLE = ["Vacation", "Kingdom of Gods", "2021", "Newschool", "Have fun", "Feel the game"]
-APP_TITLE = "Kuba2 Reloaded - " + random.choice(TITLE)
+APP_TITLE = "Kronius2 - " + random.choice(TITLE)
 
 GUILD_HEADQUARTER = "Main Building"
 GUILD_FACILITY = "Facility"

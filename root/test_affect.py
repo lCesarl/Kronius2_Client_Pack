@@ -11,7 +11,7 @@ app.SetMouseHandler(mouseModule.mouseController)
 app.SetHairColorEnable(TRUE)
 wndMgr.SetMouseHandler(mouseModule.mouseController)
 wndMgr.SetScreenSize(systemSetting.GetWidth(), systemSetting.GetHeight())
-app.Create("Kuba2 Reloaded - Vacation", systemSetting.GetWidth(), systemSetting.GetHeight(), 1)
+app.Create("Kronius2", systemSetting.GetWidth(), systemSetting.GetHeight(), 1)
 mouseModule.mouseController.Create()
 
 import chr

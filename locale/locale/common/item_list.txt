@@ -13456,3 +13456,7 @@
 55097	ETC	icon/item/runa_07.tga
 55098	ETC	icon/item/runa_07.tga
 55099	ETC	icon/item/runa_07.tga
+71258	ETC	icon/item/71258.tga
+71259	ETC	icon/item/71259.tga
+71260	ETC	icon/item/71260.tga
+71261	ETC	icon/item/71261.tga
