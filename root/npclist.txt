@@ -2730,7 +2730,7 @@
 8064	metinstone_10
 9348	gandalf
 59997	nephrite_pillar
-60010	hanma_boss_gold
+60010	hanma_boss
 60011	hanma_boss
 60012	hanma_boss
 60013	hanma_boss

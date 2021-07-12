@@ -13458,5 +13458,10 @@
 55099	ETC	icon/item/runa_07.tga
 71258	ETC	icon/item/71258.tga
 71259	ETC	icon/item/71259.tga
-71260	ETC	icon/item/71260.tga
 71261	ETC	icon/item/71261.tga
+71260	ETC	icon/item/71260.tga
+48000	ETC	icon/item/48000.tga
+49000	ETC	icon/item/49000.tga
+30721	ETC	icon/item/slime_item1.tga
+30722	ETC	icon/item/slime_item2.tga
+30723	ETC	icon/item/slime_item3.tga
