@@ -211,6 +211,7 @@ class MainStream(object):
 					net.SendSelectCharacterPacket(chrSlot)
 					background.SetViewDistanceSet(background.DISTANCE0, 25600)
 					background.SelectViewDistanceNum(background.DISTANCE0)
+					chr.PushOnceMotion(chr.MOTION_INTRO_NOT_SELECTED, 0.1)
 
 				def Open(self):
 					pass
