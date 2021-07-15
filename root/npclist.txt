@@ -2730,7 +2730,14 @@
 8064	metinstone_10
 9348	gandalf
 59997	nephrite_pillar
-60010	hanma_boss
+60010	hanma_boss_gold
 60011	hanma_boss
 60012	hanma_boss
 60013	hanma_boss
+766	plechi_slime_monster1
+767	plechi_slime_monster2
+768	plechi_slime_boss
+8430	plechi_slime_metin
+9236	plechi_slime_npc
+9237	plechi_slime_npc2
+9238	slime_obj00

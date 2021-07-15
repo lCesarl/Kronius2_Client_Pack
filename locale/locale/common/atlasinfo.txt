@@ -122,3 +122,4 @@ zylon_wueste	472600	549200	3	4
 zylon_farm_map	890200	980200	5	5
 zylon_dung_new	1211200	1311300	2	2
 slime_cave	1715200	102400	2	2
+

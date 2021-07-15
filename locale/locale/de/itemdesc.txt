@@ -6066,7 +6066,7 @@
 80009	Goldtruhe(150kk)	Diese Truhe stammt 
 80010	Goldtruhe(225kk)	Eine Truhe mit mies viel Gold, ich schwöre!
 80011	Goldtruhe(1kkk)	Musst eh Hälfte an Staat abgeben lul
-70007	Warpring	Teleportation durch die Kronius2 Welt.| Are you a Wizard :o
+70007	Warpring	Teleportation durch die Kuba2 Welt.| Are you a Wizard :o
 38067	Lolly-Truhe	Aus dieser Truhe kommt ein Diabetes bringendes ITEM.| Keep it Easy	
 38066	Diebes-Truhe	Ich glaube hier war ein Pole am Werk.| Aber heeeey nimm es mit Humor Buddy.	
 38065	Monster-Truhe	Ich hoffe diese Truhe wird dir Nachts die Monster unter deinem Bett vom Leib halten..	
@@ -6233,7 +6233,7 @@
 170649	Goldener Monster-Ring	Ein vergoldeter Ring der Monster! Er gewährt verstärkten Effekt und Permanenz!
 51643	Glücksbox(v2)	Enthält ein zufälliges Item aus einer handerlesenen Auswahl!	
 30781	Magischer Kristall	Mit diesem Kristall wird dich Trolljäger Jumper die Trollhöhle betreteten lassen!	
-30811	Rolle der Weisheit	Das verschollene Zertifikat der Kronius2Akademie! Würde auch mal Sherlock gut tun, diese zu besuchen..
+30811	Rolle der Weisheit	Das verschollene Zertifikat der Kuba2Akademie! Würde auch mal Sherlock gut tun, diese zu besuchen..
 70045	Vargulf-Zahn	Karies-Alarm!	
 31025	Vargulf-Haut	Sehr schuppige und ledrige Haut eines Vargulfs!	
 39146	Grünes Fragment	Aus diesen Fragmenten kannst du ein Glanzfragment herstellen.	
@@ -6248,4 +6248,11 @@
 170659	Naturshard	Ein Mitbringsel aus dem Natur-Run!	
 170660	Haifischshard	Ein Mitbringsel aus dem Haifisch-Dungeon!	
 170661	Totenshard	Ein Mitbringsel aus dem Tal der Toten!	
+71258	Lolly-Blau	Ein Lolli aus geheimen Zutaten, welcher dir Kräfte gibt.	
+71259	Lolly-Gelb	Ein Lolli aus geheimen Zutaten, welcher dir Kräfte gibt.	
+71261	Ring der Daemonen	Einzigartiges Schmuckstück mit einer kunstvoll gearbeiteten Gravur in der Form eines Halbmondes. Spüre wie seine unglaubliche Macht dich durchströmt.
+71260	Ring der Schatten	Einzigartiges Schmuckstück mit einer kunstvoll gearbeiteten Gravur in der Form eines Halbmondes. Spüre wie seine unglaubliche Macht dich durchströmt.
+48000	Torschlüssel	Ein mächtiger Schlüssel, welcher dir ermöglicht, das schwere Tor zu öffnen	[DUNGEON-ITEM]
+49000	Säulenstein	Mit diesem kraftvollen Stein lässt sich die Säule zerstören	[DUNGEON-ITEM]	
 170662	Pyramidenshard	Ein Mitbringsel aus der Antiken Pyramide!	
+
