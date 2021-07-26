@@ -12,6 +12,7 @@
 528	"D:/ymir work/item/ridack_work/ridack_weapon_purple/ridack_sword.mse"
 529	"D:/ymir work/item/ridack_work/ridack_weapon_purple/ridack_spear.mse"
 530	"D:/ymir work/item/ridack_work/ridack_weapon_purple/ridack_swords.mse"
+460	"D:/ymir work/effect/mehok/sw_1.mse"
 559	"D:/ymir work/item\weapon/ridack_bow.mse"
 560	"D:/ymir work/item\weapon/ridack_knife.mse"
 561	"D:/ymir work/item\weapon/ridack_fan.mse"
