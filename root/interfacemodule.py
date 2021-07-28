@@ -64,6 +64,9 @@ if app.ENABLE_SKILLCHOOSE:
 if app.ENABLE_DYNASTY_DUELLSTYLE:
 	import uidynastyduell
 
+if app.WAVE_DUNGEON_YUMA:
+	import uiwavedungeonattribute
+
 import uiitemfinder
 
 IsQBHide = 0
@@ -334,6 +337,12 @@ class Interface(object):
 			self.wndWeb.LoadWindow()
 			self.wndWeb.Hide()
 
+	if app.WAVE_DUNGEON_YUMA:
+		def __MakeWaveDungeonAttrWindow(self):
+			self.wndWaveDungeon = uiwavedungeonattribute.Window()
+			self.wndWaveDungeon.LoadWindow()
+			self.wndWaveDungeon.Hide()
+
 	def __MakeItemFinder(self):
 		self.wndItemFinder = uiitemfinder.ItemFinder()
 		self.wndItemFinder.LoadWindow()
@@ -365,10 +374,11 @@ class Interface(object):
 		self.__MakeHelpWindow()
 		self.__MakeTipBoard()
 		self.__MakeWebWindow()
+		self.__MakeItemFinder()
 		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
 			self.__MakeCubeRenewal()
-		self.__MakeItemFinder()
-		
+		if app.WAVE_DUNGEON_YUMA:
+			self.__MakeWaveDungeonAttrWindow()
 		
 		# ACCESSORY_REFINE_ADD_METIN_STONE
 		self.__MakeItemSelectWindow()
@@ -498,6 +508,10 @@ class Interface(object):
 		if self.wndHelp:
 			self.wndHelp.Destroy()
 
+		if app.WAVE_DUNGEON_YUMA:
+			if self.wndWaveDungeon:
+				self.wndWaveDungeon.Destroy()
+
 		if self.wndMessenger:
 			self.wndMessenger.Destroy()
 
@@ -611,7 +625,11 @@ class Interface(object):
 		del self.bigBoard
 		del self.wndItemSelect
 		del self.wndAcce
-		del self.changechannel	
+		del self.changechannel
+
+		if app.WAVE_DUNGEON_YUMA:
+			if self.wndWaveDungeon:
+				del self.wndWaveDungeon
 
 		if app.ENABLE_SHOW_CHEST_DROP:
 			if self.dlgChestDrop:
@@ -1358,6 +1376,13 @@ class Interface(object):
 
 		# ���������� ���� ä���� �ݴ´�
 		self.wndChat.CloseChat()
+
+	if app.WAVE_DUNGEON_YUMA:
+		def OpenWaveDungeonAttrWindow(self):
+			self.wndWaveDungeon.Open()
+
+		def UpdateWaveDungeonAttrWindow(self, iType, iValue):
+			self.wndWaveDungeon.UpdateAttr(int(iType), int(iValue))
 
 	# show GIFT
 	def ShowGift(self):

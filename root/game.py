@@ -1099,9 +1099,6 @@ class GameWindow(ui.ScriptWindow):
 		partyInviteQuestionDialog.partyLeaderVID = leaderVID
 		self.partyInviteQuestionDialog = partyInviteQuestionDialog
 
-		if app.ENABLE_TOASTNOTIFY_YUMA:
-			app.ToastNotify(localeInfo.PARTY_DO_YOU_JOIN)
-
 	def AnswerPartyInvite(self, answer):
 
 		if not self.partyInviteQuestionDialog:
@@ -2181,8 +2178,11 @@ class GameWindow(ui.ScriptWindow):
 			"open_searched"	:self.interface.ShowItemFinder,
 			"searched_item"				: self.SitemFinder,
 			"searched_item_count"		: self.SitemFinderCounter,
-
 		}
+
+		if app.WAVE_DUNGEON_YUMA:
+			serverCommandList["OpenWaveDungeonAttrWindow"] = self.OpenWaveDungeonAttrWindow
+			serverCommandList["UpdateWaveDungeonAttr"] = self.UpdateWaveDungeonAttr
 
 		# DYNASTY DUELL WINDOW
 		if app.ENABLE_DYNASTY_DUELLSTYLE:
@@ -2708,3 +2708,12 @@ class GameWindow(ui.ScriptWindow):
 		constInfo.finder_counts = int(count)
 	#	import chat
 	#	chat.AppendChat(8, str(count))
+
+	if app.WAVE_DUNGEON_YUMA:
+		def OpenWaveDungeonAttrWindow(self):
+			if self.interface:
+				self.interface.OpenWaveDungeonAttrWindow()
+
+		def UpdateWaveDungeonAttr(self, iType, iValue):
+			if self.interface:
+				self.interface.UpdateWaveDungeonAttrWindow(iType, iValue)
