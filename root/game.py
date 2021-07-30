@@ -2183,6 +2183,9 @@ class GameWindow(ui.ScriptWindow):
 		if app.WAVE_DUNGEON_YUMA:
 			serverCommandList["OpenWaveDungeonAttrWindow"] = self.OpenWaveDungeonAttrWindow
 			serverCommandList["UpdateWaveDungeonAttr"] = self.UpdateWaveDungeonAttr
+			serverCommandList["UpdateWaveDungeonRound"] = self.UpdateWaveDungeonRound
+			serverCommandList["UpdateWaveDungeonLifeCount"] = self.UpdateWaveDungeonLifeCount
+			serverCommandList["UpdateWaveDungeonMonsterCount"] = self.UpdateWaveDungeonMonsterCount
 
 		# DYNASTY DUELL WINDOW
 		if app.ENABLE_DYNASTY_DUELLSTYLE:
@@ -2717,3 +2720,15 @@ class GameWindow(ui.ScriptWindow):
 		def UpdateWaveDungeonAttr(self, iType, iValue):
 			if self.interface:
 				self.interface.UpdateWaveDungeonAttrWindow(iType, iValue)
+
+		def UpdateWaveDungeonRound(self, iRound):
+			if self.interface:
+				self.interface.UpdateWaveDungeonRoundWindow(iRound)
+
+		def UpdateWaveDungeonLifeCount(self, iLifeCount):
+			if self.interface:
+				self.interface.UpdateWaveDungeonLifeCountWindow(iLifeCount)
+
+		def UpdateWaveDungeonMonsterCount(self, iMonsterCount):
+			if self.interface:
+				self.interface.UpdateWaveDungeonMonsterCountWindow(iMonsterCount)

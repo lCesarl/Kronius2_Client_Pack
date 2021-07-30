@@ -1337,7 +1337,7 @@ class ItemToolTip(ToolTip):
 
 		### Runen ###
 		if app.ENABLE_SYSTEM_RUNE:
-			if itemType >= item.ITEM_TYPE_RUNE and itemType <= item.ITEM_TYPE_RUNE_GREEN:
+			if itemType >= item.ITEM_TYPE_RUNE and itemType <= item.ITEM_TYPE_RUNE_BLACK:
 				self.AppendDescription("Runen-Item", 26, self.CRAFT_ITEM_COLOR)
 				self.__AppendAffectInformation()
 				self.__AppendAttributeInformation(attrSlot)

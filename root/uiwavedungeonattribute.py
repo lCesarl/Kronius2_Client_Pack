@@ -1,9 +1,11 @@
 import ui
 import localeInfo
-import chat
 import item
 
 class Window(ui.ScriptWindow):
+	BOARD_WIDTH = 210
+	BOARD_HEIGHT = 90
+
 	AFFECT_DICT = {
 		item.APPLY_MAX_HP : localeInfo.TOOLTIP_MAX_HP,
 		item.APPLY_MAX_SP : localeInfo.TOOLTIP_MAX_SP,
@@ -110,6 +112,14 @@ class Window(ui.ScriptWindow):
 		ui.ScriptWindow.__init__(self)
 
 		self.isLoaded = 0
+
+		self.board = None
+		self.roundCount = None
+		self.monsterCount = None
+		self.lifeCount = None
+		self.informationsTitle = None
+		self.modificationsTitle = None
+
 		self.attr = [None, None, None, None, None, None]
 		self.attrTypes = [None, None, None, None, None, None]
 
@@ -120,6 +130,14 @@ class Window(ui.ScriptWindow):
 		self.ClearDictionary()
 
 		self.isLoaded = 0
+
+		self.board = None
+		self.roundCount = None
+		self.monsterCount = None
+		self.lifeCount = None
+		self.informationsTitle = None
+		self.modificationsTitle = None
+
 		self.attr = [None, None, None, None, None, None]
 		self.attrTypes = [None, None, None, None, None, None]
 
@@ -137,6 +155,25 @@ class Window(ui.ScriptWindow):
 			exception.Abort("WaveDungeonAttributeWindow.LoadDialog.LoadScript")
 		
 		try:
+			self.board = self.GetChild("board")
+
+			self.roundCount = self.GetChild("Round")
+			self.monsterCount = self.GetChild("Monster")
+			self.lifeCount = self.GetChild("Life")
+
+			self.informationsTitle = self.GetChild("TitleInfo")
+			self.modificationsTitle = self.GetChild("TitleModifications")
+
+			self.roundCount.SetFontColor(230.0 / 255.0, 148.0 / 255.0, 32.0 / 255.0)
+			self.lifeCount.SetFontColor(230.0 / 255.0, 148.0 / 255.0, 32.0 / 255.0)
+			self.monsterCount.SetFontColor(230.0 / 255.0, 148.0 / 255.0, 32.0 / 255.0)
+
+			self.modificationsTitle.SetFontColor(224.0 / 255.0, 27.0 / 255.0, 53.0 / 255.0)
+			self.informationsTitle.SetFontColor(224.0 / 255.0, 27.0 / 255.0, 53.0 / 255.0)
+
+			self.modificationsTitle.SetOutline()
+			self.informationsTitle.SetOutline()
+
 			for i in xrange(6):
 				self.attr[i] = self.GetChild("Attr_" + str(i))
 		except:
@@ -190,9 +227,25 @@ class Window(ui.ScriptWindow):
 					if affectString:
 						self.attr[i].SetText(affectString)
 						self.attrTypes[i] = iType
+
+						self.BOARD_HEIGHT += 18
+						self.board.SetSize(self.BOARD_WIDTH, self.BOARD_HEIGHT)
 						break
 		else:
 			affectString = self.__GetAffectString(iType, iValue)
 			if affectString:
 				self.attr[index].SetText(affectString)
+
+	def UpdateRound(self, iRound):
+		if 0 == iRound:
+			import exception
+			exception.Abort("WaveDungeonAttributeWindow.UpdateRound.iRound")
+
+		self.roundCount.SetText("Runde: %d" % (iRound))
+
+	def UpdateLifeCount(self, iLifeCount):
+		self.lifeCount.SetText("Leben: %d" % (iLifeCount))
+
+	def UpdateMonsterCount(self, iMonsterCount):
+		self.monsterCount.SetText("Monster: %d" % (iMonsterCount))
 

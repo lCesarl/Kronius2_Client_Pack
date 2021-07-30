@@ -1384,6 +1384,15 @@ class Interface(object):
 		def UpdateWaveDungeonAttrWindow(self, iType, iValue):
 			self.wndWaveDungeon.UpdateAttr(int(iType), int(iValue))
 
+		def UpdateWaveDungeonRoundWindow(self, iRound):
+			self.wndWaveDungeon.UpdateRound(int(iRound))
+
+		def UpdateWaveDungeonLifeCountWindow(self, iLifeCount):
+			self.wndWaveDungeon.UpdateLifeCount(int(iLifeCount))
+
+		def UpdateWaveDungeonMonsterCountWindow(self, iMonsterCount):
+			self.wndWaveDungeon.UpdateMonsterCount(int(iMonsterCount))
+
 	# show GIFT
 	def ShowGift(self):
 		self.wndTaskBar.ShowGift()
