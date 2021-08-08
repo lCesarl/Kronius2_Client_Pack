@@ -1156,6 +1156,7 @@
 4402	hanma_boss
 4403	thunder_boss
 4410	blue_dragon_awake
+6700	epic. kristall-setaou
 4411	yamachun_boss_awake
 4412	hanma_boss_awake
 4413	thunder_boss_awake
@@ -2536,6 +2537,8 @@
 0	plechi_shark_boss1	plechito_summer2020\plechi_shark_boss1
 0	plechi_shark_boss1_ghost	plechito_summer2020\plechi_shark_boss1_ghost
 0	plechi_shark_boss2	plechito_summer2020\plechi_shark_boss2
+0	epic. plechi_shark_boss2	plechito_summer2020\epic. plechi_shark_boss2
+0	leg. plechi_shark_boss2	plechito_summer2020\leg. plechi_shark_boss2
 0	plechi_shark_stone1	plechito_shark_stones\plechi_shark_stone1
 0	plechi_shark_stone2	plechito_shark_stones\plechi_shark_stone2
 0	plechi_shark_stone3	plechito_shark_stones\plechi_shark_stone3
@@ -2603,6 +2606,8 @@
 0	plechi_chamwis_monster2	plechi_chamber_wisdom\plechi_chamwis_monster2
 0	plechi_chamwis_monster3	plechi_chamber_wisdom\plechi_chamwis_monster3
 0	plechi_chamwis_boss	plechi_chamber_wisdom\plechi_chamwis_boss
+0	epic. plechi_chamwis_boss	plechi_chamber_wisdom\epic. plechi_chamwis_boss
+0	leg. plechi_chamwis_boss	plechi_chamber_wisdom\leg. plechi_chamwis_boss
 0	plechi_chamwis_stone1a	plechito_chamber_wisdom\plechi_chamwis_stone1
 0	plechi_chamwis_stone1b	plechito_chamber_wisdom\plechi_chamwis_stone1
 0	plechi_chamber_npc1	plechito_chamber_wisdom\plechi_chamber_npc1
@@ -2797,3 +2802,17 @@
 6893	whitedragonvalley_knight02_2
 6894	whitedragonvalley_s_knight_2
 6895	whitedragonvalley_boss_02
+6896	zylon_affen_statue
+6897	epischer nemere
+6899	epic_monkey_boss
+6900	leg_monkey_boss
+6901	epic. Azrael
+6902	leg. Azrael
+6903	epic. plechi_slime_boss
+6904	leg. plechi_slime_boss
+6905	epic. plechi_gold_boss2
+6906	leg. plechi_gold_boss2
+6907	epic. plechi_shark_boss2
+6908	leg. plechi_shark_boss2
+6909	epic. plechi_chamwis_boss
+6910	leg. plechi_chamwis_boss

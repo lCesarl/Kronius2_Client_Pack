@@ -6254,5 +6254,9 @@
 71260	Ring der Schatten	Einzigartiges Schmuckstück mit einer kunstvoll gearbeiteten Gravur in der Form eines Halbmondes. Spüre wie seine unglaubliche Macht dich durchströmt.
 48000	Torschlüssel	Ein mächtiger Schlüssel, welcher dir ermöglicht, das schwere Tor zu öffnen	[DUNGEON-ITEM]
 49000	Säulenstein	Mit diesem kraftvollen Stein lässt sich die Säule zerstören	[DUNGEON-ITEM]	
+45000	Affen-Schlüssel	Aus restbestehenden Bananenschalen fertigten eins die Affen diesen Schlüssel um ihre geheimen Informationen zu verstecken.	[DUNGEON-ITEM]	
+43500	Reife Bananen	Diese Bananen sind genießbar. Damit lockst du den mächtigen Anführer der Affen aus seinem Versteck raus.	[DUNGEON-ITEM]	
+47000	Faule Bananen	Aus dem innerlichen kommt ein wiederlicher Geruch raus.	Dieses Item ist nutzlos.	
+49500	Affen-Truhe	Der Affen-Lord bewahrt all seine Schätze in dieser Truhe	Herkunft: Affen-Run	
 170662	Pyramidenshard	Ein Mitbringsel aus der Antiken Pyramide!	
 

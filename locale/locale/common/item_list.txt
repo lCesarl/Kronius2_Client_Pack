@@ -325,7 +325,7 @@
 333	WEAPON	icon/item/330.tga	d:/ymir work/item/weapon/plechito/halloween2020/h2020_sword.gr2
 334	WEAPON	icon/item/330.tga	d:/ymir work/item/weapon/plechito/halloween2020/h2020_sword.gr2
 335	WEAPON	icon/item/330.tga	d:/ymir work/item/weapon/plechito/halloween2020/h2020_sword.gr2
-340	WEAPON	icon/item/00340.tga	d:/ymir work/item/weapon/plechito/halloween2020/h2020_sword.gr2
+340	WEAPON	icon/item/00340.tga	d:/ymir work/item/weapon/00340.gr2
 341	WEAPON	icon/item/00340.tga	d:/ymir work/item/weapon/00340.gr2
 342	WEAPON	icon/item/00340.tga	d:/ymir work/item/weapon/00340.gr2
 343	WEAPON	icon/item/00340.tga	d:/ymir work/item/weapon/00340.gr2
@@ -7813,7 +7813,7 @@
 28001	ETC	icon/item/28001.tga	
 28002	ETC	icon/item/28002.tga	
 28003	ETC	icon/item/28003.tga	
-28004	ETC	icon/item/28005.tga	
+28004	ETC	icon/item/28015.tga	
 28005	ETC	icon/item/28005.tga	
 28006	ETC	icon/item/28006.tga	
 28007	ETC	icon/item/28007.tga	
@@ -7843,7 +7843,7 @@
 28101	ETC	icon/item/28001.tga	
 28102	ETC	icon/item/28002.tga	
 28103	ETC	icon/item/28003.tga	
-28104	ETC	icon/item/28005.tga	
+28104	ETC	icon/item/28015.tga	
 28105	ETC	icon/item/28005.tga	
 28106	ETC	icon/item/28006.tga	
 28107	ETC	icon/item/28007.tga	
@@ -7873,7 +7873,7 @@
 28201	ETC	icon/item/28001.tga	
 28202	ETC	icon/item/28002.tga	
 28203	ETC	icon/item/28003.tga	
-28204	ETC	icon/item/28005.tga	
+28204	ETC	icon/item/28015tga	
 28205	ETC	icon/item/28005.tga	
 28206	ETC	icon/item/28006.tga	
 28207	ETC	icon/item/28007.tga	
@@ -7903,7 +7903,7 @@
 28301	ETC	icon/item/28001.tga	
 28302	ETC	icon/item/28002.tga	
 28303	ETC	icon/item/28003.tga	
-28304	ETC	icon/item/28005.tga	
+28304	ETC	icon/item/28304.tga	
 28305	ETC	icon/item/28005.tga	
 28306	ETC	icon/item/28006.tga	
 28307	ETC	icon/item/28007.tga	
@@ -7933,7 +7933,7 @@
 28401	ETC	icon/item/28001.tga	
 28402	ETC	icon/item/28002.tga	
 28403	ETC	icon/item/28003.tga	
-28404	ETC	icon/item/28005.tga	
+28404	ETC	icon/item/280304.tga	
 28405	ETC	icon/item/28005.tga	
 28406	ETC	icon/item/28006.tga	
 28407	ETC	icon/item/28007.tga	
@@ -7963,7 +7963,7 @@
 28501	ETC	icon/item/28001.tga	
 28502	ETC	icon/item/28002.tga	
 28503	ETC	icon/item/28003.tga	
-28504	ETC	icon/item/28004.tga	
+28504	ETC	icon/item/28304.tga	
 28505	ETC	icon/item/28005.tga	
 28506	ETC	icon/item/28006.tga	
 28507	ETC	icon/item/28007.tga	
@@ -13465,3 +13465,7 @@
 30721	ETC	icon/item/slime_item1.tga
 30722	ETC	icon/item/slime_item2.tga
 30723	ETC	icon/item/slime_item3.tga
+45000	ETC	icon/item/affenschlusse.tga
+43500	ETC	icon/item/normalebanenen.tga
+47000	ETC	icon/item/verfaultebanenen.tga
+49500	ETC	icon/item/affen_truhe.tga
