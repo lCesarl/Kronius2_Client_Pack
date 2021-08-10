@@ -4,8 +4,7 @@ import uiToolTip
 import uiCommon
 import mouseModule
 import constInfo
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 import net
 import player
 import item

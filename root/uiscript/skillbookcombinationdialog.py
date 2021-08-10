@@ -1,6 +1,5 @@
 import uiScriptLocale
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 
 SIZE_X = 192
 SIZE_Y = 154

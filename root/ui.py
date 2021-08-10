@@ -5,8 +5,7 @@ import snd
 import wndMgr
 import item
 import skill
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo as locale
 import constInfo
 import os
 # MARK_BUG_FIX
@@ -77,7 +76,7 @@ def RegisterCandidateWindowClass(codePage, candidateWindowClass):
 def RegisterToolTipWindow(type, createToolTipWindow):
 	createToolTipWindowDict[type]=createToolTipWindow
 
-app.SetDefaultFontName(_localeInfo.UI_DEF_FONT)
+app.SetDefaultFontName(locale.UI_DEF_FONT)
 
 ## Window Manager Event List##
 ##############################
@@ -180,16 +179,6 @@ class Window(object):
 			self.SetWindowName("NONAME_Window")
 
 		self.Hide()
-
-		if app.INGAME_WIKI:
-			self.mouseLeftButtonDownEvent = None
-			self.mouseLeftButtonDownArgs = None
-			self.overInEvent = None
-			self.overInArgs = None
-			self.overOutEvent = None
-			self.overOutArgs = None
-			
-			self.SetWindowName("NONAME_Window")
 
 	def __del__(self):
 		wndMgr.Destroy(self.hWnd)
@@ -359,51 +348,8 @@ class Window(object):
 	def GetChildCount(self):
 		return wndMgr.GetChildCount(self.hWnd)
 
-	if app.INGAME_WIKI:
-		def IsIn(self, checkChilds = False):
-			return wndMgr.IsIn(self.hWnd, checkChilds)
-		
-		def GetRenderBox(self):
-			return wndMgr.GetRenderBox(self.hWnd)
-		
-		def SetInsideRender(self, val):
-			wndMgr.SetInsideRender(self.hWnd, val)
-		
-		def IsInPosition(self):
-			xMouse, yMouse = wndMgr.GetMousePosition()
-			x, y = self.GetGlobalPosition()
-			return xMouse >= x and xMouse < x + self.GetWidth() and yMouse >= y and yMouse < y + self.GetHeight()
-		
-		def SetMouseLeftButtonDownEvent(self, event, *args):
-			self.mouseLeftButtonDownEvent = event
-			self.mouseLeftButtonDownArgs = args
-
-		def OnMouseLeftButtonDown(self):
-			if self.mouseLeftButtonDownEvent:
-				apply(self.mouseLeftButtonDownEvent, self.mouseLeftButtonDownArgs)
-		
-		def SAFE_SetOverInEvent(self, func, *args):
-			self.overInEvent = __mem_func__(func)
-			self.overInArgs = args
-		
-		def SAFE_SetOverOutEvent(self, func, *args):
-			self.overOutEvent = __mem_func__(func)
-			self.overOutArgs = args
-		
-		def OnMouseOverIn(self):
-			if self.overInEvent:
-				apply(self.overInEvent, self.overInArgs)
-		
-		def OnMouseOverOut(self):
-			if self.overOutEvent:
-				apply(self.overOutEvent, self.overOutArgs)
-		
-		def AdjustSize(self):
-			x, y = self.GetTextSize()
-			wndMgr.SetWindowSize(self.hWnd, x, y)
-	else:
-		def IsIn(self):
-			return wndMgr.IsIn(self.hWnd)
+	def IsIn(self):
+		return wndMgr.IsIn(self.hWnd)
 
 	if app.ENABLE_TARGET_INFO:
 		def SetMouseLeftButtonUpEvent(self, event, *args):
@@ -652,10 +598,6 @@ class ListBoxEx(Window):
 
 	def __GetItemCount(self):
 		return len(self.itemList)
-
-	if app.INGAME_WIKI:
-		def GetItemCount(self):
-			return len(self.itemList)
 
 	def GetItemViewCoord(self, pos, itemWidth):
 		return (0, (pos-self.basePos)*self.itemStep)
@@ -1103,20 +1045,13 @@ class TextLine(Window):
 	def __init__(self):
 		Window.__init__(self)
 		self.max = 0
-		self.SetFontName(_localeInfo.UI_DEF_FONT)
+		self.SetFontName(locale.UI_DEF_FONT)
 
 	def __del__(self):
 		Window.__del__(self)
 
 	def RegisterWindow(self, layer):
 		self.hWnd = wndMgr.RegisterTextLine(self, layer)
-
-	if app.INGAME_WIKI:
-		def GetRenderPos(self):
-			return wndMgr.GetRenderPos(self.hWnd)
-
-		def SetFixedRenderPos(self, startPos, endPos):
-			wndMgr.SetFixedRenderPos(self.hWnd, startPos, endPos)
 
 	def SetMax(self, max):
 		wndMgr.SetMax(self.hWnd, max)
@@ -1161,7 +1096,7 @@ class TextLine(Window):
 		wndMgr.SetFontName(self.hWnd, fontName)
 
 	def SetDefaultFontName(self):
-		wndMgr.SetFontName(self.hWnd, _localeInfo.UI_DEF_FONT)
+		wndMgr.SetFontName(self.hWnd, locale.UI_DEF_FONT)
 
 	def SetFontColor(self, red, green, blue):
 		wndMgr.SetFontColor(self.hWnd, red, green, blue)
@@ -1239,15 +1174,6 @@ class EditLine(TextLine):
 		self.readingWnd = ReadingWnd()
 		self.readingWnd.Hide()
 
-		if app.INGAME_WIKI:
-			self.eventUpdate = None
-			
-			self.overLay = TextLine()
-			self.overLay.SetParent(self)
-			self.overLay.SetPosition(0, 0)
-			self.overLay.SetPackedFontColor(WHITE_COLOR)
-			self.overLay.Hide()
-
 	def __del__(self):
 		TextLine.__del__(self)
 
@@ -1286,32 +1212,6 @@ class EditLine(TextLine):
 	def SetTabEvent(self, event):
 		self.eventTab = event
 
-	if app.INGAME_WIKI:
-		def SetOverlayText(self, text):
-			self.overLay.SetText(text)
-			self.__RefreshOverlay()
-		
-		def GetOverlayText(self):
-			return self.overLay.GetText()
-		
-		def SetUpdateEvent(self, event):
-			self.eventUpdate = event
-		
-		def GetDisplayText(self):
-			if len(self.GetText()):
-				return self.GetText()
-			else:
-				return self.overLay.GetText()
-		
-		def __RefreshOverlay(self):
-			if len(self.GetText()):
-				self.overLay.Hide()
-			else:
-				self.overLay.Show()
-		
-		def IsShowCursor(self):
-			return wndMgr.IsShowCursor(self.hWnd)
-
 	def SetMax(self, max):
 		self.max = max
 		wndMgr.SetMax(self.hWnd, self.max)
@@ -1342,9 +1242,6 @@ class EditLine(TextLine):
 
 		if self.IsFocus():
 			ime.SetText(text)
-
-		if app.INGAME_WIKI:
-			self.__RefreshOverlay()
 
 	def Enable(self):
 		wndMgr.ShowCursor(self.hWnd)
@@ -1425,12 +1322,6 @@ class EditLine(TextLine):
 
 		snd.PlaySound("sound/ui/type.wav")
 		TextLine.SetText(self, ime.GetText(self.bCodePage))
-
-		if app.INGAME_WIKI:
-			self.__RefreshOverlay()
-			
-			if self.eventUpdate:
-				self.eventUpdate()
 
 	def OnIMETab(self):
 		if self.canEdit == FALSE:
@@ -1650,10 +1541,6 @@ class ImageBox(Window):
 		if len(self.eventDict)!=0:
 			print "LOAD IMAGE", self, self.eventDict
 
-	if app.INGAME_WIKI:
-		def UnloadImage(self):
-			wndMgr.UnloadImage(self.hWnd)
-
 	def SetAlpha(self, alpha):
 		wndMgr.SetDiffuseColor(self.hWnd, 1.0, 1.0, 1.0, alpha)
 
@@ -1663,48 +1550,25 @@ class ImageBox(Window):
 	def GetHeight(self):
 		return wndMgr.GetHeight(self.hWnd)
 
-	if app.INGAME_WIKI:
-		def OnMouseOverIn(self):
-			self.__OnMouseOverIn()
-		
-		def OnMouseOverOut(self):
-			self.__OnMouseOverOut()
-		
-		def __OnMouseOverIn(self):
-			try:
-				apply(self.eventDict["MOUSE_OVER_IN"], self.argDict["MOUSE_OVER_IN"])
-			except KeyError:
-				pass
-		
-		def __OnMouseOverOut(self):
-			try:
-				apply(self.eventDict["MOUSE_OVER_OUT"], self.argDict["MOUSE_OVER_OUT"])
-			except KeyError:
-				pass
-		
-		def OnMouseLeftButtonDown(self):
-			if self.eventDict.has_key("MOUSE_LEFT_DOWN"):
-				apply(self.eventDict["MOUSE_LEFT_DOWN"], self.argDict["MOUSE_LEFT_DOWN"])
-	else:
-		def OnMouseOverIn(self):
-			try:
-				args = self.eventArgs.get("MOUSE_OVER_IN", None)
-				if not args:
-					self.eventDict["MOUSE_OVER_IN"]()
-				else:
-					apply(self.eventDict["MOUSE_OVER_IN"], args)
-			except KeyError:
-				pass
+	def OnMouseOverIn(self):
+		try:
+			args = self.eventArgs.get("MOUSE_OVER_IN", None)
+			if not args:
+				self.eventDict["MOUSE_OVER_IN"]()
+			else:
+				apply(self.eventDict["MOUSE_OVER_IN"], args)
+		except KeyError:
+			pass
 
-		def OnMouseOverOut(self):
-			try:
-				args = self.eventArgs.get("MOUSE_OVER_OUT", None)
-				if not args:
-					self.eventDict["MOUSE_OVER_OUT"]()
-				else:
-					apply(self.eventDict["MOUSE_OVER_OUT"], args)
-			except KeyError:
-				pass
+	def OnMouseOverOut(self):
+		try:
+			args = self.eventArgs.get("MOUSE_OVER_OUT", None)
+			if not args:
+				self.eventDict["MOUSE_OVER_OUT"]()
+			else:
+				apply(self.eventDict["MOUSE_OVER_OUT"], args)
+		except KeyError:
+			pass
 
 	def SAFE_SetStringEvent(self, event, func):
 		self.eventDict[event]=__mem_func__(func)
@@ -1821,8 +1685,6 @@ class ImageBox2(Window):
 class ExpandedImageBox(ImageBox):
 	def __init__(self, layer = "UI"):
 		ImageBox.__init__(self, layer)
-		self.eventDict={}
-		self.argDict={}
 
 	def __del__(self):
 		ImageBox.__del__(self)
@@ -1863,14 +1725,6 @@ class ExpandedImageBox(ImageBox):
 
 	def SetMoveAll(self, flag):
 		wndMgr.SetMoveAll(self.hWnd, flag)
-
-	def SAFE_SetStringEvent(self, event, func, *args):
-		self.eventDict[event]=__mem_func__(func)
-		self.argDict[event]=args
-
-	def SetStringEvent(self, event, func, *args):
-		self.eventDict[event]=func
-		self.argDict[event]=args
 
 class ExpandedImageBox2(ImageBox2):
 	def __init__(self, layer = "UI"):
@@ -3107,7 +2961,7 @@ class TitleBar(Window):
 		btnClose.SetUpVisual("d:/ymir work/ui/public/close_button_01.sub")
 		btnClose.SetOverVisual("d:/ymir work/ui/public/close_button_02.sub")
 		btnClose.SetDownVisual("d:/ymir work/ui/public/close_button_03.sub")
-		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -23)
+		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -23)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
@@ -3331,6 +3185,7 @@ class Gauge(Window):
 				self.imgGauge.LoadImage("d:/ymir work/ui/pattern/gauge_" + color + ".tga")
 
 class Board(Window):
+
 	CORNER_WIDTH = 32
 	CORNER_HEIGHT = 32
 	LINE_WIDTH = 128
@@ -3344,41 +3199,22 @@ class Board(Window):
 	R = 1
 	T = 2
 	B = 3
-	
-	BASE_PATH = "d:/ymir work/interface/Illumina_vegas/board"
-	IMAGES = {
-		'CORNER' : {
-			0 : "board_corner_lefttop",
-			1 : "board_corner_leftbottom",
-			2 : "board_corner_righttop",
-			3 : "board_corner_rightbottom"
-		},
-		'BAR' : {
-			0 : "board_line_left",
-			1 : "board_line_right",
-			2 : "board_line_top",
-			3 : "board_line_bottom"
-		},
-		'FILL' : "board_base"
-	}
 
-	def __init__(self, layer = "UI"):
-		Window.__init__(self, layer)
-		self.skipMaxCheck = False
+	def __init__(self):
+		Window.__init__(self)
 
-		self.MakeBoard()
+		self.MakeBoard("d:/ymir work/ui/one_work/board/Board_Corner_", "d:/ymir work/ui/one_work/board/Board_Line_")
+		self.MakeBase()
+
+	def MakeBoard(self, cornerPath, linePath):
+
+		CornerFileNames = [ cornerPath+dir+".tga" for dir in ("LeftTop", "LeftBottom", "RightTop", "RightBottom", ) ]
+		LineFileNames = [ linePath+dir+".tga" for dir in ("Left", "Right", "Top", "Bottom", ) ]
 		
-	def MakeBoard(self):
-		CornerFileNames = [ ]
-		LineFileNames = [ ]
+		DecoFileNames = [ "d:/ymir work/ui/one_work/board/deco_thing.png", "d:/ymir work/ui/one_work/board/deco_thing.png", "d:/ymir work/ui/one_work/board/deco_l_top.png", "d:/ymir work/ui/one_work/board/deco_b_left.png", "d:/ymir work/ui/one_work/board/deco_b_right.png", "d:/ymir work/ui/one_work/board/deco_r_top.png" ]
 		
-		for imageDictKey in (['CORNER', 'BAR']):
-			for x in xrange(len(self.IMAGES[imageDictKey])):
-				if imageDictKey == "CORNER":
-					CornerFileNames.append("%s/%s.tga" % (self.BASE_PATH, self.IMAGES[imageDictKey][x]))
-				elif imageDictKey == "BAR":
-					LineFileNames.append("%s/%s.tga" % (self.BASE_PATH, self.IMAGES[imageDictKey][x]))
-		
+
+
 		self.Corners = []
 		for fileName in CornerFileNames:
 			Corner = ExpandedImageBox()
@@ -3398,13 +3234,28 @@ class Board(Window):
 			Line.SetPosition(0, 0)
 			Line.Show()
 			self.Lines.append(Line)
+			
+		self.Deco = []
+		for fileName in DecoFileNames:
+			Deco = ExpandedImageBox()
+			Deco.AddFlag("not_pick")
+			Deco.LoadImage(fileName)
+			Deco.SetParent(self)
+			Deco.SetPosition(0, 0)
+			Deco.Show()
+			self.Deco.append(Deco)
 
 		self.Lines[self.L].SetPosition(0, self.CORNER_HEIGHT)
 		self.Lines[self.T].SetPosition(self.CORNER_WIDTH, 0)
+		
+	def SetDecoTop(self):
+		for deco in self.Deco:
+			deco.SetTop()
 
+	def MakeBase(self):
 		self.Base = ExpandedImageBox()
 		self.Base.AddFlag("not_pick")
-		self.Base.LoadImage("%s/%s.tga" % (self.BASE_PATH, self.IMAGES['FILL']))
+		self.Base.LoadImage("d:/ymir work/ui/one_work/board/Board_Base.tga")
 		self.Base.SetParent(self)
 		self.Base.SetPosition(self.CORNER_WIDTH, self.CORNER_HEIGHT)
 		self.Base.Show()
@@ -3413,10 +3264,9 @@ class Board(Window):
 		Window.__del__(self)
 
 	def SetSize(self, width, height):
-		if not self.skipMaxCheck:
-			width = max(self.CORNER_WIDTH*2, width)
-			height = max(self.CORNER_HEIGHT*2, height)
-			
+
+		width = max(self.CORNER_WIDTH*2, width)
+		height = max(self.CORNER_HEIGHT*2, height)
 		Window.SetSize(self, width, height)
 
 		self.Corners[self.LB].SetPosition(0, height - self.CORNER_HEIGHT)
@@ -3424,6 +3274,23 @@ class Board(Window):
 		self.Corners[self.RB].SetPosition(width - self.CORNER_WIDTH, height - self.CORNER_HEIGHT)
 		self.Lines[self.R].SetPosition(width - self.CORNER_WIDTH, self.CORNER_HEIGHT)
 		self.Lines[self.B].SetPosition(self.CORNER_HEIGHT, height - self.CORNER_HEIGHT)
+		
+		self.Deco[0].SetParent(self)
+		self.Deco[0].SetPosition(0, -4)
+		self.Deco[0].SetWindowHorizontalAlignCenter()
+		
+		self.Deco[1].SetParent(self)
+		self.Deco[1].SetPosition(0, height - 14)
+		self.Deco[1].SetWindowHorizontalAlignCenter()
+		
+		self.Deco[2].SetParent(self.Corners[self.LT])
+		self.Deco[2].SetPosition(-4, -4)
+		self.Deco[3].SetParent(self.Corners[self.LB])
+		self.Deco[3].SetPosition(-4, -8)
+		self.Deco[4].SetParent(self.Corners[self.RB])
+		self.Deco[4].SetPosition(-4, -8)
+		self.Deco[5].SetParent(self.Corners[self.RT])
+		self.Deco[5].SetPosition(-4, -4)
 
 		verticalShowingPercentage = float((height - self.CORNER_HEIGHT*2) - self.LINE_HEIGHT) / self.LINE_HEIGHT
 		horizontalShowingPercentage = float((width - self.CORNER_WIDTH*2) - self.LINE_WIDTH) / self.LINE_WIDTH
@@ -3433,7 +3300,7 @@ class Board(Window):
 		self.Lines[self.B].SetRenderingRect(0, 0, horizontalShowingPercentage, 0)
 
 		if self.Base:
-			self.Base.SetRenderingRect(0, 0, horizontalShowingPercentage, verticalShowingPercentage)
+			self.Base.SetRenderingRect(0, 0, horizontalShowingPercentage, verticalShowingPercentage)				
 		
 
 class Board2(Window):
@@ -3842,7 +3709,7 @@ class TitleBar(Window):
 		btnClose.SetUpVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_normal.tga")
 		btnClose.SetOverVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_hover.tga")
 		btnClose.SetDownVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_pressed.tga")
-		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -11)
+		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -11)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
@@ -3875,13 +3742,10 @@ class TitleBar(Window):
 	def GetCloseEvent(self):
 		return self.btnClose.GetEvent()
 
-class TitleBar2(Window):
+class TitleBar(Window):
 
-	BLOCK_WIDTH = 76
-	BLOCK_HEIGHT = 42
-	
-	PLUS_OVERFLOW = 22
-	PLUS_POSITION = 15
+	BLOCK_WIDTH = 32
+	BLOCK_HEIGHT = 23
 
 	def __init__(self):
 		Window.__init__(self)
@@ -3892,100 +3756,68 @@ class TitleBar2(Window):
 
 	def MakeTitleBar(self, width, color):
 
-		## ���� Color�� ����ϰ� ���� ����
-
 		width = max(64, width)
-		
-		imgCenter = ExpandedImageBox()
+
 		imgLeft = ImageBox()
+		imgCenter = ExpandedImageBox()
 		imgRight = ImageBox()
-		imgdecoration = ImageBox()
-		imgCenter.AddFlag("not_pick")
 		imgLeft.AddFlag("not_pick")
+		imgCenter.AddFlag("not_pick")
 		imgRight.AddFlag("not_pick")
-		imgCenter.SetParent(self)
 		imgLeft.SetParent(self)
+		imgCenter.SetParent(self)
 		imgRight.SetParent(self)
-		imgdecoration.SetParent(imgRight)
-		imgLeft.LoadImage("d:/ymir work/interface/Illumina_vegas/title_bar/titlebar_left.tga")
-		imgCenter.LoadImage("d:/ymir work/interface/Illumina_vegas/title_bar/titlebar_center.tga")
-		imgRight.LoadImage("d:/ymir work/interface/Illumina_vegas/title_bar/titlebar_right.tga")
-		imgdecoration.LoadImage("d:/ymir work/interface/Illumina_vegas/Board/decoration_leftbottom.tga")
+
+		imgLeft.LoadImage("d:/ymir work/ui/one_work/title_left.png")
+		imgCenter.LoadImage("d:/ymir work/ui/one_work/title_mid.png")
+		imgRight.LoadImage("d:/ymir work/ui/one_work/title_right.png")
+
 		imgLeft.Show()
-		imgRight.Show()
 		imgCenter.Show()
-		imgdecoration.Show()
-		
-		self.boton = Button()
-		self.boton.SetParent(self)
-		import salveaza_pozitie
-		if salveaza_pozitie.CitesteLiniaDinArhiva(1) == "0":
-			self.boton.SetToolTipText("Minimizar", 0, -23)
-			self.boton.SetUpVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_01_normal.tga")
-			self.boton.SetOverVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_02_hover.tga")
-			self.boton.SetDownVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_03_active.tga")
-		else:
-			self.boton.SetToolTipText("Maximizar", 0, -23)
-			self.boton.SetUpVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_01_normal.tga")
-			self.boton.SetOverVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_02_hover.tga")
-			self.boton.SetDownVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_03_active.tga")
-		self.boton.SetEvent(self.ChangeImage)
-		self.boton.Show()
-		
-		cBtnBG = ImageBox()
-		cBtnBG.AddFlag("not_pick")
-		cBtnBG.LoadImage("d:/ymir work/interface/Illumina_vegas/title_bar/titlebar_cBtn_bg.tga")
-		cBtnBG.SetParent(self)
-		cBtnBG.Show()
-		
+		imgRight.Show()
+
 		btnClose = Button()
 		btnClose.SetParent(self)
-		btnClose.SetUpVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_normal.tga")
-		btnClose.SetOverVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_hover.tga")
-		btnClose.SetDownVisual("d:/ymir work/interface/Illumina_vegas/title_bar/Board_cBtn_pressed.tga")
-		btnClose.SetToolTipText(_localeInfo.UI_CLOSE, 0, -11)
+		btnClose.SetUpVisual("d:/ymir work/ui/one_work/btn_x_1.png")
+		btnClose.SetOverVisual("d:/ymir work/ui/one_work/btn_x_2.png")
+		btnClose.SetDownVisual("d:/ymir work/ui/one_work/btn_x_3.png")
+		btnClose.SetToolTipText(locale.UI_CLOSE, 0, -23)
 		btnClose.Show()
 
 		self.imgLeft = imgLeft
 		self.imgCenter = imgCenter
 		self.imgRight = imgRight
-		self.imgdecoration = imgdecoration
 		self.btnClose = btnClose
-		self.cBtnBG = cBtnBG
+		
+		DecoFileNames = [ "d:/ymir work/ui/one_work/board/deco_thing.png"]
+
+		self.Deco = []
+		for fileName in DecoFileNames:
+			Deco = ExpandedImageBox()
+			Deco.AddFlag("not_pick")
+			Deco.LoadImage(fileName)
+			Deco.SetParent(self)
+			Deco.SetPosition(0, 0)
+			Deco.Show()
+			self.Deco.append(Deco)
+			
+		self.Deco[0].SetParent(self)
+		self.Deco[0].SetPosition(0, -11)
+		self.Deco[0].SetWindowHorizontalAlignCenter()
 
 		self.SetWidth(width)
 
 	def SetWidth(self, width):
-		self.imgCenter.SetRenderingRect(0.0, 0.0, float((width - self.BLOCK_WIDTH*2 + (self.PLUS_OVERFLOW*2) + (self.PLUS_POSITION*2)) - self.BLOCK_WIDTH) / self.BLOCK_WIDTH+0.3, 0.0)
-		self.imgCenter.SetPosition(self.BLOCK_WIDTH - self.PLUS_OVERFLOW - self.PLUS_POSITION-8, 0)
-		self.imgRight.SetPosition((width - self.BLOCK_WIDTH) + self.PLUS_POSITION+35, 0)
-		self.imgLeft.SetPosition(self.PLUS_POSITION*-1-30, 0)
-		self.imgdecoration.SetPosition(-10, 0-25)
-		self.btnClose.SetPosition(width - self.btnClose.GetWidth() +11, -11)
+		self.imgCenter.SetRenderingRect(0.0, 0.0, float((width - self.BLOCK_WIDTH*2) - self.BLOCK_WIDTH) / self.BLOCK_WIDTH, 0.0)
+		self.imgCenter.SetPosition(self.BLOCK_WIDTH, 0)
+		self.imgRight.SetPosition(width - self.BLOCK_WIDTH, 0)
+
+		self.btnClose.SetPosition(width - self.btnClose.GetWidth() - 3, 1)
+			
 		self.SetSize(width, self.BLOCK_HEIGHT)
-		
-		self.cBtnBG.SetPosition(width - 60, -22)
-		
-		self.btnClose.SetPosition(width - self.btnClose.GetWidth() - 0+5, -11)
-		self.boton.SetPosition(width - self.boton.GetWidth() - 55, 4)
 
 	def SetCloseEvent(self, event):
 		self.btnClose.SetEvent(event)
-
-	def ChangeImage(self):
-		import salveaza_pozitie
-		if salveaza_pozitie.CitesteLiniaDinArhiva(1) == "1":
-			salveaza_pozitie.ScrieLiniaInArhiva(1,"0")
-			self.boton.SetToolTipText("Micsoreaza", 0, 3)
-			self.boton.SetUpVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_01_normal.tga")
-			self.boton.SetOverVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_02_hover.tga")
-			self.boton.SetDownVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_collapse_03_active.tga")
-		else:
-			self.boton.SetToolTipText("Mareste", 0, -23)
-			self.boton.SetUpVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_01_normal.tga")
-			self.boton.SetOverVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_02_hover.tga")
-			self.boton.SetDownVisual("d:/ymir work/interface/Illumina_vegas/buttons/titlebar_expand_03_active.tga")
-			salveaza_pozitie.ScrieLiniaInArhiva(1,"1")	
 		
 class BoardWithTitleBarAndSelect(Board):
 	def __init__(self):
@@ -4000,7 +3832,7 @@ class BoardWithTitleBarAndSelect(Board):
 		self.apollo.SetSize(200,0)
 		self.apollo.Show()
 
-		titleBar = TitleBar2()
+		titleBar = TitleBar()
 		titleBar.SetParent(self)
 		titleBar.MakeTitleBar(0, "red")
 		titleBar.SetPosition(8, 7)
@@ -4017,6 +3849,8 @@ class BoardWithTitleBarAndSelect(Board):
 		self.cant = 0
 		self.SetCloseEvent(self.Hide)
 		self.titleName.SetFontColor(0.902, 0.816, 0.635)
+		
+		Board.SetDecoTop()
 
 	def __del__(self):
 		Board.__del__(self)
@@ -4388,9 +4222,9 @@ class Simple_Board(Window):
 		if self.Base:
 			self.Base.SetRenderingRect(0, 0, horizontalShowingPercentage, verticalShowingPercentage)
 
-class BoardWithTitleBar(Board2):
+class BoardWithTitleBar(Board):
 	def __init__(self):
-		Board2.__init__(self)
+		Board.__init__(self)
 
 		titleBar = TitleBar()
 		titleBar.SetParent(self)
@@ -4411,14 +4245,14 @@ class BoardWithTitleBar(Board2):
 		self.SetCloseEvent(self.Hide)
 
 	def __del__(self):
-		Board2.__del__(self)
+		Board.__del__(self)
 		self.titleBar = None
 		self.titleName = None
 
 	def SetSize(self, width, height):
 		self.titleBar.SetWidth(width - 15)
 		#self.pickRestrictWindow.SetSize(width, height - 30)
-		Board2.SetSize(self, width, height)
+		Board.SetSize(self, width, height)
 		self.titleName.UpdateRect()
 
 	def SetTitleColor(self, color):
@@ -4433,20 +4267,22 @@ class BoardWithTitleBar(Board2):
 
 class ThinBoard(Window):
 
-	CORNER_WIDTH = 21
-	CORNER_HEIGHT = 21
-	LINE_WIDTH = 21
-	LINE_HEIGHT = 21
-	BOARD_COLOR = grp.GenerateColor(0.0, 0.0, 0.0, 0.61)
+	CORNER_WIDTH = 16
+	CORNER_HEIGHT = 16
+	LINE_WIDTH = 16
+	LINE_HEIGHT = 16
+	
+	r = float(12.0/255.0)
+	g = float(2.0/255.0)
+	b = float(2.0/255.0)
+	a = float(209.0/255.0)
+	
+	BOARD_COLOR = grp.GenerateColor(r, g, b, a)
 
-	SLT = 0
-	SLB = 1
-	SRT = 2
-	SRB = 3
-	LT = 4
-	LB = 5
-	RT = 6
-	RB = 7
+	LT = 0
+	LB = 1
+	RT = 2
+	RB = 3
 	L = 0
 	R = 1
 	T = 2
@@ -4455,8 +4291,10 @@ class ThinBoard(Window):
 	def __init__(self, layer = "UI"):
 		Window.__init__(self, layer)
 
-		CornerFileNames = [ "d:/ymir work/interface/Illumina_vegas/thinboard_transparent/Corner_"+dir+".tga" for dir in ["Shadow_LeftTop","Shadow_LeftBottom","Shadow_RightTop","Shadow_RightBottom","LeftTop","LeftBottom","RightTop","RightBottom"] ]
-		LineFileNames = [ "d:/ymir work/interface/Illumina_vegas/thinboard_transparent/bar_"+dir+".tga" for dir in ["Left","Right","Top","Bottom"] ]
+		CornerFileNames = [ "d:/ymir work/ui/pattern/ThinBoard_Corner_"+dir+".tga" for dir in ["LeftTop","LeftBottom","RightTop","RightBottom"] ]
+		LineFileNames = [ "d:/ymir work/ui/pattern/ThinBoard_Line_"+dir+".tga" for dir in ["Left","Right","Top","Bottom"] ]
+
+		DecoFileNames = [ "d:/ymir work/ui/one_work/board/deco_thing.png", "d:/ymir work/ui/one_work/board/deco_thing.png", "d:/ymir work/ui/one_work/board/deco_l_top.png", "d:/ymir work/ui/one_work/board/deco_b_left.png", "d:/ymir work/ui/one_work/board/deco_b_right.png", "d:/ymir work/ui/one_work/board/deco_r_top.png" ]
 
 		self.Corners = []
 		for fileName in CornerFileNames:
@@ -4479,6 +4317,16 @@ class ThinBoard(Window):
 			Line.SetPosition(0, 0)
 			Line.Show()
 			self.Lines.append(Line)
+			
+		self.Deco = []
+		for fileName in DecoFileNames:
+			Deco = ExpandedImageBox()
+			Deco.AddFlag("not_pick")
+			Deco.LoadImage(fileName)
+			Deco.SetParent(self)
+			Deco.SetPosition(0, 0)
+			Deco.Show()
+			self.Deco.append(Deco)
 
 		Base = Bar()
 		Base.SetParent(self)
@@ -4491,10 +4339,58 @@ class ThinBoard(Window):
 
 		self.Lines[self.L].SetPosition(0, self.CORNER_HEIGHT)
 		self.Lines[self.T].SetPosition(self.CORNER_WIDTH, 0)
+		
+	def SetDecoTop(self):
+		for deco in self.Deco:
+			deco.SetTop()
 
 	def __del__(self):
 		Window.__del__(self)
 
+	def SetSize(self, width, height):
+
+		width = max(self.CORNER_WIDTH*2, width)
+		height = max(self.CORNER_HEIGHT*2, height)
+		Window.SetSize(self, width, height)
+
+		self.Corners[self.LB].SetPosition(0, height - self.CORNER_HEIGHT)
+		self.Corners[self.RT].SetPosition(width - self.CORNER_WIDTH, 0)
+		self.Corners[self.RB].SetPosition(width - self.CORNER_WIDTH, height - self.CORNER_HEIGHT)
+		self.Lines[self.R].SetPosition(width - self.CORNER_WIDTH, self.CORNER_HEIGHT)
+		self.Lines[self.B].SetPosition(self.CORNER_HEIGHT, height - self.CORNER_HEIGHT)
+
+		verticalShowingPercentage = float((height - self.CORNER_HEIGHT*2) - self.LINE_HEIGHT) / self.LINE_HEIGHT
+		horizontalShowingPercentage = float((width - self.CORNER_WIDTH*2) - self.LINE_WIDTH) / self.LINE_WIDTH
+		self.Lines[self.L].SetRenderingRect(0, 0, 0, verticalShowingPercentage)
+		self.Lines[self.R].SetRenderingRect(0, 0, 0, verticalShowingPercentage)
+		self.Lines[self.T].SetRenderingRect(0, 0, horizontalShowingPercentage, 0)
+		self.Lines[self.B].SetRenderingRect(0, 0, horizontalShowingPercentage, 0)
+		self.Base.SetSize(width - self.CORNER_WIDTH*2, height - self.CORNER_HEIGHT*2)
+		
+		self.Deco[0].SetParent(self)
+		self.Deco[0].SetPosition(0, -4)
+		self.Deco[0].SetWindowHorizontalAlignCenter()
+		
+		self.Deco[1].SetParent(self)
+		self.Deco[1].SetPosition(0, height - 14)
+		self.Deco[1].SetWindowHorizontalAlignCenter()
+		
+		self.Deco[2].SetParent(self.Corners[self.LT])
+		self.Deco[2].SetPosition(-4, -4)
+		self.Deco[3].SetParent(self.Corners[self.LB])
+		self.Deco[3].SetPosition(-4, -22)
+		self.Deco[4].SetParent(self.Corners[self.RB])
+		self.Deco[4].SetPosition(-22, -22)
+		self.Deco[5].SetParent(self.Corners[self.RT])
+		self.Deco[5].SetPosition(-22, -4)
+
+	def ShowInternal(self):
+		self.Base.Show()
+		for wnd in self.Lines:
+			wnd.Show()
+		for wnd in self.Corners:
+			wnd.Show()
+			
 	if app.ENABLE_TARGET_INFO:
 		def ShowCorner(self, corner):
 			self.Corners[corner].Show()
@@ -4512,47 +4408,19 @@ class ThinBoard(Window):
 			self.Lines[line].Hide()
 			self.SetSize(self.GetWidth(), self.GetHeight())
 
-	def SetSize(self, width, height):
-
-		width = max(self.CORNER_WIDTH*2, width)
-		height = max(self.CORNER_HEIGHT*2, height)
-		Window.SetSize(self, width, height)
-
-		self.Corners[self.LB].SetPosition(0, height - self.CORNER_HEIGHT)
-		self.Corners[self.RT].SetPosition(width - self.CORNER_WIDTH, 0)
-		self.Corners[self.RB].SetPosition(width - self.CORNER_WIDTH, height - self.CORNER_HEIGHT)
-		
-		##Shadows thinboard
-		self.Corners[self.SLT].SetPosition(self.CORNER_WIDTH-33,self.CORNER_HEIGHT-33)
-		self.Corners[self.SLB].SetPosition(-11, height - self.CORNER_HEIGHT)
-		self.Corners[self.SRT].SetPosition(width - self.CORNER_WIDTH, -13)
-		self.Corners[self.SRB].SetPosition(width - self.CORNER_WIDTH, height - self.CORNER_HEIGHT)
-		
-		
-		self.Lines[self.R].SetPosition(width - self.CORNER_WIDTH, self.CORNER_HEIGHT)
-		self.Lines[self.B].SetPosition(self.CORNER_HEIGHT, height - self.CORNER_HEIGHT)
-
-		verticalShowingPercentage = float((height - self.CORNER_HEIGHT*2) - self.LINE_HEIGHT) / self.LINE_HEIGHT
-		horizontalShowingPercentage = float((width - self.CORNER_WIDTH*2) - self.LINE_WIDTH) / self.LINE_WIDTH
-		self.Lines[self.L].SetRenderingRect(0, 0, 0, verticalShowingPercentage)
-		self.Lines[self.R].SetRenderingRect(0, 0, 0, verticalShowingPercentage)
-		self.Lines[self.T].SetRenderingRect(0, 0, horizontalShowingPercentage, 0)
-		self.Lines[self.B].SetRenderingRect(0, 0, horizontalShowingPercentage, 0)
-		self.Base.SetSize(width - self.CORNER_WIDTH*2, height - self.CORNER_HEIGHT*2)
-
-	def ShowInternal(self):
-		self.Base.Show()
-		for wnd in self.Lines:
-			wnd.Show()
-		for wnd in self.Corners:
-			wnd.Show()
-
 	def HideInternal(self):
 		self.Base.Hide()
 		for wnd in self.Lines:
 			wnd.Hide()
 		for wnd in self.Corners:
 			wnd.Hide()
+			
+	def SetColor(self, r, g, b, a):
+		self.Base.SetColor(r, g, b, a)
+		for corner in self.Corners:
+			corner.SetColor(r, g, b, a)
+		for line in self.Lines:
+			line.SetColor(r, g, b, a)	
 
 			
 class MenuBoard(ExpandedImageBox):
@@ -6047,7 +5915,7 @@ class ComboBox(Window):
 		self.enable = TRUE
 
 		self.textLine = MakeTextLine(self)
-		self.textLine.SetText(_localeInfo.UI_ITEM)
+		self.textLine.SetText(locale.UI_ITEM)
 
 		self.listBox = self.ListBoxWithBoard("TOP_MOST")
 		self.listBox.SetPickAlways()
@@ -6423,7 +6291,7 @@ class NewComboBox(Window):
 		self.enable = TRUE
 
 		self.textLine = MakeTextLine(self)
-		self.textLine.SetText(_localeInfo.UI_ITEM)
+		self.textLine.SetText(locale.UI_ITEM)
 		
 		self.listBox = self.ListBoxWithBoard("TOP_MOST")
 		self.listBox.SetPickAlways()
@@ -7255,7 +7123,7 @@ class PythonScriptLoader(object):
 			fontSize = value["fontsize"]
 
 			if "LARGE" == fontSize:
-				window.SetFontName(_localeInfo.UI_DEF_FONT_LARGE)
+				window.SetFontName(locale.UI_DEF_FONT_LARGE)
 
 		elif value.has_key("fontname"):
 			fontName = value["fontname"]
@@ -8587,102 +8455,6 @@ if app.__ENABLE_NEW_OFFLINESHOP__:
 
 			self.SetScrollBarLength(self.__GetElementLength(self.baseImage))
 
-if app.INGAME_WIKI:
-	class WikiRenderTarget(Window):
-		def __init__(self):
-			Window.__init__(self)
-		
-		def __del__(self):
-			Window.__del__(self)
-		
-		def RegisterWindow(self, layer):
-			self.hWnd = wndMgr.RegisterWikiRenderTarget(self, layer)
-	
-	class InGameWikiCheckBox(Window):
-		def __init__(self):
-			Window.__init__(self)
-			
-			self.backgroundImage = None
-			self.checkImage = None
-			
-			self.eventFunc = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
-			self.eventArgs = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
-			
-			self.CreateElements()
-		
-		def __del__(self):
-			Window.__del__(self)
-			
-			self.backgroundImage = None
-			self.checkImage = None
-			
-			self.eventFunc = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
-			self.eventArgs = { "ON_CHECK" : None, "ON_UNCKECK" : None, }
-		
-		def CreateElements(self):
-			self.backgroundImage = ImageBox()
-			self.backgroundImage.SetParent(self)
-			self.backgroundImage.AddFlag("not_pick")
-			self.backgroundImage.LoadImage("d:/ymir work/ui/wiki/wiki_check_box_clean.tga")
-			self.backgroundImage.Show()
-			
-			self.checkImage = ImageBox()
-			self.checkImage.SetParent(self)
-			self.checkImage.AddFlag("not_pick")
-			self.checkImage.LoadImage("d:/ymir work/ui/wiki/wiki_check_box_checked.tga")
-			self.checkImage.Hide()
-			
-			self.textInfo = TextLine()
-			self.textInfo.SetParent(self)
-			self.textInfo.SetPosition(20, 0)
-			self.textInfo.Show()
-			
-			self.SetSize(self.backgroundImage.GetWidth() + self.textInfo.GetTextSize()[0], self.backgroundImage.GetHeight() + self.textInfo.GetTextSize()[1])
-		
-		def SetTextInfo(self, info):
-			if self.textInfo:
-				self.textInfo.SetText(info)
-			
-			self.SetSize(self.backgroundImage.GetWidth() + self.textInfo.GetTextSize()[0], self.backgroundImage.GetHeight() + self.textInfo.GetTextSize()[1])
-		
-		def SetCheckStatus(self, flag):
-			if flag:
-				self.checkImage.Show()
-			else:
-				self.checkImage.Hide()
-		
-		def GetCheckStatus(self):
-			if self.checkImage:
-				return self.checkImage.IsShow()
-			
-			return False
-		
-		def SetEvent(self, func, *args) :
-			result = self.eventFunc.has_key(args[0])
-			if result:
-				self.eventFunc[args[0]] = func
-				self.eventArgs[args[0]] = args
-			else:
-				print "[ERROR] ui.py SetEvent, Can`t Find has_key : %s" % args[0]
-		
-		def SetBaseCheckImage(self, image):
-			if not self.backgroundImage:
-				return
-			
-			self.backgroundImage.LoadImage(image)
-		
-		def OnMouseLeftButtonUp(self):
-			if self.checkImage:
-				if self.checkImage.IsShow():
-					self.checkImage.Hide()
-					
-					if self.eventFunc["ON_UNCKECK"]:
-						apply(self.eventFunc["ON_UNCKECK"], self.eventArgs["ON_UNCKECK"])
-				else:
-					self.checkImage.Show()
-					
-					if self.eventFunc["ON_CHECK"]:
-						apply(self.eventFunc["ON_CHECK"], self.eventArgs["ON_CHECK"])
 
 RegisterToolTipWindow("TEXT", TextLine)
 

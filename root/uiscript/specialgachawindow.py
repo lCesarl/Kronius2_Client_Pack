@@ -1,5 +1,4 @@
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 MAINBOARD_WIDTH = 352
 MAINBOARD_HEIGHT = 458
 MAINBOARD_X = (SCREEN_WIDTH/2) - (MAINBOARD_WIDTH/2)

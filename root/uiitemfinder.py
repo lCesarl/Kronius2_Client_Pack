@@ -2,8 +2,7 @@ import ui
 import item
 import net
 import constInfo
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 import wndMgr
 import app
 import renderTarget

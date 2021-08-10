@@ -204,7 +204,7 @@ class WhisperDialog(ui.ScriptWindow):
 			self.editBar.SetPosition(10, height-60)
 			self.sendButton.SetPosition(width-80, 10)
 			self.minimizeButton.SetPosition(width-42, 12)
-			self.closeButton.SetPosition(width-24, 12)
+			self.closeButton.SetPosition(width-24-15, 12)
 
 			self.SetChatLineMax(max)
 

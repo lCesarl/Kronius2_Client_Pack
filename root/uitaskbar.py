@@ -10,6 +10,7 @@ import constInfo
 import mouseModule
 import uiScriptLocale
 import app
+import uicharacterview
 
 if app.ENABLE_POISON_GAUGE_EFFECT:
 	import chr
@@ -139,7 +140,6 @@ class ExpandedTaskBar(ui.ScriptWindow):
 		return TRUE
 	
 class TaskBar(ui.ScriptWindow):
-
 	BUTTON_CHARACTER = 0
 	BUTTON_INVENTORY = 1
 	BUTTON_MESSENGER = 2
@@ -147,6 +147,13 @@ class TaskBar(ui.ScriptWindow):
 	BUTTON_CHAT = 4
 	BUTTON_EXPAND = 4
 	IS_EXPANDED = FALSE
+	
+	QUICKPAGE_NUMBER_FILENAME = [
+		"d:/ymir work/ui/game/taskbar/1.sub",
+		"d:/ymir work/ui/game/taskbar/2.sub",
+		"d:/ymir work/ui/game/taskbar/3.sub",
+		"d:/ymir work/ui/game/taskbar/4.sub",
+	]
 
 	MOUSE_BUTTON_LEFT = 0
 	MOUSE_BUTTON_RIGHT = 1
@@ -161,19 +168,6 @@ class TaskBar(ui.ScriptWindow):
 
 	GAUGE_WIDTH = 133
 	GAUGE_HEIGHT = 17
-
-	QUICKPAGE_NUMBER_FILENAME = [
-		"d:/ymir work/ui/game/taskbar/1.sub",
-		"d:/ymir work/ui/game/taskbar/2.sub",
-		"d:/ymir work/ui/game/taskbar/3.sub",
-		"d:/ymir work/ui/game/taskbar/4.sub",
-	]
-
-	def ShowGift(self):
-		self.wndGiftBox.Show()
-	
-	def HideGift(self):
-		self.wndGiftBox.Hide()
 
 	class TextToolTip(ui.Window):
 		def __init__(self):
@@ -247,12 +241,10 @@ class TaskBar(ui.ScriptWindow):
 			self.SetSkillSlotNew(slotNumber, skillIndex, skillGrade, skillLevel)
 			self.SetSlotCountNew(slotNumber, skillGrade, skillLevel)
 
-			## NOTE : CoolTime 체크
 			if player.IsSkillCoolTime(skillSlotNumber):
 				(coolTime, elapsedTime) = player.GetSkillCoolTime(skillSlotNumber)
 				self.SetSlotCoolTime(slotNumber, coolTime, elapsedTime)
 
-			## NOTE : Activate 되어 있다면 아이콘도 업데이트
 			if player.IsSkillActive(skillSlotNumber):
 				self.ActivateSlot(slotNumber)
 
@@ -289,641 +281,173 @@ class TaskBar(ui.ScriptWindow):
 				else:
 					self.event()
 
+	
 	def __init__(self):
 		#print "NEW TASKBAR  ----------------------------------------------------------------------------"
 
 		ui.ScriptWindow.__init__(self, "TOP_MOST")
-
+		
 		self.quickPageNumImageBox = None
 		self.tooltipItem = 0
 		self.tooltipSkill = 0
-		self.mouseModeButtonList = [ ui.ScriptWindow("TOP_MOST"), ui.ScriptWindow("TOP_MOST") ]
-
-		self.tooltipHP = self.TextToolTip()
-		self.tooltipHP.Show()
-		self.tooltipSP = self.TextToolTip()
-		self.tooltipSP.Show()
-		self.tooltipST = self.TextToolTip()
-		self.tooltipST.Show()
-		self.tooltipEXP = self.TextToolTip()
-		self.tooltipEXP.Show()
-		
-		self.skillCategoryNameList = [ "ACTIVE_1", "ACTIVE_2", "ACTIVE_3" ]
-		self.skillPageStartSlotIndexDict = {
-			"ACTIVE_1" : 1, 
-			"ACTIVE_2" : 21, 
-			"ACTIVE_3" : 41, 
-		}
-
 		self.selectSkillButtonList = []
-		self.quickslot_label = []
 		
-		self.lastUpdateQuickSlot = 0
-		self.SetWindowName("TaskBar")
-
-	def __del__(self):
-		#print "---------------------------------------------------------------------------- DELETE TASKBAR"
-		ui.ScriptWindow.__del__(self)
-
-	def LoadWindow(self):
-		try:
-			pyScrLoader = ui.PythonScriptLoader()
-
-			if constInfo.IN_GAME_SHOP_ENABLE:
-				pyScrLoader.LoadScriptFile(self, uiScriptLocale.LOCALE_UISCRIPT_PATH + "TaskBar.py")
-			else:
-				pyScrLoader.LoadScriptFile(self, "UIScript/TaskBar.py")
-			pyScrLoader.LoadScriptFile(self.mouseModeButtonList[self.MOUSE_BUTTON_LEFT], "UIScript/MouseButtonWindow.py")
-			pyScrLoader.LoadScriptFile(self.mouseModeButtonList[self.MOUSE_BUTTON_RIGHT], "UIScript/RightMouseButtonWindow.py")
-		except:
-			import exception
-			exception.Abort("TaskBar.LoadWindow.LoadObject")
-
-		self.quickslot = []
-		self.quickslot.append(self.GetChild("quick_slot_1"))
-		self.quickslot.append(self.GetChild("quick_slot_2"))
-		for slot in self.quickslot:
-			slot.SetSlotStyle(wndMgr.SLOT_STYLE_NONE)
-			slot.SetSelectEmptySlotEvent(ui.__mem_func__(self.SelectEmptyQuickSlot))
-			slot.SetSelectItemSlotEvent(ui.__mem_func__(self.SelectItemQuickSlot))
-			slot.SetUnselectItemSlotEvent(ui.__mem_func__(self.UnselectItemQuickSlot))
-			slot.SetOverInItemEvent(ui.__mem_func__(self.OverInItem))
-			slot.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
-
-		toggleButtonDict = {}
-		toggleButtonDict[TaskBar.BUTTON_CHARACTER]=self.GetChild("CharacterButton")
-		toggleButtonDict[TaskBar.BUTTON_INVENTORY]=self.GetChild("InventoryButton")
-		toggleButtonDict[TaskBar.BUTTON_MESSENGER]=self.GetChild("MessengerButton")
-		toggleButtonDict[TaskBar.BUTTON_SYSTEM]=self.GetChild("SystemButton")
+		self.LoadWindow()
 		
-		# ChatButton, ExpandButton 둘 중 하나는 반드시 존재한다.
-		try:
-			toggleButtonDict[TaskBar.BUTTON_CHAT]=self.GetChild("ChatButton")
-		except:
-			toggleButtonDict[TaskBar.BUTTON_EXPAND]=self.GetChild("ExpandButton")
-			TaskBar.IS_EXPANDED = TRUE
-	  
-		self.quickPageNumImageBox=self.GetChild("QuickPageNumber")
-
-		self.GetChild("QuickPageUpButton").SetEvent(ui.__mem_func__(self.__OnClickQuickPageUpButton))
-		self.GetChild("QuickPageDownButton").SetEvent(ui.__mem_func__(self.__OnClickQuickPageDownButton))
-
-		mouseLeftButtonModeButton = self.GetChild("LeftMouseButton")
-		mouseRightButtonModeButton = self.GetChild("RightMouseButton")
-		mouseLeftButtonModeButton.SetEvent(ui.__mem_func__(self.ToggleLeftMouseButtonModeWindow))		
-		mouseRightButtonModeButton.SetEvent(ui.__mem_func__(self.ToggleRightMouseButtonModeWindow))
-		self.curMouseModeButton = [ mouseLeftButtonModeButton, mouseRightButtonModeButton ]
-
-		(xLocalRight, yLocalRight) = mouseRightButtonModeButton.GetLocalPosition()
-		self.curSkillButton = self.SkillButton()
-		self.curSkillButton.SetParent(self)
-		self.curSkillButton.SetPosition(xLocalRight, 3)
-		self.curSkillButton.SetSkillEvent(ui.__mem_func__(self.ToggleRightMouseButtonModeWindow))
-		self.curSkillButton.Hide()
-
-		(xLeft, yLeft) = mouseLeftButtonModeButton.GetGlobalPosition()
-		(xRight, yRight) = mouseRightButtonModeButton.GetGlobalPosition()
-		leftModeButtonList = self.mouseModeButtonList[self.MOUSE_BUTTON_LEFT]
-		leftModeButtonList.SetPosition(xLeft, yLeft - leftModeButtonList.GetHeight()-5)
-		rightModeButtonList = self.mouseModeButtonList[self.MOUSE_BUTTON_RIGHT]
-		rightModeButtonList.SetPosition(xRight - rightModeButtonList.GetWidth() + 32, yRight - rightModeButtonList.GetHeight()-5)
-		rightModeButtonList.GetChild("button_skill").SetEvent(lambda adir=self.MOUSE_BUTTON_RIGHT, aevent=self.EVENT_SKILL: self.SelectMouseButtonEvent(adir, aevent))
-		rightModeButtonList.GetChild("button_skill").Hide()
-
-		mouseImage = ui.ImageBox("TOP_MOST")
-		mouseImage.AddFlag("float")
-		mouseImage.LoadImage("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub")
-		mouseImage.SetPosition(xRight, wndMgr.GetScreenHeight() - 34)
-		mouseImage.Hide()
-		self.mouseImage = mouseImage
-
-		dir = self.MOUSE_BUTTON_LEFT
-		wnd = self.mouseModeButtonList[dir]
-		wnd.GetChild("button_move_and_attack").SetEvent(lambda adir=dir, aevent=self.EVENT_MOVE_AND_ATTACK: self.SelectMouseButtonEvent(adir, aevent))
-		wnd.GetChild("button_auto_attack").SetEvent(lambda adir=dir, aevent=self.EVENT_AUTO: self.SelectMouseButtonEvent(adir, aevent))
-		wnd.GetChild("button_camera").SetEvent(lambda adir=dir, aevent=self.EVENT_CAMERA: self.SelectMouseButtonEvent(adir, aevent))
-
-		dir = self.MOUSE_BUTTON_RIGHT
-		wnd = self.mouseModeButtonList[dir]
-		wnd.GetChild("button_move_and_attack").SetEvent(lambda adir=dir, aevent=self.EVENT_MOVE_AND_ATTACK: self.SelectMouseButtonEvent(adir, aevent))
-		wnd.GetChild("button_camera").SetEvent(lambda adir=dir, aevent=self.EVENT_CAMERA: self.SelectMouseButtonEvent(adir, aevent))
-
-		self.toggleButtonDict = toggleButtonDict
-
-		self.hpGauge = self.GetChild("HPGauge")
-		self.mpGauge = self.GetChild("SPGauge")
-		self.stGauge = self.GetChild("STGauge")
-
-		self.hpRecoveryGaugeBar = self.GetChild("HPRecoveryGaugeBar")
-		self.spRecoveryGaugeBar = self.GetChild("SPRecoveryGaugeBar")
-
-		if app.ENABLE_POISON_GAUGE_EFFECT:
-			self.hpPoisonGauge = self.GetChild("HPPoisonGauge")
-			self.hpPoisonRecoveryGaugeBar = self.GetChild("HPPoisonRecoveryGaugeBar")
-			self.hpPoisonGauge.Hide()
-			self.hpPoisonRecoveryGaugeBar.Hide()
-
-		self.hpGaugeTextPerc = self.GetChild("HPGauge_Perc_Text")
-		self.hpGaugeTextPerc.SetOutline()
-		self.hpGaugeTextPerc.SetFontColor(250.0 / 255.0, 55.0 / 255.0, 65.0 / 255.0)
-
-		self.spGaugeTextPerc = self.GetChild("SPGauge_Perc_Text")
-		self.spGaugeTextPerc.SetOutline()
-		self.spGaugeTextPerc.SetFontColor(115.0 / 255.0, 171.0 / 255.0, 245.0 / 255.0)
-
-		self.hpGaugeBoard=self.GetChild("HPGauge_Board")
-		self.mpGaugeBoard=self.GetChild("SPGauge_Board")
-		self.stGaugeBoard=self.GetChild("STGauge_Board")
-		self.expGauge=self.GetChild("EXP_Gauge")
-
-		for i in range(1, 9):
-			self.GetChild("quickslot_label_"+str(i)).SetOutline()
-			self.GetChild("quickslot_label_"+str(i)).SetFontColor(214.0 / 255.0, 212.0 / 255.0, 212.0 / 255.0)
-		
-		#giftbox object
-		wndGiftBox = GiftBox()
-		wndGiftBox.LoadWindow()
-		self.wndGiftBox = wndGiftBox
-	
-		self.__LoadMouseSettings()
-		self.RefreshStatus()
-		self.RefreshQuickSlot()
-
-	"""def __RampageGauge_OverIn(self):
-		print "rampage_over_in"
-		self.rampageGauge2.Show()
-		self.rampageGauge1.Hide()
-
-	def __RampageGauge_OverOut(self):
-		print "rampage_over_out"
-		self.rampageGauge2.Hide()
-		self.rampageGauge1.Show()
-
-	def __RampageGauge_Click(self):
-		print "rampage_up"
-		net.SendChatPacket("/in_game_mall")
-		# gift icon hide when click mall icon
-		self.wndGiftBox.Hide()"""
-
-	def __LoadMouseSettings(self):
-		try:
-			LoadMouseButtonSettings()
-			(mouseLeftButtonEvent, mouseRightButtonEvent) = GetMouseButtonSettings()
-			if not self.__IsInSafeMouseButtonSettingRange(mouseLeftButtonEvent) or not self.__IsInSafeMouseButtonSettingRange(mouseRightButtonEvent):
-					raise RuntimeError, "INVALID_MOUSE_BUTTON_SETTINGS"
-		except:
-			InitMouseButtonSettings(self.EVENT_MOVE_AND_ATTACK, self.EVENT_CAMERA)
-			(mouseLeftButtonEvent, mouseRightButtonEvent) = GetMouseButtonSettings()
-
-		try:
-			self.SelectMouseButtonEvent(self.MOUSE_BUTTON_LEFT,	mouseLeftButtonEvent)
-			self.SelectMouseButtonEvent(self.MOUSE_BUTTON_RIGHT,	mouseRightButtonEvent)
-		except:
-			InitMouseButtonSettings(self.EVENT_MOVE_AND_ATTACK, self.EVENT_CAMERA)
-			(mouseLeftButtonEvent, mouseRightButtonEvent) = GetMouseButtonSettings()
-
-			self.SelectMouseButtonEvent(self.MOUSE_BUTTON_LEFT,	mouseLeftButtonEvent)
-			self.SelectMouseButtonEvent(self.MOUSE_BUTTON_RIGHT,	mouseRightButtonEvent)
-
-
-
-	def __IsInSafeMouseButtonSettingRange(self, arg):
-		return arg >= self.EVENT_MOVE and arg <= self.EVENT_AUTO
-
 	def Destroy(self):		
-		SaveMouseButtonSettings()
-
 		self.ClearDictionary()
-		self.mouseModeButtonList[0].ClearDictionary()
-		self.mouseModeButtonList[1].ClearDictionary()
-		self.mouseModeButtonList = 0
-		self.curMouseModeButton = 0
-		self.curSkillButton = 0
-		self.selectSkillButtonList = 0
-		self.quickslot_label = 0
-
-
-		self.expGauge = None
-		self.hpGauge = None
-		self.mpGauge = None
-		self.stGauge = None
-		self.hpRecoveryGaugeBar = None
-		self.spRecoveryGaugeBar = None
-
-		if app.ENABLE_POISON_GAUGE_EFFECT:
-			self.hpPoisonGauge = None
-			self.hpPoisonRecoveryGaugeBar = None
-	
 		self.tooltipItem = 0
 		self.tooltipSkill = 0
-		self.quickslot = 0
 		self.toggleButtonDict = 0
-
-		self.hpGaugeBoard = 0
-		self.mpGaugeBoard = 0
-		self.stGaugeBoard = 0
-
-		self.tooltipHP = 0
-		self.tooltipSP = 0
-		self.tooltipST = 0
-		self.tooltipEXP = 0
-
-		self.mouseImage = None
-
-	def __OnClickQuickPageUpButton(self):
-		player.SetQuickPage(player.GetQuickPage()-1)
-
-	def __OnClickQuickPageDownButton(self):
-		player.SetQuickPage(player.GetQuickPage()+1)
-
-	def SetToggleButtonEvent(self, eButton, kEventFunc):
-		self.toggleButtonDict[eButton].SetEvent(kEventFunc)
+		self.selectSkillButtonList = 0
+		self.curSkillButton = 0
+		self.CharacterView.Destroy()
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
 
 	def SetSkillToolTip(self, tooltipSkill):
 		self.tooltipSkill = tooltipSkill
-		self.curSkillButton.SetSkillToolTip(self.tooltipSkill)
+		# self.curSkillButton.SetSkillToolTip(self.tooltipSkill)
 
-	## Mouse Image
-	def ShowMouseImage(self):
-		self.mouseImage.SetTop()
-		self.mouseImage.Show()
-
-	def HideMouseImage(self):
-		player.SetQuickCameraMode(FALSE)
-		self.mouseImage.Hide()
-
-	## Gauge
-	def RefreshStatus(self):
-		curHP = player.GetStatus(player.HP)
-		maxHP = player.GetStatus(player.MAX_HP)
-		curSP = player.GetStatus(player.SP)
-		maxSP = player.GetStatus(player.MAX_SP)
-		curEXP = unsigned32(player.GetStatus(player.EXP))
-		nextEXP = unsigned32(player.GetStatus(player.NEXT_EXP))
-		recoveryHP = player.GetStatus(player.HP_RECOVERY)
-		recoverySP = player.GetStatus(player.SP_RECOVERY)
+	def SetToggleButtonEvent(self, eButton, kEventFunc):
+		self.toggleButtonDict[eButton].SetEvent(kEventFunc)
 		
-		self.RefreshStamina()
-
-		self.SetHP(curHP, recoveryHP, maxHP)
-
-		if app.ENABLE_POISON_GAUGE_EFFECT:
-			if chrmgr.HasAffectByVID(player.GetMainCharacterIndex(), chr.AFFECT_POISON):
-				self.hpGauge.Hide()
-				self.hpPoisonGauge.Show()
-			else:
-				self.hpPoisonGauge.Hide()
-				self.hpGauge.Show()
-
-		self.SetSP(curSP, recoverySP, maxSP)
-		self.SetExperience(curEXP, nextEXP)
-		
-	def RefreshStamina(self):
-		curST = player.GetStatus(player.STAMINA)
-		maxST = player.GetStatus(player.MAX_STAMINA)
-		self.SetST(curST, maxST)
-
-	def RefreshSkill(self):
-		self.curSkillButton.RefreshSkill()
-		for button in self.selectSkillButtonList:
-			button.RefreshSkill()
-
-	def SetHP(self, curPoint, recoveryPoint, maxPoint):
-		curPoint = min(curPoint, maxPoint)
-		if maxPoint > 0:
-			self.hpGauge.SetPercentage(curPoint, maxPoint)
-	
-			if app.ENABLE_POISON_GAUGE_EFFECT:
-				self.hpPoisonGauge.SetPercentage(curPoint, maxPoint)
-	
-			self.hpGaugeTextPerc.SetText("%s%%" % str((curPoint * 100) / maxPoint))
-			self.tooltipHP.SetText("%s : %s / %s" % (localeInfo.TASKBAR_HP, localeInfo.NumberToDecimalString(curPoint), localeInfo.NumberToDecimalString(maxPoint)))
-
-			if 0 == recoveryPoint:
-
-				if app.ENABLE_POISON_GAUGE_EFFECT:
-						self.hpPoisonRecoveryGaugeBar.Hide()
-
-				self.hpRecoveryGaugeBar.Hide()
-			else:
-				destPoint = min(maxPoint, curPoint + recoveryPoint)
-				newWidth = int(self.GAUGE_WIDTH * (float(destPoint) / float(maxPoint)))
-
-				if app.ENABLE_POISON_GAUGE_EFFECT:
-					if chrmgr.HasAffectByVID(player.GetMainCharacterIndex(), chr.AFFECT_POISON):
-						if self.hpRecoveryGaugeBar.IsShow():
-							self.hpRecoveryGaugeBar.Hide()
-						self.hpPoisonRecoveryGaugeBar.SetSize(newWidth, self.GAUGE_HEIGHT)
-						self.hpPoisonRecoveryGaugeBar.Show()
-						return
-					else:
-						if self.hpPoisonRecoveryGaugeBar.IsShow():
-							self.hpPoisonRecoveryGaugeBar.Hide()
-
-				self.hpRecoveryGaugeBar.SetSize(newWidth, self.GAUGE_HEIGHT)
-				self.hpRecoveryGaugeBar.Show()
-
-	def SetSP(self, curPoint, recoveryPoint, maxPoint):
-		curPoint = min(curPoint, maxPoint)
-		if maxPoint > 0:
-			self.mpGauge.SetPercentage(curPoint, maxPoint)
-			self.spGaugeTextPerc.SetText("%s%%" % str((curPoint * 100) / maxPoint))
-			self.tooltipSP.SetText("%s : %s / %s" % (localeInfo.TASKBAR_SP, localeInfo.NumberToDecimalString(curPoint), localeInfo.NumberToDecimalString(maxPoint)))
-
-			if 0 == recoveryPoint:
-				self.spRecoveryGaugeBar.Hide()
-			else:
-				destPoint = min(maxPoint, curPoint + recoveryPoint)
-				newWidth = int(self.GAUGE_WIDTH * (float(destPoint) / float(maxPoint)))
-				self.spRecoveryGaugeBar.SetSize(newWidth, self.GAUGE_HEIGHT)
-				self.spRecoveryGaugeBar.Show()
-
-	def SetST(self, curPoint, maxPoint):
-		curPoint = min(curPoint, maxPoint)
-		if maxPoint > 0:
-			self.stGauge.SetPercentage(curPoint, maxPoint)
-			self.tooltipST.SetText("%s : %d / %d" % (localeInfo.TASKBAR_ST, curPoint, maxPoint))
-
-	def SetExperience(self, curPoint, maxPoint):
-		curPoint = min(curPoint, maxPoint)
-		if maxPoint > 0:
-			self.expGauge.SetPercentage(curPoint, maxPoint)
-
-		#####
-		self.tooltipEXP.SetText("%s : %.2f%%" % (localeInfo.TASKBAR_EXP, float(curPoint) / max(1, float(maxPoint)) * 100))
-	
-		
-	## QuickSlot
-	def RefreshQuickSlot(self):
-
-		pageNum = player.GetQuickPage()
-
+	def LoadWindow(self):
 		try:
-			self.quickPageNumImageBox.LoadImage(TaskBar.QUICKPAGE_NUMBER_FILENAME[pageNum])
+			pyScrLoader = ui.PythonScriptLoader()
+
+			pyScrLoader.LoadScriptFile(self, "newtaskbar.py")
 		except:
-			pass
-
-		startNumber = 0
-		for slot in self.quickslot:
-
-			for i in xrange(4):
-
-				slotNumber = i+startNumber
-
-				(Type, Position) = player.GetLocalQuickSlot(slotNumber)
-
-				if player.SLOT_TYPE_NONE == Type:
-					slot.ClearSlot(slotNumber)
-					continue
-
-				if player.SLOT_TYPE_INVENTORY == Type:
-
-					itemIndex = player.GetItemIndex(Position)
-					itemCount = player.GetItemCount(Position)
-					if itemCount <= 1:
-						itemCount = 0
-					
-					## 자동물약 (#72723, #72724) 특수처리 - 아이템인데도 슬롯에 활성화/비활성화 표시를 위한 작업임 - [hyo]
-					if constInfo.IS_AUTO_POTION(itemIndex):
-						# metinSocket - [0] : 활성화 여부, [1] : 사용한 양, [2] : 최대 용량
-						metinSocket = [player.GetItemMetinSocket(Position, j) for j in xrange(player.METIN_SOCKET_MAX_NUM)]
-						
-						if 0 != int(metinSocket[0]):
-							slot.ActivateSlot(slotNumber)
-						else:
-							slot.DeactivateSlot(slotNumber)
-
-					if False:#app.ENABLE_NEW_BLEND:#TODO TODO TODO TODO IMPORTANT IMPORTANT WICHTIG WICHTIG
-						if item.ITEM_TYPE_BLEND == item.GetItemType() and item.GetItemSubType() == item.INFINITY_BLEND:
-							metinSocket = player.GetItemMetinSocket(slotNumber, 2)
-							if metinSocket == 1:
-								slot.ActivateSlot(slotNumber)
-							else:
-								slot.DeactivateSlot(slotNumber)
-					
-					slot.SetItemSlot(slotNumber, itemIndex, itemCount)
-
-				elif player.SLOT_TYPE_SKILL == Type:
-
-					skillIndex = player.GetSkillIndex(Position)
-					if 0 == skillIndex:
-						slot.ClearSlot(slotNumber)
-						continue
-
-					skillType = skill.GetSkillType(skillIndex)
-					if skill.SKILL_TYPE_GUILD == skillType:
-						import guild
-						skillGrade = 0
-						skillLevel = guild.GetSkillLevel(Position)
-
-					else:
-						skillGrade = player.GetSkillGrade(Position)
-						skillLevel = player.GetSkillLevel(Position)
-
-					slot.SetSkillSlotNew(slotNumber, skillIndex, skillGrade, skillLevel)
-					slot.SetSlotCountNew(slotNumber, skillGrade, skillLevel)
-					slot.SetCoverButton(slotNumber)
-
-					## NOTE : CoolTime 체크
-					if player.IsSkillCoolTime(Position):
-						(coolTime, elapsedTime) = player.GetSkillCoolTime(Position)
-						slot.SetSlotCoolTime(slotNumber, coolTime, elapsedTime)
-
-					## NOTE : Activate 되어 있다면 아이콘도 업데이트
-					if player.IsSkillActive(Position):
-						slot.ActivateSlot(slotNumber)
-
-				elif player.SLOT_TYPE_EMOTION == Type:
-
-					emotionIndex = Position
-					slot.SetEmotionSlot(slotNumber, emotionIndex)
-					slot.SetCoverButton(slotNumber)
-					slot.SetSlotCount(slotNumber, 0)
-
-			slot.RefreshSlot()
-			startNumber += 4
-
-	def canAddQuickSlot(self, Type, slotNumber):
-
-		if player.SLOT_TYPE_INVENTORY == Type:
-
-			itemIndex = player.GetItemIndex(slotNumber)
-			return item.CanAddToQuickSlotItem(itemIndex)
-
-		return TRUE
-
-	def AddQuickSlot(self, localSlotIndex):
-		AttachedSlotType = mouseModule.mouseController.GetAttachedType()
-		AttachedSlotNumber = mouseModule.mouseController.GetAttachedSlotNumber()
-		AttachedItemIndex = mouseModule.mouseController.GetAttachedItemIndex()
-
-		if player.SLOT_TYPE_QUICK_SLOT == AttachedSlotType:
-			player.RequestMoveGlobalQuickSlotToLocalQuickSlot(AttachedSlotNumber, localSlotIndex)
-
-		elif player.SLOT_TYPE_EMOTION == AttachedSlotType:
-
-			player.RequestAddLocalQuickSlot(localSlotIndex, AttachedSlotType, AttachedItemIndex)
-
-		elif TRUE == self.canAddQuickSlot(AttachedSlotType, AttachedSlotNumber):
-
-			## Online Code
-			player.RequestAddLocalQuickSlot(localSlotIndex, AttachedSlotType, AttachedSlotNumber)
+			import exception
+			exception.Abort("TaskBar.LoadWindow.LoadObject")
+			
+		self.CharacterView = uicharacterview.MainWindow()
+		self.CharacterView.Show()
 		
-		mouseModule.mouseController.DeattachObject()
-		self.RefreshQuickSlot()
+		self.LoadObject()
+		self.LoadSkills()
+		self.LoadAll()
+		
+	def LoadAll(self):
+		self.curSkillButton = self.SkillButton()
+		self.curSkillButton.SetParent(self)
+		self.curSkillButton.SetPosition(3, 3)
+		self.curSkillButton.SetSkillEvent(ui.__mem_func__(self.ToggleRightMouseButtonModeWindow))
+		self.curSkillButton.Hide()
+		
+		self.quickPageNumberBox = ui.ImageBox()
+		self.quickPageNumberBox.SetParent(self)
+		self.quickPageNumberBox.SetPosition(425, 60)
+		self.quickPageNumberBox.LoadImage("taskbar/quickpage_slot.png")
+		self.quickPageNumberBox.Show()
+		
+		self.quickPageNumImageBox = ui.ImageBox()
+		self.quickPageNumImageBox.SetParent(self)
+		self.quickPageNumImageBox.SetPosition(425+2, 60)
+		self.quickPageNumImageBox.LoadImage("d:/ymir work/ui/game/taskbar/1.sub")
+		self.quickPageNumImageBox.Show()
+		
+		self.QuickPageUpButton = ui.Button()
+		self.QuickPageUpButton.SetParent(self)
+		self.QuickPageUpButton.SetToolTipText(uiScriptLocale.TASKBAR_PREV_QUICKSLOT)
+		self.QuickPageUpButton.SetPosition(425, 52)
+		self.QuickPageUpButton.SetUpVisual("taskbar/quickslot_up.png")
+		self.QuickPageUpButton.SetOverVisual("taskbar/quickslot_up.png")
+		self.QuickPageUpButton.SetDownVisual("taskbar/quickslot_up.png")
+		self.QuickPageUpButton.SetEvent(ui.__mem_func__(self.__OnClickQuickPageUpButton))
+		self.QuickPageUpButton.Show()
+		
+		self.QuickPageDownButton = ui.Button()
+		self.QuickPageDownButton.SetParent(self)
+		self.QuickPageDownButton.SetToolTipText(uiScriptLocale.TASKBAR_NEXT_QUICKSLOT)
+		self.QuickPageDownButton.SetPosition(425, 76)
+		self.QuickPageDownButton.SetUpVisual("taskbar/quickslot_down.png")
+		self.QuickPageDownButton.SetOverVisual("taskbar/quickslot_down.png")
+		self.QuickPageDownButton.SetDownVisual("taskbar/quickslot_down.png")
+		self.QuickPageDownButton.SetEvent(ui.__mem_func__(self.__OnClickQuickPageDownButton))
+		self.QuickPageDownButton.Show()
+		
 
-	def SelectEmptyQuickSlot(self, slotIndex):
-
-		if TRUE == mouseModule.mouseController.isAttached():
-			self.AddQuickSlot(slotIndex)
-
-	def SelectItemQuickSlot(self, localQuickSlotIndex):
-
-		if TRUE == mouseModule.mouseController.isAttached():
-			self.AddQuickSlot(localQuickSlotIndex)
-
-		else:
-			globalQuickSlotIndex=player.LocalQuickSlotIndexToGlobalQuickSlotIndex(localQuickSlotIndex)
-			mouseModule.mouseController.AttachObject(self, player.SLOT_TYPE_QUICK_SLOT, globalQuickSlotIndex, globalQuickSlotIndex)
-
-	def UnselectItemQuickSlot(self, localSlotIndex):
-
-		if FALSE == mouseModule.mouseController.isAttached():
-			player.RequestUseLocalQuickSlot(localSlotIndex)
-			return
-
-		elif mouseModule.mouseController.isAttached():
-			mouseModule.mouseController.DeattachObject()
-			return
-
-
-	def OnUseSkill(self, usedSlotIndex, coolTime):
-
-		QUICK_SLOT_SLOT_COUNT = 4
-		slotIndex = 0
-
-		## Current Skill Button
-		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
-			self.curSkillButton.Activate(coolTime)
-
-		## Quick Slot
-		for slotWindow in self.quickslot:
-
-			for i in xrange(QUICK_SLOT_SLOT_COUNT):
-
-				(Type, Position) = player.GetLocalQuickSlot(slotIndex)
-
-				if Type == player.SLOT_TYPE_SKILL:
-					if usedSlotIndex == Position:
-						slotWindow.SetSlotCoolTime(slotIndex, coolTime)
-						return
-
-				slotIndex += 1
-
-	def OnActivateSkill(self, usedSlotIndex):
-		slotIndex = 0
-
-		## Current Skill Button
-		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
-			self.curSkillButton.Deactivate()
-
-		## Quick Slot
-		for slotWindow in self.quickslot:
-
-			for i in xrange(4):
-
-				(Type, Position) = player.GetLocalQuickSlot(slotIndex)
-
-				if Type == player.SLOT_TYPE_SKILL:
-					if usedSlotIndex == Position:
-						slotWindow.ActivateSlot(slotIndex)
-						return
-
-				slotIndex += 1
-
-	def OnDeactivateSkill(self, usedSlotIndex):
-		slotIndex = 0
-
-		## Current Skill Button
-		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
-			self.curSkillButton.Deactivate()
-
-		## Quick Slot
-		for slotWindow in self.quickslot:
-
-			for i in xrange(4):
-
-				(Type, Position) = player.GetLocalQuickSlot(slotIndex)
-
-				if Type == player.SLOT_TYPE_SKILL:
-					if usedSlotIndex == Position:
-						slotWindow.DeactivateSlot(slotIndex)
-						return
-
-				slotIndex += 1
-
-	def OverInItem(self, slotNumber):
-		if mouseModule.mouseController.isAttached():
-			return
-
-		(Type, Position) = player.GetLocalQuickSlot(slotNumber)
-
-		if player.SLOT_TYPE_INVENTORY == Type:
-			self.tooltipItem.SetInventoryItem(Position)
-			self.tooltipSkill.HideToolTip()
-
-		elif player.SLOT_TYPE_SKILL == Type:
-
-			skillIndex = player.GetSkillIndex(Position)
-			skillType = skill.GetSkillType(skillIndex)
-
-			if skill.SKILL_TYPE_GUILD == skillType:
-				import guild
-				skillGrade = 0
-				skillLevel = guild.GetSkillLevel(Position)
-
+		# self.GetChild("QuickPageUpButton").SetEvent(ui.__mem_func__(self.__OnClickQuickPageUpButton))
+		# self.GetChild("QuickPageDownButton").SetEvent(ui.__mem_func__(self.__OnClickQuickPageDownButton))
+		
+	def RefreshStatus(self):
+		self.CharacterView.RefreshStatus()
+		
+	def LoadSkills(self):
+		self.GridTable = ui.GridSlotWindow()
+		self.GridTable.SetParent(self)
+		self.GridTable.SetPosition(75, 53)
+		self.GridTable.SetSize(32*8, 32*1)
+		self.GridTable.ArrangeSlot(0, 8, 1, 32, 32, 11, 0)
+		self.GridTable.Show()
+		self.GridTable.SetSlotBaseImage("taskbar/taskbar_slot.png", 1.0, 1.0, 1.0, 1.0)
+		self.GridTable.SetUsableItem(True)
+		
+		self.GridTable.SetSlotStyle(wndMgr.SLOT_STYLE_NONE)
+		self.GridTable.SetSelectEmptySlotEvent(ui.__mem_func__(self.SelectEmptyQuickSlot))
+		self.GridTable.SetSelectItemSlotEvent(ui.__mem_func__(self.SelectItemQuickSlot))
+		self.GridTable.SetUnselectItemSlotEvent(ui.__mem_func__(self.UnselectItemQuickSlot))
+		self.GridTable.SetOverInItemEvent(ui.__mem_func__(self.OverInItem))
+		self.GridTable.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
+		
+		self.slotImages = []
+		
+		for i in range(8):
+			slotImage = ui.ImageBox()
+			slotImage.SetParent(self.GridTable)
+			slotImage.SetPosition(3 + 43*i, 0)
+			new_i = i+1
+			if new_i < 5:
+				slotImage.LoadImage("d:/ymir work/ui/game/taskbar/%d.sub" % (new_i))
 			else:
-				skillGrade = player.GetSkillGrade(Position)
-				skillLevel = player.GetSkillLevel(Position)
-
-			self.tooltipSkill.SetSkillNew(Position, skillIndex, skillGrade, skillLevel)
-			self.tooltipItem.HideToolTip()
-
-	def OverOutItem(self):
-		if 0 != self.tooltipItem:
-			self.tooltipItem.HideToolTip()
-		if 0 != self.tooltipSkill:
-			self.tooltipSkill.HideToolTip()
-
-	def OnUpdate(self):
-		if app.GetGlobalTime() - self.lastUpdateQuickSlot > 500:
-			self.lastUpdateQuickSlot = app.GetGlobalTime()
-			self.RefreshQuickSlot()
-
-		if TRUE == self.hpGaugeBoard.IsIn():
-			self.tooltipHP.Show()
-		else:
-			self.tooltipHP.Hide()
-
-		if TRUE == self.mpGaugeBoard.IsIn():
-			self.tooltipSP.Show()
-		else:
-			self.tooltipSP.Hide()
-
-		if TRUE == self.stGaugeBoard.IsIn():
-			self.tooltipST.Show()
-		else:
-			self.tooltipST.Hide()
+				slotImage.LoadImage("d:/ymir work/ui/game/taskbar/f%d.sub" % (new_i-4))
+			slotImage.Show()
+			
+			self.slotImages.append(slotImage)
+			
+	def LoadObject(self):
+		self.CharacterBtn = ui.Button()
+		self.CharacterBtn.SetParent(self)
+		self.CharacterBtn.SetPosition(483, 52)
+		self.CharacterBtn.SetUpVisual("taskbar/btn_character.png")
+		self.CharacterBtn.SetOverVisual("taskbar/btn_character1.png")
+		self.CharacterBtn.SetDownVisual("taskbar/btn_character2.png")
+		self.CharacterBtn.Show()
 		
-		if TRUE == self.expGauge.IsIn():
-			self.tooltipEXP.Show()
-			self.tooltipEXP.SetTop()
-		else:
-			self.tooltipEXP.Hide()
-
+		self.InventoryBtn = ui.Button()
+		self.InventoryBtn.SetParent(self)
+		self.InventoryBtn.SetPosition(524, 52)
+		self.InventoryBtn.SetUpVisual("taskbar/btn_inventory.png")
+		self.InventoryBtn.SetOverVisual("taskbar/btn_inventory1.png")
+		self.InventoryBtn.SetDownVisual("taskbar/btn_inventory2.png")
+		self.InventoryBtn.Show()
+		
+		self.FriendsBtn = ui.Button()
+		self.FriendsBtn.SetParent(self)
+		self.FriendsBtn.SetPosition(565, 52)
+		self.FriendsBtn.SetUpVisual("taskbar/btn_friends.png")
+		self.FriendsBtn.SetOverVisual("taskbar/btn_friends1.png")
+		self.FriendsBtn.SetDownVisual("taskbar/btn_friends2.png")
+		self.FriendsBtn.Show()
+		
+		self.SettingsBtn = ui.Button()
+		self.SettingsBtn.SetParent(self)
+		self.SettingsBtn.SetPosition(606, 52)
+		self.SettingsBtn.SetUpVisual("taskbar/btn_settings.png")
+		self.SettingsBtn.SetOverVisual("taskbar/btn_settings1.png")
+		self.SettingsBtn.SetDownVisual("taskbar/btn_settings2.png")
+		self.SettingsBtn.Show()
+		
+		toggleButtonDict = {}
+		toggleButtonDict[TaskBar.BUTTON_CHARACTER]=self.CharacterBtn
+		toggleButtonDict[TaskBar.BUTTON_INVENTORY]=self.InventoryBtn
+		toggleButtonDict[TaskBar.BUTTON_MESSENGER]=self.FriendsBtn
+		toggleButtonDict[TaskBar.BUTTON_SYSTEM]=self.SettingsBtn
+		
+		self.toggleButtonDict = toggleButtonDict
+		
 	def ToggleLeftMouseButtonModeWindow(self):
 
 		wndMouseButtonMode = self.mouseModeButtonList[self.MOUSE_BUTTON_LEFT]
@@ -1062,4 +586,251 @@ class TaskBar(ui.ScriptWindow):
 		self.curSkillButton.SetSkill(skillSlotNumber)
 		self.curSkillButton.Show()
 		self.curMouseModeButton[self.MOUSE_BUTTON_RIGHT].Hide()
+		
+	def RefreshQuickSlot(self):
 
+		pageNum = player.GetQuickPage()
+
+		try:
+			self.quickPageNumImageBox.LoadImage(TaskBar.QUICKPAGE_NUMBER_FILENAME[pageNum])
+		except:
+			pass
+
+		startNumber = 0
+		# for slot in self.quickslot:
+
+		for i in xrange(8):
+
+			slotNumber = i+startNumber
+
+			(Type, Position) = player.GetLocalQuickSlot(slotNumber)
+
+			if player.SLOT_TYPE_NONE == Type:
+				self.GridTable.ClearSlot(slotNumber)
+				continue
+
+			if player.SLOT_TYPE_INVENTORY == Type:
+
+				itemIndex = player.GetItemIndex(Position)
+				itemCount = player.GetItemCount(Position)
+				if itemCount <= 1:
+					itemCount = 0
+				
+				if constInfo.IS_AUTO_POTION(itemIndex):
+					metinSocket = [player.GetItemMetinSocket(Position, j) for j in xrange(player.METIN_SOCKET_MAX_NUM)]
+					
+					if 0 != int(metinSocket[0]):
+						self.GridTable.ActivateSlot(slotNumber)
+					else:
+						self.GridTable.DeactivateSlot(slotNumber)
+
+				if False:#app.ENABLE_NEW_BLEND:#TODO TODO TODO TODO IMPORTANT IMPORTANT WICHTIG WICHTIG
+					if item.ITEM_TYPE_BLEND == item.GetItemType() and item.GetItemSubType() == item.INFINITY_BLEND:
+						metinSocket = player.GetItemMetinSocket(slotNumber, 2)
+						if metinSocket == 1:
+							self.GridTable.ActivateSlot(slotNumber)
+						else:
+							self.GridTable.DeactivateSlot(slotNumber)
+				
+				self.GridTable.SetItemSlot(slotNumber, itemIndex, itemCount)
+
+			elif player.SLOT_TYPE_SKILL == Type:
+
+				skillIndex = player.GetSkillIndex(Position)
+				if 0 == skillIndex:
+					self.GridTable.ClearSlot(slotNumber)
+					continue
+
+				skillType = skill.GetSkillType(skillIndex)
+				if skill.SKILL_TYPE_GUILD == skillType:
+					import guild
+					skillGrade = 0
+					skillLevel = guild.GetSkillLevel(Position)
+
+				else:
+					skillGrade = player.GetSkillGrade(Position)
+					skillLevel = player.GetSkillLevel(Position)
+
+				self.GridTable.SetSkillSlotNew(slotNumber, skillIndex, skillGrade, skillLevel)
+				self.GridTable.SetSlotCountNew(slotNumber, skillGrade, skillLevel)
+				self.GridTable.SetCoverButton(slotNumber)
+
+				if player.IsSkillCoolTime(Position):
+					(coolTime, elapsedTime) = player.GetSkillCoolTime(Position)
+					self.GridTable.SetSlotCoolTime(slotNumber, coolTime, elapsedTime)
+
+				if player.IsSkillActive(Position):
+					self.GridTable.ActivateSlot(slotNumber)
+
+			elif player.SLOT_TYPE_EMOTION == Type:
+
+				emotionIndex = Position
+				self.GridTable.SetEmotionSlot(slotNumber, emotionIndex)
+				self.GridTable.SetCoverButton(slotNumber)
+				self.GridTable.SetSlotCount(slotNumber, 0)
+
+		self.GridTable.RefreshSlot()
+		startNumber += 4
+
+	def canAddQuickSlot(self, Type, slotNumber):
+
+		if player.SLOT_TYPE_INVENTORY == Type:
+
+			itemIndex = player.GetItemIndex(slotNumber)
+			return item.CanAddToQuickSlotItem(itemIndex)
+
+		return TRUE
+
+	def AddQuickSlot(self, localSlotIndex):
+		AttachedSlotType = mouseModule.mouseController.GetAttachedType()
+		AttachedSlotNumber = mouseModule.mouseController.GetAttachedSlotNumber()
+		AttachedItemIndex = mouseModule.mouseController.GetAttachedItemIndex()
+
+		if player.SLOT_TYPE_QUICK_SLOT == AttachedSlotType:
+			player.RequestMoveGlobalQuickSlotToLocalQuickSlot(AttachedSlotNumber, localSlotIndex)
+
+		elif player.SLOT_TYPE_EMOTION == AttachedSlotType:
+
+			player.RequestAddLocalQuickSlot(localSlotIndex, AttachedSlotType, AttachedItemIndex)
+
+		elif TRUE == self.canAddQuickSlot(AttachedSlotType, AttachedSlotNumber):
+
+			## Online Code
+			player.RequestAddLocalQuickSlot(localSlotIndex, AttachedSlotType, AttachedSlotNumber)
+		
+		mouseModule.mouseController.DeattachObject()
+		self.RefreshQuickSlot()
+
+	def SelectEmptyQuickSlot(self, slotIndex):
+
+		if TRUE == mouseModule.mouseController.isAttached():
+			self.AddQuickSlot(slotIndex)
+
+	def SelectItemQuickSlot(self, localQuickSlotIndex):
+
+		if TRUE == mouseModule.mouseController.isAttached():
+			self.AddQuickSlot(localQuickSlotIndex)
+
+		else:
+			globalQuickSlotIndex=player.LocalQuickSlotIndexToGlobalQuickSlotIndex(localQuickSlotIndex)
+			mouseModule.mouseController.AttachObject(self, player.SLOT_TYPE_QUICK_SLOT, globalQuickSlotIndex, globalQuickSlotIndex)
+
+	def UnselectItemQuickSlot(self, localSlotIndex):
+
+		if FALSE == mouseModule.mouseController.isAttached():
+			player.RequestUseLocalQuickSlot(localSlotIndex)
+			return
+
+		elif mouseModule.mouseController.isAttached():
+			mouseModule.mouseController.DeattachObject()
+			return
+
+
+	def OnUseSkill(self, usedSlotIndex, coolTime):
+
+		QUICK_SLOT_SLOT_COUNT = 8
+		slotIndex = 0
+
+		## Current Skill Button
+		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
+			self.curSkillButton.Activate(coolTime)
+
+		## Quick Slot
+		# for slotWindow in self.quickslot:
+
+		for i in xrange(QUICK_SLOT_SLOT_COUNT):
+
+			(Type, Position) = player.GetLocalQuickSlot(slotIndex)
+
+			if Type == player.SLOT_TYPE_SKILL:
+				if usedSlotIndex == Position:
+					self.GridTable.SetSlotCoolTime(slotIndex, coolTime)
+					return
+
+			slotIndex += 1
+
+	def OnActivateSkill(self, usedSlotIndex):
+		slotIndex = 0
+
+		## Current Skill Button
+		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
+			self.curSkillButton.Deactivate()
+
+		## Quick Slot
+		# for slotWindow in self.quickslot:
+
+		for i in xrange(8):
+
+			(Type, Position) = player.GetLocalQuickSlot(slotIndex)
+
+			if Type == player.SLOT_TYPE_SKILL:
+				if usedSlotIndex == Position:
+					self.GridTable.ActivateSlot(slotIndex)
+					return
+
+			slotIndex += 1
+
+	def OnDeactivateSkill(self, usedSlotIndex):
+		slotIndex = 0
+
+		## Current Skill Button
+		if usedSlotIndex == self.curSkillButton.GetSlotIndex():
+			self.curSkillButton.Deactivate()
+
+		## Quick Slot
+		# for slotWindow in self.quickslot:
+
+		for i in xrange(8):
+
+			(Type, Position) = player.GetLocalQuickSlot(slotIndex)
+
+			if Type == player.SLOT_TYPE_SKILL:
+				if usedSlotIndex == Position:
+					self.GridTable.DeactivateSlot(slotIndex)
+					return
+
+			slotIndex += 1
+
+	def OverInItem(self, slotNumber):
+		if mouseModule.mouseController.isAttached():
+			return
+
+		(Type, Position) = player.GetLocalQuickSlot(slotNumber)
+
+		if player.SLOT_TYPE_INVENTORY == Type:
+			self.tooltipItem.SetInventoryItem(Position)
+			self.tooltipSkill.HideToolTip()
+
+		elif player.SLOT_TYPE_SKILL == Type:
+
+			skillIndex = player.GetSkillIndex(Position)
+			skillType = skill.GetSkillType(skillIndex)
+
+			if skill.SKILL_TYPE_GUILD == skillType:
+				import guild
+				skillGrade = 0
+				skillLevel = guild.GetSkillLevel(Position)
+
+			else:
+				skillGrade = player.GetSkillGrade(Position)
+				skillLevel = player.GetSkillLevel(Position)
+
+			self.tooltipSkill.SetSkillNew(Position, skillIndex, skillGrade, skillLevel)
+			self.tooltipItem.HideToolTip()
+
+	def OverOutItem(self):
+		if 0 != self.tooltipItem:
+			self.tooltipItem.HideToolTip()
+		if 0 != self.tooltipSkill:
+			self.tooltipSkill.HideToolTip()
+		
+	def RefreshSkill(self):
+		self.curSkillButton.RefreshSkill()
+		for button in self.selectSkillButtonList:
+			button.RefreshSkill()
+			
+	def __OnClickQuickPageUpButton(self):
+		player.SetQuickPage(player.GetQuickPage()-1)
+
+	def __OnClickQuickPageDownButton(self):
+		player.SetQuickPage(player.GetQuickPage()+1)

@@ -1,5 +1,4 @@
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 import uiScriptLocale
 
 LOCALE_PATH = uiScriptLocale.WINDOWS_PATH

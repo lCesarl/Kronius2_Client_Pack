@@ -24,9 +24,6 @@ if app.__ENABLE_NEW_OFFLINESHOP__:
 	import offlineshop
 	import uiofflineshop
 
-if app.ENABLE_REMEMBER_LAST_SPLIT:
-	import systemSetting
-
 ITEM_MALL_BUTTON_ENABLE = TRUE
 ITEM_FLAG_APPLICABLE = 1 << 14
 
@@ -981,16 +978,11 @@ class InventoryWindow(ui.ScriptWindow):
 		mouseModule.mouseController.AttachMoney(self, player.SLOT_TYPE_INVENTORY, money)
 
 	def OnPickItem(self, count):
-		chat.AppendChat(9, "Count = " + str(count))
-		chat.AppendChat(9, "LastSplitData = " + str(systemSetting.GetLastSplitData()))
 		itemSlotIndex = self.dlgPickMoney.itemGlobalSlotIndex
 		if app.__ENABLE_NEW_OFFLINESHOP__:
 			if uiofflineshop.IsBuildingShop() and uiofflineshop.IsSaleSlot(player.INVENTORY, itemSlotIndex):
 				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.OFFLINESHOP_CANT_SELECT_ITEM_DURING_BUILING)
 				return
-
-		if app.ENABLE_REMEMBER_LAST_SPLIT:
-			systemSetting.SetLastSplitData(count)
 		selectedItemVNum = player.GetItemIndex(itemSlotIndex)
 		mouseModule.mouseController.AttachObject(self, player.SLOT_TYPE_INVENTORY, itemSlotIndex, selectedItemVNum, count)
 
@@ -1365,10 +1357,7 @@ class InventoryWindow(ui.ScriptWindow):
 				if itemCount > 1:
 					self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
 					self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickItem))
-					if app.ENABLE_REMEMBER_LAST_SPLIT:
-						self.dlgPickMoney.Open(itemCount, systemSetting.GetLastSplitData())
-					else:
-						self.dlgPickMoney.Open(itemCount)
+					self.dlgPickMoney.Open(itemCount)
 					self.dlgPickMoney.itemGlobalSlotIndex = itemSlotIndex
 				#else:
 					#selectedItemVNum = player.GetItemIndex(itemSlotIndex)

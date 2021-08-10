@@ -1,6 +1,5 @@
 import uiScriptLocale
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 
 ROOT = "d:/ymir work/ui/minigame/bnw/"
 PUBLIC_PATH = "d:/ymir work/ui/public/"

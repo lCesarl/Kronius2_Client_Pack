@@ -44,6 +44,9 @@ import uiScriptLocale
 
 import uiswitchchannel
 
+if app.WAVE_DUNGEON_YUMA:
+	import uiwavedungeonattribute
+
 if app.ENABLE_SHOW_CHEST_DROP:
 	import uichestdrop
 
@@ -63,9 +66,6 @@ if app.ENABLE_SKILLCHOOSE:
 
 if app.ENABLE_DYNASTY_DUELLSTYLE:
 	import uidynastyduell
-
-if app.WAVE_DUNGEON_YUMA:
-	import uiwavedungeonattribute
 
 import uiitemfinder
 
@@ -176,14 +176,14 @@ class Interface(object):
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_INVENTORY, ui.__mem_func__(self.ToggleInventoryWindow))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_MESSENGER, ui.__mem_func__(self.ToggleMessenger))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_SYSTEM, ui.__mem_func__(self.ToggleSystemDialog))
-		if uiTaskBar.TaskBar.IS_EXPANDED:
-			self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_EXPAND, ui.__mem_func__(self.ToggleExpandedButton))
-			self.wndExpandedTaskBar = uiTaskBar.ExpandedTaskBar()
-			self.wndExpandedTaskBar.LoadWindow()
-			self.wndExpandedTaskBar.SetToggleButtonEvent(uiTaskBar.ExpandedTaskBar.BUTTON_DRAGON_SOUL, ui.__mem_func__(self.ToggleDragonSoulWindow))
+		# if uiTaskBar.TaskBar.IS_EXPANDED:
+			# self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_EXPAND, ui.__mem_func__(self.ToggleExpandedButton))
+			# self.wndExpandedTaskBar = uiTaskBar.ExpandedTaskBar()
+			# self.wndExpandedTaskBar.LoadWindow()
+			# self.wndExpandedTaskBar.SetToggleButtonEvent(uiTaskBar.ExpandedTaskBar.BUTTON_DRAGON_SOUL, ui.__mem_func__(self.ToggleDragonSoulWindow))
 
-		else:
-			self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_CHAT, ui.__mem_func__(self.ToggleChat))	
+		# else:
+			# self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_CHAT, ui.__mem_func__(self.ToggleChat))	
 
 	def __MakeParty(self):
 		wndParty = uiParty.PartyWindow()
@@ -374,9 +374,9 @@ class Interface(object):
 		self.__MakeHelpWindow()
 		self.__MakeTipBoard()
 		self.__MakeWebWindow()
-		self.__MakeItemFinder()
 		if app.ENABLE_CUBE_RENEWAL_WORLDARD:
 			self.__MakeCubeRenewal()
+		self.__MakeItemFinder()
 		if app.WAVE_DUNGEON_YUMA:
 			self.__MakeWaveDungeonAttrWindow()
 		
@@ -626,7 +626,6 @@ class Interface(object):
 		del self.wndItemSelect
 		del self.wndAcce
 		del self.changechannel
-
 		if app.WAVE_DUNGEON_YUMA:
 			if self.wndWaveDungeon:
 				del self.wndWaveDungeon
@@ -695,8 +694,8 @@ class Interface(object):
 		self.wndDragonSoul.RefreshStatus()
 
 	def RefreshStamina(self):
-		self.wndTaskBar.RefreshStamina()
-
+		pass
+		# self.wndTaskBar.RefreshStamina()
 	def RefreshSkill(self):
 		self.wndCharacter.RefreshSkill()
 		self.wndTaskBar.RefreshSkill()
@@ -1965,11 +1964,6 @@ class Interface(object):
 
 	def EmptyFunction(self):
 		pass
-
-	if app.INGAME_WIKI:
-		def ToggleWikiNew(self):
-			import net
-			net.ToggleWikiWindow()
 
 	def GetInventoryPageIndex(self):
 		if self.wndInventory:

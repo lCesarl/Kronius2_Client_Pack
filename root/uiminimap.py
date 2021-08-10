@@ -482,7 +482,7 @@ class MiniMap(ui.ScriptWindow):
 		(x, y) = self.GetGlobalPosition()
 		fx = float(x)
 		fy = float(y)
-		miniMap.Render(fx + 4.0, fy + 5.0)
+		miniMap.Render(fx + 22.0, fy + 20.0)
 
 	def Close(self):
 		self.HideMiniMap()

@@ -23,7 +23,7 @@ if app.ENABLE_TARGET_INFO:
 	def HAS_FLAG(value, flag):
 		return (value & flag) == flag
 
-class TargetBoard(ui.ThinBoard):
+class TargetBoard(ui.Board):
 
 	if app.ENABLE_TARGET_INFO:
 		class InfoBoard(ui.ThinBoard):
@@ -540,7 +540,7 @@ class TargetBoard(ui.ThinBoard):
 	EXCHANGE_LIMIT_RANGE = 3000
 
 	def __init__(self):
-		ui.ThinBoard.__init__(self)
+		ui.Board.__init__(self)
 
 		name = ui.TextLine()
 		name.SetParent(self)
@@ -548,10 +548,11 @@ class TargetBoard(ui.ThinBoard):
 		name.SetOutline()
 		name.Show()
 
-		hpGauge = ui.Gauge()
-		hpGauge.SetParent(self)
-		hpGauge.MakeGauge(130, "red")
-		hpGauge.Hide()
+		self.hpGaugeBG = ui.ImageBox()
+		self.hpGaugeBG.SetParent(self)
+		self.hpGaugeBG.LoadImage("d:/ymir work/ui/one_work/target_hp.png")
+		self.hpGaugeBG.Show()
+
 
 		if app.ENABLE_POISON_GAUGE_EFFECT:
 			hpPoisonGauge = ui.Gauge()
@@ -562,11 +563,12 @@ class TargetBoard(ui.ThinBoard):
 			hpPoisonGauge.Hide()
 
 		hpDecimal = ui.TextLine()
-		hpDecimal.SetParent(hpGauge)
+		hpDecimal.SetParent(self.hpGaugeBG)
 		hpDecimal.SetDefaultFontName()
 		hpDecimal.SetPosition(5, 5)
 		hpDecimal.SetOutline()
 		hpDecimal.Hide()
+		
 
 		closeButton = ui.Button()
 		closeButton.SetParent(self)
@@ -574,15 +576,24 @@ class TargetBoard(ui.ThinBoard):
 		closeButton.SetOverVisual("d:/ymir work/ui/public/close_button_02.sub")
 		closeButton.SetDownVisual("d:/ymir work/ui/public/close_button_03.sub")
 		closeButton.SetPosition(30, 13)
-		hpGauge.SetPosition(175, 17)
-		hpGauge.SetWindowHorizontalAlignRight()
+		self.hpGaugeBG.SetPosition(165, 0)
+		self.hpGaugeBG.SetWindowVerticalAlignCenter()
+		self.hpGaugeBG.SetWindowHorizontalAlignRight()
+		hpGauge = ui.ExpandedImageBox()
+		hpGauge.SetParent(self.hpGaugeBG)
+		hpGauge.SetWindowVerticalAlignCenter()
+		# hpGauge.SetWindowHorizontalAlignRight()
+		hpGauge.LoadImage("d:/ymir work/ui/one_work/target_hp_full.png")
+		# hpGauge.MakeGauge(130, "red")
+		hpGauge.Hide()
+		hpGauge.SetPosition(0, 0)
 		closeButton.SetWindowHorizontalAlignRight()
 		if app.ENABLE_TARGET_INFO:
 			infoButton = ui.Button()
 			infoButton.SetParent(self)
-			infoButton.SetUpVisual("d:/ymir work/ui/pattern/q_mark_01.tga")
-			infoButton.SetOverVisual("d:/ymir work/ui/pattern/q_mark_02.tga")
-			infoButton.SetDownVisual("d:/ymir work/ui/pattern/q_mark_01.tga")
+			infoButton.SetUpVisual("d:/ymir work/ui/one_work/question_mark.png")
+			infoButton.SetOverVisual("d:/ymir work/ui/one_work/question_mark.png")
+			infoButton.SetDownVisual("d:/ymir work/ui/one_work/question_mark.png")
 			infoButton.SetEvent(ui.__mem_func__(self.OnPressedInfoButton))
 			infoButton.Hide()
 
@@ -598,9 +609,9 @@ class TargetBoard(ui.ThinBoard):
 		for buttonName in self.BUTTON_NAME_LIST:
 			button = ui.Button()
 			button.SetParent(self)
-			button.SetUpVisual("d:/ymir work/ui/public/small_thin_button_01.sub")
-			button.SetOverVisual("d:/ymir work/ui/public/small_thin_button_02.sub")
-			button.SetDownVisual("d:/ymir work/ui/public/small_thin_button_03.sub")
+			button.SetUpVisual("d:/ymir work/ui/public/small_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/small_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/small_button_03.sub")
 			button.SetWindowHorizontalAlignCenter()
 			button.SetText(buttonName)
 			button.Hide()
@@ -657,7 +668,7 @@ class TargetBoard(ui.ThinBoard):
 		self.ResetTargetBoard()
 
 	def __del__(self):
-		ui.ThinBoard.__del__(self)
+		ui.Board.__del__(self)
 
 		print "===================================================== DESTROYED TARGET BOARD"
 
@@ -719,6 +730,7 @@ class TargetBoard(ui.ThinBoard):
 					return
 
 			if vid != self.GetTargetVID():
+				self.vid = vid
 				self.ResetTargetBoard()
 				self.SetTargetVID(vid)
 				self.SetTargetName(name)
@@ -803,7 +815,9 @@ class TargetBoard(ui.ThinBoard):
 		if app.ENABLE_TARGET_INFO:
 			self.infoButton.Hide()
 			self.infoButton.showWnd.Close()
-		self.SetSize(250, 40)
+			
+
+		self.SetSize(250, 80)
 
 	def SetTargetVID(self, vid):
 		self.vid = vid
@@ -831,7 +845,8 @@ class TargetBoard(ui.ThinBoard):
 			if not chr.GetInstanceType(self.vid) == chr.INSTANCE_TYPE_PLAYER:
 				(textWidth, textHeight) = self.name.GetTextSize()
 
-				self.infoButton.SetPosition(textWidth + 25, 12)
+				self.infoButton.SetPosition(textWidth + 35, 0)
+				self.infoButton.SetWindowVerticalAlignCenter()
 				self.infoButton.SetWindowHorizontalAlignLeft()
 
 				self.vnum = vnum
@@ -847,6 +862,8 @@ class TargetBoard(ui.ThinBoard):
 		self.nameString = name
 		self.nameLength = len(name)
 		self.name.SetText(name)
+		self.name.SetWindowVerticalAlignCenter()
+		self.name.SetVerticalAlignCenter()
 
 	if app.ENABLE_VIEW_ELEMENT:
 		def SetElementImage(self,elementId):
@@ -862,14 +879,25 @@ class TargetBoard(ui.ThinBoard):
 
 	def SetHP(self, hpPercentage, iMinHP, iMaxHP):
 		if not self.hpGauge.IsShow():
-			self.name.SetPosition(23, 13)
+			self.name.SetPosition(23, 0)
 			self.name.SetWindowHorizontalAlignLeft()
 			self.name.SetHorizontalAlignLeft()
 			self.hpGauge.Show()
 			self.UpdatePosition()
 			self.__ArrangeButtonPosition() ##fixme
+		
+		newPCT = float(hpPercentage/100)
+		newPCT = float(newPCT)
+			
+		# import chat
+		# chat.AppendChat(3, "hpPercentage %d" % newPCT)
+		
+		Percentage = float(iMinHP % iMaxHP) / iMaxHP - 1.0
+		
+		if iMinHP == iMaxHP:
+			Percentage = 0.0
 
-		self.hpGauge.SetPercentage(hpPercentage, 100)
+		self.hpGauge.SetRenderingRect(0.0, 0.0, Percentage, 0.0)
 
 		if app.ENABLE_POISON_GAUGE_EFFECT:
 			self.hpPoisonGauge.SetPercentage(hpPercentage, 100)
@@ -992,7 +1020,7 @@ class TargetBoard(ui.ThinBoard):
 		
 		if player.IsPVPInstance(self.vid) or player.IsObserverMode():
 			# PVP_INFO_SIZE_BUG_FIX
-			self.SetSize(200 + 7*self.nameLength, 40)
+			self.SetSize(250 + 7*self.nameLength, 80)
 			self.UpdatePosition()
 			# END_OF_PVP_INFO_SIZE_BUG_FIX			
 			return
@@ -1062,17 +1090,17 @@ class TargetBoard(ui.ThinBoard):
 			pos += 34
 
 		for button in self.showingButtonList:
-			button.SetPosition(pos, 33)
+			button.SetPosition(pos, 33+16)
 			pos += 68
 
 		if showingButtonCount == 0 and chr.GetInstanceType(self.vid) == chr.INSTANCE_TYPE_PLAYER:
-			self.SetSize(max(150 + 125, showingButtonCount * 75), 40)
+			self.SetSize(max(150 + 125, showingButtonCount * 75), 80)
 		elif showingButtonCount <= 3 and chr.GetInstanceType(self.vid) == chr.INSTANCE_TYPE_PLAYER:
-			self.SetSize(max(150 + 125, showingButtonCount * 75), 65)
+			self.SetSize(max(150 + 125, showingButtonCount * 75), 80)
 		elif showingButtonCount >= 4 and chr.GetInstanceType(self.vid) == chr.INSTANCE_TYPE_PLAYER:
-			self.SetSize(max(150, showingButtonCount * 75), 65)
+			self.SetSize(max(150, showingButtonCount * 75), 80)
 		else:
-			self.SetSize(200 + self.name.GetTextSize()[0] + 20, 40)
+			self.SetSize(250 + self.name.GetTextSize()[0] + 20, 80)
 		
 		self.UpdatePosition()
 

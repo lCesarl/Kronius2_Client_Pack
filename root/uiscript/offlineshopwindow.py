@@ -1,6 +1,5 @@
 import app
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 
 WINDOW_WIDTH	= 627
 WINDOW_HEIGHT	= 572

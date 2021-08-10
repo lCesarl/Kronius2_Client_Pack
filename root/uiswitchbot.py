@@ -9,8 +9,7 @@ import ui
 from uiToolTip import ItemToolTip
 import player
 import mouseModule
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 import wndMgr
 import cPickle as pickle
 import switchbot

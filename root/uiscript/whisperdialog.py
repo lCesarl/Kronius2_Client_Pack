@@ -39,10 +39,10 @@ window = {
 					"type" : "image",
 					"style" : ("attach",),
 
-					"x" : 10,
-					"y" : 10,
+					"x" : 15,
+					"y" : 15,
 
-					"image":"d:/ymir work/ui/public/Parameter_Slot_05.sub",
+					"image":"d:/ymir work/ui/parameter.dds",
 
 					"children" :
 					(
@@ -63,7 +63,7 @@ window = {
 							"y" : 3,
 
 							"width" : 120,
-							"height" : 17,
+							"height" : 22,
 
 							"input_limit" : PLAYER_NAME_MAX_LEN,
 
@@ -78,7 +78,7 @@ window = {
 					"style" : ("attach",),
 
 					"x" : 206,
-					"y" : 6,
+					"y" : 16,
 
 					"x_scale" : 0.1,
 					"y_scale" : 0.1,
@@ -98,8 +98,8 @@ window = {
 					"name" : "ignorebutton",
 					"type" : "toggle_button",
 
-					"x" : 145,
-					"y" : 10,
+					"x" : 175,
+					"y" : 19,
 
 					"text" : uiScriptLocale.WHISPER_BAN,
 
@@ -111,8 +111,8 @@ window = {
 					"name" : "reportviolentwhisperbutton",
 					"type" : "button",
 
-					"x" : 145,
-					"y" : 10,
+					"x" : 175,
+					"y" : 19,
 
 					"text" : uiScriptLocale.WHISPER_REPORT,
 
@@ -124,8 +124,8 @@ window = {
 					"name" : "acceptbutton",
 					"type" : "button",
 
-					"x" : 145,
-					"y" : 10,
+					"x" : 175,
+					"y" : 19,
 
 					"text" : uiScriptLocale.OK,
 
@@ -150,14 +150,14 @@ window = {
 					"name" : "closebutton",
 					"type" : "button",
 
-					"x" : 280 - 24,
-					"y" : 12,
+					"x" : 280 - 40-15,
+					"y" : 10,
 
 					"tooltip_text" : uiScriptLocale.CLOSE,
 
-					"default_image" : "d:/ymir work/ui/public/close_button_01.sub",
-					"over_image" : "d:/ymir work/ui/public/close_button_02.sub",
-					"down_image" : "d:/ymir work/ui/public/close_button_03.sub",
+					"default_image" : "d:/ymir work/ui/one_work/btn_x_1.png",
+					"over_image" : "d:/ymir work/ui/one_work/btn_x_2.png",
+					"down_image" : "d:/ymir work/ui/one_work/btn_x_3.png",
 				},
 
 				## ScrollBar
@@ -182,7 +182,7 @@ window = {
 					"width" : 280 - 18,
 					"height" : 50,
 
-					"color" : 0x77000000,
+					"color" : 0xff150403,
 
 					"children" :
 					(

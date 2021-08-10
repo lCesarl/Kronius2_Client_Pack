@@ -435,114 +435,141 @@ window = {
 						},
 					),
 				},
+				
+				
 				{
-					"name" : "Inventory_Tab_01",
-					"type" : "radio_button",
- 
-					"x" : 10,
-					"y" : 33 + 189,
- 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
-					"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_1,
- 
+					"name" : "Inventory_Image",
+					"type" : "image",
+					
+					"x" : 6,
+					"y" : 33 + 189+5,
+					
+					"image" : "inventory/inv_btn_bg.png",
+					
 					"children" :
 					(
 						{
-							"name" : "Inventory_Tab_01_Print",
-							"type" : "text",
- 
-							"x" : 0,
+							"name" : "Inventory_Tab_01",
+							"type" : "radio_button",
+		 
+							"x" : -60,
 							"y" : 0,
- 
-							"all_align" : "center",
- 
-							"text" : "I",
+							
+							"horizontal_align" : "center",
+							"vertical_align" : "center",
+		 
+							"default_image" : "inventory/pressed_btn_none.png",
+							"over_image" : "inventory/pressed_btn.png",
+							"down_image" : "inventory/pressed_btn.png",
+							"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_1,
+		 
+							"children" :
+							(
+								{
+									"name" : "Inventory_Tab_01_Print",
+									"type" : "text",
+		 
+									"x" : 0,
+									"y" : 0,
+		 
+									"all_align" : "center",
+		 
+									"text" : "I",
+								},
+							),
 						},
-					),
-				},
-				{
-					"name" : "Inventory_Tab_02",
-					"type" : "radio_button",
- 
-					"x" : 10 + 78,
-					"y" : 33 + 189,
- 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
-					"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_2,
- 
-					"children" :
-					(
 						{
-							"name" : "Inventory_Tab_02_Print",
-							"type" : "text",
- 
-							"x" : 0,
+							"name" : "Inventory_Tab_02",
+							"type" : "radio_button",
+		 
+							"x" : -20,
 							"y" : 0,
- 
-							"all_align" : "center",
- 
-							"text" : "II",
+							
+							"horizontal_align" : "center",
+							"vertical_align" : "center",
+		 
+							"default_image" : "inventory/pressed_btn_none.png",
+							"over_image" : "inventory/pressed_btn.png",
+							"down_image" : "inventory/pressed_btn.png",
+							"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_2,
+		 
+							"children" :
+							(
+								{
+									"name" : "Inventory_Tab_02_Print",
+									"type" : "text",
+		 
+									"x" : 0,
+									"y" : 0,
+		 
+									"all_align" : "center",
+		 
+									"text" : "II",
+								},
+							),
 						},
-					),
-				},
-				{
-					"name" : "Inventory_Tab_03",
-					"type" : "radio_button",
- 
-					"x" : 10,
-					"y" : 33 + 210,
- 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
-					"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_3,
- 
-					"children" :
-					(
 						{
-							"name" : "Inventory_Tab_03_Print",
-							"type" : "text",
- 
-							"x" : 0,
+							"name" : "Inventory_Tab_03",
+							"type" : "radio_button",
+		 
+							"x" : 20,
 							"y" : 0,
- 
-							"all_align" : "center",
- 
-							"text" : "III",
+							
+							"horizontal_align" : "center",
+							"vertical_align" : "center",
+		 
+							"default_image" : "inventory/pressed_btn_none.png",
+							"over_image" : "inventory/pressed_btn.png",
+							"down_image" : "inventory/pressed_btn.png",
+							"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_3,
+		 
+							"children" :
+							(
+								{
+									"name" : "Inventory_Tab_03_Print",
+									"type" : "text",
+		 
+									"x" : 0,
+									"y" : 0,
+		 
+									"all_align" : "center",
+		 
+									"text" : "III",
+								},
+							),
 						},
-					),
-				},
-				{
-					"name" : "Inventory_Tab_04",
-					"type" : "radio_button",
- 
-					"x" : 10 + 78,
-					"y" : 33 + 210,
- 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
-					"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_4,
- 
-					"children" :
-					(
 						{
-							"name" : "Inventory_Tab_04_Print",
-							"type" : "text",
- 
-							"x" : 0,
+							"name" : "Inventory_Tab_04",
+							"type" : "radio_button",
+		 
+							"x" : 60,
 							"y" : 0,
- 
-							"all_align" : "center",
- 
-							"text" : "IV",
-						},
+							
+							"horizontal_align" : "center",
+							"vertical_align" : "center",
+		 
+							"default_image" : "inventory/pressed_btn_none.png",
+							"over_image" : "inventory/pressed_btn.png",
+							"down_image" : "inventory/pressed_btn.png",
+							"tooltip_text" : uiScriptlocale.INVENTORY_PAGE_BUTTON_TOOLTIP_4,
+		 
+							"children" :
+							(
+								{
+									"name" : "Inventory_Tab_04_Print",
+									"type" : "text",
+		 
+									"x" : 0,
+									"y" : 0,
+		 
+									"all_align" : "center",
+		 
+									"text" : "IV",
+								},
+							),
+						},      
 					),
-				},       
+				}, 
  
 				## Item Slot
 				{

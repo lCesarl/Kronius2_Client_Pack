@@ -1,14 +1,11 @@
 ######################################## AICI INCEPE TREABA ######################################## ORA: 21:36
 import app, net, ui, snd, wndMgr, dbg, os
 import musicInfo, systemSetting
-import constinfo, uiScriptLocale, uicommon
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo, constinfo, uiScriptLocale, uicommon
 import ime
 import serverInfo
 import serverCommandParser
 import time
-import ServerStateChecker
 import serverlogindata
 
 if app.ENABLE_LOGIN_PIN_SYSTEM:
@@ -28,16 +25,12 @@ class LoginWindow(ui.ScriptWindow):
 		net.SetAccountConnectorHandler(self)
 
 		self.AccountManager = [
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
+									[None, None, None],
+									[None, None, None],
+									[None, None, None],
+									[None, None, None],
 								]
 		self.AccountManagerData	= [
-								["", ""],
-								["", ""],
 								["", ""],
 								["", ""],
 								["", ""],
@@ -49,8 +42,6 @@ class LoginWindow(ui.ScriptWindow):
 			self.user_pwd = None
 			self.bReady = 0
 
-		self.stateCH = [None, None, None, None, None, None]
-		self.SelectedChannel = [None, None, None, None, None, None]
 		self.stream = stream
 		self.isDown = False
 		
@@ -75,17 +66,13 @@ class LoginWindow(ui.ScriptWindow):
 
 						self.AccountManager[idx][0].Show()
 						self.AccountManager[idx][1].Show()
-						self.AccountManager[idx][2].Hide()
 		
 		
 		for idx, account in enumerate(self.AccountManagerData):
 			if account[0] != "":
-				self.AccountManager[idx][3].SetText(str(idx+1) + ". " + account[0])
+				self.AccountManager[idx][2].SetText(str(idx+1) + ". " + account[0])
 			else:
-				self.AccountManager[idx][0].Hide()
-				self.AccountManager[idx][1].Hide()
-				self.AccountManager[idx][2].Show()
-				self.AccountManager[idx][3].SetText(str(idx+1) + ". " + uiScriptLocale.LOGIN_INTERFACE_FREE_SPACE)
+				self.AccountManager[idx][2].SetText(str(idx+1) + ". " + uiScriptLocale.LOGIN_INTERFACE_FREE_SPACE)
 
 	def SaveAccountData(self):
 		with open('account.cfg', 'w+') as content_file:
@@ -93,22 +80,11 @@ class LoginWindow(ui.ScriptWindow):
 			data += self.AccountManagerData[1][0] + ':#:' + self.AccountManagerData[1][1] + ';'
 			data += self.AccountManagerData[2][0] + ':#:' + self.AccountManagerData[2][1] + ';'
 			data += self.AccountManagerData[3][0] + ':#:' + self.AccountManagerData[3][1] + ';'
-			data += self.AccountManagerData[4][0] + ':#:' + self.AccountManagerData[3][1] + ';'
-			data += self.AccountManagerData[5][0] + ':#:' + self.AccountManagerData[3][1] + ';'
 			
 			encData = app.EncryptByHWID(data)
 			content_file.write(encData)
 
 	def Open(self):
-		#ServerStateChecker.Initialize()
-		#ServerStateChecker.Create(self)
-		#for proxy_key in serverlogindata.PROXIES:
-		#	if "CH" not in proxy_key:
-		#		continue
-		#	index = int(proxy_key.split("CH")[1])-1
-		#	channel_data = serverlogindata.PROXIES[proxy_key]
-		#	ServerStateChecker.AddChannel(index, channel_data[0], channel_data[1])
-
 		self.loginFailureMsgDict={
 
 			"ALREADY"	: localeInfo.LOGIN_FAILURE_ALREAY,
@@ -179,16 +155,12 @@ class LoginWindow(ui.ScriptWindow):
 		self.onPressKeyDict 			= None
 
 		self.AccountManager = [
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
-									[None, None, None, None],
+									[None, None, None],
+									[None, None, None],
+									[None, None, None],
+									[None, None, None],
 								]
 		self.AccountManagerData	= None
-		self.stateCH = [None, None, None, None, None, None]
-		self.SelectedChannel = [None, None, None, None, None, None]
 
 		if app.ENABLE_LOGIN_PIN_SYSTEM:
 			self.user_id = None
@@ -239,7 +211,6 @@ class LoginWindow(ui.ScriptWindow):
 		self.PopupDisplayMessage(localeInfo.LOGIN_PROCESSING)
 
 	def OnLoginFailure(self, error):
-		ServerStateChecker.Request()
 		try:
 			loginFailureMsg = self.loginFailureMsgDict[error]
 		except KeyError:
@@ -264,18 +235,6 @@ class LoginWindow(ui.ScriptWindow):
 			self.idEditLine			= self.GetChild("id")
 			self.pwdEditLine		= self.GetChild("pwd")
 
-			self.stateCH[0]			= self.GetChild("channel1_status")
-			self.stateCH[1]			= self.GetChild("channel2_status")
-			self.stateCH[2]			= self.GetChild("channel3_status")
-			self.stateCH[3]			= self.GetChild("channel4_status")
-			self.stateCH[4]			= self.GetChild("channel5_status")
-			self.stateCH[5]			= self.GetChild("channel6_status")
-				
-			self.stateCH[0].SetFontColor(106.0 / 255.0, 209.0 / 255.0, 65.0 / 255.0)
-			self.stateCH[1].SetFontColor(106.0 / 255.0, 209.0 / 255.0, 65.0 / 255.0)
-			self.stateCH[2].SetFontColor(106.0 / 255.0, 209.0 / 255.0, 65.0 / 255.0)
-			self.stateCH[3].SetFontColor(106.0 / 255.0, 209.0 / 255.0, 65.0 / 255.0)
-
 			self.loginButton		= self.GetChild("login_button")
 			#self.exitButton			= self.GetChild("exit_button")
 
@@ -289,40 +248,19 @@ class LoginWindow(ui.ScriptWindow):
 
 			self.AccountManager[0][0]	= self.GetChild("saved_accs_acc1_use")
 			self.AccountManager[0][1]	= self.GetChild("saved_accs_acc1_del")
-			self.AccountManager[0][2]	= self.GetChild("save_acc1")
-			self.AccountManager[0][3]	= self.GetChild("saved_accs_acc1")
+			self.AccountManager[0][2]	= self.GetChild("saved_accs_acc1")
 
 			self.AccountManager[1][0]	= self.GetChild("saved_accs_acc2_use")
 			self.AccountManager[1][1]	= self.GetChild("saved_accs_acc2_del")
-			self.AccountManager[1][2]	= self.GetChild("save_acc2")
-			self.AccountManager[1][3]	= self.GetChild("saved_accs_acc2")
+			self.AccountManager[1][2]	= self.GetChild("saved_accs_acc2")
 
 			self.AccountManager[2][0]	= self.GetChild("saved_accs_acc3_use")
 			self.AccountManager[2][1]	= self.GetChild("saved_accs_acc3_del")
-			self.AccountManager[2][2]	= self.GetChild("save_acc3")
-			self.AccountManager[2][3]	= self.GetChild("saved_accs_acc3")
+			self.AccountManager[2][2]	= self.GetChild("saved_accs_acc3")
 
 			self.AccountManager[3][0]	= self.GetChild("saved_accs_acc4_use")
 			self.AccountManager[3][1]	= self.GetChild("saved_accs_acc4_del")
-			self.AccountManager[3][2]	= self.GetChild("save_acc4")
-			self.AccountManager[3][3]	= self.GetChild("saved_accs_acc4")
-
-			self.AccountManager[4][0]	= self.GetChild("saved_accs_acc5_use")
-			self.AccountManager[4][1]	= self.GetChild("saved_accs_acc5_del")
-			self.AccountManager[4][2]	= self.GetChild("save_acc5")
-			self.AccountManager[4][3]	= self.GetChild("saved_accs_acc5")
-
-			self.AccountManager[5][0]	= self.GetChild("saved_accs_acc6_use")
-			self.AccountManager[5][1]	= self.GetChild("saved_accs_acc6_del")
-			self.AccountManager[5][2]	= self.GetChild("save_acc6")
-			self.AccountManager[5][3]	= self.GetChild("saved_accs_acc6")
-
-			self.SelectedChannel[0]	= self.GetChild("selected_channel1")
-			self.SelectedChannel[1]	= self.GetChild("selected_channel2")
-			self.SelectedChannel[2]	= self.GetChild("selected_channel3")
-			self.SelectedChannel[3]	= self.GetChild("selected_channel4")
-			self.SelectedChannel[4]	= self.GetChild("selected_channel5")
-			self.SelectedChannel[5]	= self.GetChild("selected_channel6")
+			self.AccountManager[3][2]	= self.GetChild("saved_accs_acc4")
 			
 			self.channelButton = {
 				0 : self.GetChild("ch1"),
@@ -369,45 +307,24 @@ class LoginWindow(ui.ScriptWindow):
 		self.AccountManager[1][0].SetEvent(lambda:ui.__mem_func__(self.loginWithHotkey)(1+1))
 		self.AccountManager[2][0].SetEvent(lambda:ui.__mem_func__(self.loginWithHotkey)(2+1))
 		self.AccountManager[3][0].SetEvent(lambda:ui.__mem_func__(self.loginWithHotkey)(3+1))
-		self.AccountManager[4][0].SetEvent(lambda:ui.__mem_func__(self.loginWithHotkey)(4+1))
-		self.AccountManager[5][0].SetEvent(lambda:ui.__mem_func__(self.loginWithHotkey)(5+1))
 
 		self.AccountManager[0][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(0))
 		self.AccountManager[1][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(1))
 		self.AccountManager[2][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(2))
 		self.AccountManager[3][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(3))
-		self.AccountManager[4][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(4))
-		self.AccountManager[5][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(5))
-
-		self.AccountManager[0][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(0))
-		self.AccountManager[1][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(1))
-		self.AccountManager[2][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(2))
-		self.AccountManager[3][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(3))
-		self.AccountManager[4][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(4))
-		self.AccountManager[5][2].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountSave)(5))
 
 		if (constinfo.bIsDEV):
 			self.buttonLive.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(0))
 			self.buttonDEV.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(1))
 			self.buttonLocal.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(2))
 
-		for i in range(len(self.AccountManager)):
-			self.AccountManager[i][0].Hide()
-			self.AccountManager[i][1].Hide()
-
-		"""for i in range(len(self.stateCH)):
-			self.stateCH[i].SetFontColor(176.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)"""
-		
-	def OnUpdate(self):
-		ServerStateChecker.Update()
+		# for i in range(len(self.AccountManager)):
+		# 	self.AccountManager[i][0].Hide()
+		# 	self.AccountManager[i][1].Hide()
 		
 	def SetChannel(self, ch):
 		for key, button in self.channelButton.items():
 			button.SetUp()
-
-		for i in range(6):
-			self.SelectedChannel[i].Hide()
-		self.SelectedChannel[ch].Show()
 			
 		self.channelButton[ch].Down()
 		ch += 1
@@ -492,31 +409,6 @@ class LoginWindow(ui.ScriptWindow):
 	def __GetChannelID(self):
 		return self.channelList.GetSelectedItem()
 
-## SERVER STATE CHECKER
-
-	# This is called by the native code state-checker
-	def NotifyChannelState(self, key, state):
-		serverlogindata.SERVER_STATE_TABLE[key] = state
-
-		serverIndex = self.__GetServerID()
-		if (key / 10) == serverIndex:
-			try:
-				stateName = serverlogindata.STATE_DICT[state]
-				stateNameText = serverlogindata.STATE_TEXT_DICT[state]
-			except:
-				stateName = serverlogindata.STATE_NONE
-				stateNameText = serverlogindata.STATE_TEXT_NONE
-
-			channelIndex = key % 10
-			channelName = "Test"
-			print "LoginWindow::NotifyChannelState(key=%d, state=%d): serverIndex=%d, channelIndex=%d, channelName=%s, stateName=%s" % (key, state, serverIndex, channelIndex, channelName, stateName)
-
-			"""self.stateCH[channelIndex].SetText(str(stateNameText))
-			if state > 0:
-				self.stateCH[channelIndex].SetFontColor(106.0 / 255.0, 209.0 / 255.0, 65.0 / 255.0)
-			else:
-				self.stateCH[channelIndex].SetFontColor(176.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)"""
-
 ## ACCSAVE System ##
 	"""def __OnClickEditButton(self, arg):
 		if arg == 0:
@@ -572,8 +464,7 @@ class LoginWindow(ui.ScriptWindow):
 
 			self.AccountManager[idx][0].Show()
 			self.AccountManager[idx][1].Show()
-			self.AccountManager[idx][2].Hide()
-			self.AccountManager[idx][3].SetText(str(idx+1) + ". " + id)
+			self.AccountManager[idx][2].SetText(str(idx+1) + ". " + id)
 
 	def __OnClickAccountErase(self, idx):
 		self.questionDialog = uiCommon.QuestionDialog()
@@ -588,10 +479,9 @@ class LoginWindow(ui.ScriptWindow):
 		self.AccountManagerData[idx][0] = ""
 		self.AccountManagerData[idx][1] = ""
 		
-		self.AccountManager[idx][0].Hide()
-		self.AccountManager[idx][1].Hide()
-		self.AccountManager[idx][2].Show()
-		self.AccountManager[idx][3].SetText(str(idx+1) + ". " + uiScriptLocale.LOGIN_INTERFACE_FREE_SPACE)
+		# self.AccountManager[idx][0].Hide()
+		# self.AccountManager[idx][1].Hide()
+		self.AccountManager[idx][2].SetText(str(idx+1) + ". " + uiScriptLocale.LOGIN_INTERFACE_FREE_SPACE)
 
 		self.SaveAccountData()
 		

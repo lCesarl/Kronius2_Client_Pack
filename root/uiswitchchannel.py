@@ -7,8 +7,7 @@ import app
 import ui
 import uiOption
 import networkModule
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 
 class SwitchChannelDialog(ui.ScriptWindow):
 	def __init__(self):

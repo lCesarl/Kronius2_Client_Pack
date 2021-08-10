@@ -1,5 +1,4 @@
-import localeInfo as _localeInfo
-localeInfo = _localeInfo.localeInfo()
+import localeInfo
 
 window = {
 	"name" : "SwitchChannelDialog",

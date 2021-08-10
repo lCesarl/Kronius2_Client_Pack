@@ -89,7 +89,7 @@ class MainStream(object):
 		self.isAutoSelect=0
 		self.isAutoLogin=0
 
-		#self.curtain = 0
+		self.curtain = 0
 		self.curPhaseWindow = 0
 		self.newPhaseWindow = 0
 
@@ -108,27 +108,26 @@ class MainStream(object):
 		self.popupWindow.Destroy()
 		self.popupWindow = 0
 
-		#self.curtain = 0
+		self.curtain = 0
 
 	def Create(self):
 		self.CreatePopupDialog()
 
-		#self.curtain = uiPhaseCurtain.PhaseCurtain()
+		self.curtain = uiPhaseCurtain.PhaseCurtain()
 
 	def SetPhaseWindow(self, newPhaseWindow):
-		#if self.newPhaseWindow:
+		if self.newPhaseWindow:
 			#print "이미 새로운 윈도우로 바꾼상태에서 또 바꿈", newPhaseWindow
-		#	self.__ChangePhaseWindow()
+			self.__ChangePhaseWindow()
 
 		self.newPhaseWindow=newPhaseWindow
 
-		#if self.curPhaseWindow:
+		if self.curPhaseWindow:
 			#print "페이드 아웃되면 바꿈"
-			#self.curtain.FadeOut(self.__ChangePhaseWindow)
-		#else:
+			self.curtain.FadeOut(self.__ChangePhaseWindow)
+		else:
 			#print "현재 윈도우가 없는 상태라 바로 바꿈"
-
-		self.__ChangePhaseWindow()
+			self.__ChangePhaseWindow()
 
 	def __ChangePhaseWindow(self):
 		oldPhaseWindow=self.curPhaseWindow
@@ -144,10 +143,10 @@ class MainStream(object):
 
 		self.curPhaseWindow=newPhaseWindow
 		
-		#if self.curPhaseWindow:
-			#self.curtain.FadeIn()
-		#else:
-			#app.Exit()
+		if self.curPhaseWindow:
+			self.curtain.FadeIn()
+		else:
+			app.Exit()
 
 	def CreatePopupDialog(self):
 		self.popupWindow = PopupDialog()
@@ -155,11 +154,11 @@ class MainStream(object):
 		self.popupWindow.SetCenterPosition()
 		self.popupWindow.Hide()
 
-	# def SetLogoPhase(self):
-		# net.Disconnect()
+	def SetLogoPhase(self):
+		net.Disconnect()
 		
-		# import introLogo
-		# self.SetPhaseWindow(introLogo.LogoWindow(self))
+		import introLogo
+		self.SetPhaseWindow(introLogo.LogoWindow(self))
 
 	def SetLoginPhase(self):
 		net.Disconnect()
@@ -205,21 +204,8 @@ class MainStream(object):
 
 	def SetLoadingPhase(self):
 		try:					
-			class LoadingWindow:
-				def __init__(self, stream):					
-					chrSlot = stream.GetCharacterSlot()
-					net.SendSelectCharacterPacket(chrSlot)
-					background.SetViewDistanceSet(background.DISTANCE0, 25600)
-					background.SelectViewDistanceNum(background.DISTANCE0)
-					chr.PushOnceMotion(chr.MOTION_INTRO_NOT_SELECTED, 0.1)
-
-				def Open(self):
-					pass
-						
-				def Close(self):
-					pass
-
-			self.SetPhaseWindow(LoadingWindow(self))
+			import introLoading
+			self.SetPhaseWindow(introLoading.LoadingWindow(self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetLoadingPhase")
