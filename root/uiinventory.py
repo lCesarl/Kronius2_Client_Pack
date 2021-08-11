@@ -20,6 +20,8 @@ import ime
 import wndMgr
 import uiScriptLocale
 import chat
+import time
+
 if app.__ENABLE_NEW_OFFLINESHOP__:
 	import offlineshop
 	import uiofflineshop
@@ -445,6 +447,111 @@ if app.ENABLE_SPECIAL_INVENTORY:
 			x, y = self.wndInventory.GetGlobalPosition()
 			self.SetPosition(x - self.IMG_WIDTH + 1, y + 270)
 
+class Animation(object):
+	def __init__(self, element, mainElement, animateSteps = 20, animateTime = 0.01):
+		self.element = element
+		self.mainElement = mainElement
+		self.animateTime = animateTime
+		self.animateSteps = animateSteps
+
+		self.animateEvent = None
+		self.animateWidth = 0
+		self.animateCurrentWidth = 0
+		self.animateHeight = 0
+		self.animateCurrentHeight = 0
+		self.animateStartTime = 0
+		self.animateEndEvent = None
+
+	def Destroy(self):
+		self.element = None
+
+	def Enlarge(self, startWidth = 60, startHeight = 60, endEvent = None):
+		self.animateWidth = self.mainElement.GetWidth()
+		self.animateCurrentWidth = startWidth
+		self.animateHeight = self.mainElement.GetHeight()
+		self.animateCurrentHeight = startHeight
+		self.animateStartTime = 0
+		self.animateEndEvent = endEvent
+
+		self.animateEvent = self.EnlargeEvent
+
+		self.element.SetSize(0, 0)
+		
+		self.element.Show()
+
+	def Shrink(self, endWidth = 60, endHeight = 60):
+		self.animateWidth = endWidth
+		self.animateCurrentWidth =  self.mainElement.GetWidth()
+		self.animateHeight = endHeight
+		self.animateCurrentHeight =  self.mainElement.GetHeight()
+		self.animateStartTime = 0
+
+		self.animateEvent = self.ShrinkEvent
+
+		self.element.SetSize(self.mainElement.GetWidth(),  self.mainElement.GetHeight())
+		self.element.Show()
+
+	def EnlargeEvent(self):
+		if self.animateCurrentWidth + self.animateSteps < self.animateWidth and self.animateCurrentHeight + self.animateSteps < self.animateHeight:
+			self.animateCurrentWidth += self.animateSteps
+			self.animateCurrentHeight += self.animateSteps
+
+			x, y = self.mainElement.GetGlobalPosition()
+
+			self.element.SetPosition(x + (self.animateWidth - self.animateCurrentWidth)/2, y + (self.animateHeight - self.animateCurrentHeight)/2)
+			self.element.SetSize(self.animateCurrentWidth, self.animateCurrentHeight)
+			
+		else:
+			self.animateEvent = None
+			self.element.Hide()
+			if self.animateEndEvent:
+				self.animateEndEvent()
+
+	def ShrinkEvent(self):
+		if self.animateCurrentWidth - self.animateSteps > self.animateWidth and self.animateCurrentHeight - self.animateSteps > self.animateHeight:
+			self.animateCurrentWidth -= self.animateSteps
+			self.animateCurrentHeight -= self.animateSteps
+			
+			x, y = self.mainElement.GetGlobalPosition()
+
+			self.element.SetPosition(x + ( self.mainElement.GetWidth() - self.animateCurrentWidth)/2, y + ( self.mainElement.GetHeight() - self.animateCurrentHeight)/2)
+			self.element.SetSize(self.animateCurrentWidth, self.animateCurrentHeight)
+		else:
+			self.animateEvent = None
+			self.element.Hide()
+
+	def OnUpdate(self):
+		if self.animateEvent:
+			if self.animateStartTime < time.clock():
+				self.animateStartTime = time.clock() + self.animateTime
+				self.animateEvent()
+					
+class BoardAnimation(ui.Board):
+	def __init__(self, mainBoardElement):
+		ui.Board.__init__(self)
+		self.mainBoardElement = mainBoardElement
+		x, y = self.mainBoardElement.GetGlobalPosition()
+		self.SetSize(self.mainBoardElement.GetWidth(), self.mainBoardElement.GetHeight())
+		self.SetPosition(x,y)
+		self.animation = Animation(self, mainBoardElement, animateSteps = 30, animateTime = 0.01)
+
+	def __del__(self):
+		ui.Board.__del__(self)
+
+	def Enlarge(self):
+		self.animation.Enlarge(endEvent = self.mainBoardElement.Show)
+
+	def Shrink(self):
+		self.mainBoardElement.Hide()
+		self.animation.Shrink()
+
+	def Destroy(self):
+		self.mainBoardElement = None
+		self.board = None
+
+	def OnUpdate(self):
+		self.animation.OnUpdate()
+
 class InventoryWindow(ui.ScriptWindow):
 
 	liHighlightedItems = []
@@ -514,6 +621,7 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.isLoaded == 1:
 			return
 
+		self.boardAnimation = BoardAnimation(self)
 		self.isLoaded = 1
 
 		try:
@@ -830,6 +938,7 @@ class InventoryWindow(ui.ScriptWindow):
 		
 	
 	def Close(self):
+		self.boardAnimation.Shrink()
 		self.Hide()
 
 	def SetInventoryPage(self, page):

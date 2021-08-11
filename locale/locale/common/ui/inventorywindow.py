@@ -585,7 +585,7 @@ window = {
 					"x_step" : 32,
 					"y_step" : 32,
  
-					"image" : "d:/ymir work/ui/yuma/slot.tga"
+					"image" : "d:/ymir work/ui/one_work/inventory/slot.png"
 				},
  
 				## Print

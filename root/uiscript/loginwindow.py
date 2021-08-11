@@ -1,29 +1,19 @@
 import uiScriptLocale
 
 PATH = "d:/ymir work/ui/login/logininterface/"
-CHITRA = "d:/ymir work/ui/yuma/login_interface/"
-BUTTON_CHITRA = "d:/ymir work/ui/yuma/login_interface/button/" 
-BUTTON_INTERFACE = "d:/ymir work/ui/yuma/login_interface/buttons/" 
-TEXT_INTERFACE = "d:/ymir work/ui/yuma/login_interface/text/" 
-INPUT_INTERFACE = "d:/ymir work/ui/yuma/login_interface/input/"
 
 LOGIN_BOARD_MARGIN = 100
+LOGIN_BOARD_MARGIN_X = 0
 
 if SCREEN_HEIGHT < 800:
-	LOGO_MARGIN = 150
 	LOGIN_BOARD_MARGIN = 100
+	LOGIN_BOARD_MARGIN_X = 50
 	
 if SCREEN_HEIGHT < 610:
-	LOGO_MARGIN = 350
-	LOGIN_BOARD_MARGIN = 250
-
-if SCREEN_WIDTH <= 800:
-	SMALL_WINDOW = 0
-	SMALL_WINDOW2 = 50
-else:
-	SMALL_WINDOW = 0
-	SMALL_WINDOW2 = 30
+	LOGIN_BOARD_MARGIN = 130
+	LOGIN_BOARD_MARGIN_X = 130
 	
+LOGIN_BOARD_POS_X = (SCREEN_WIDTH - 1150) / 2 + LOGIN_BOARD_MARGIN_X
 LOGIN_BOARD_POS_Y = (SCREEN_HEIGHT/2) - LOGIN_BOARD_MARGIN
 
 window = {
@@ -33,6 +23,7 @@ window = {
 	"height" : SCREEN_HEIGHT,
 	"children" : 
 	(
+		## Background
 		{
 			"name" : "background", 
 			"type" : "expanded_image",
@@ -41,27 +32,21 @@ window = {
 			"y_scale" : float(SCREEN_HEIGHT) / 1080.0,
 			"image" : PATH + "background.tga",
 		},
+		###################################################
+		## Logo
 		{
-			"name" : "board_logo",
+			"name" : "kuba_logo",
 			"type" : "image",
-			'x' : (SCREEN_WIDTH - 630) / 2,
-			"y" : 0, #centered middle
-			"image" : CHITRA + "logo_background.tga",
-			"children" :
-			(
-				{
-					"name" : "kuba_logo",
-					"type" : "image",
-					'x' : 150,
-					"y" : 3,
-					"image" : CHITRA + "logo.png",
-				},
-			),
+			'x' : ((SCREEN_WIDTH) / 2) - 400,
+			"y" : (SCREEN_HEIGHT/2) - 275,
+			"image" : PATH + "k2_logo.png",
 		},
+		#######################################
+		## Board_Main
 		{
 			"name" : "board_main",
 			"type" : "image",
-			'x' : (SCREEN_WIDTH - 1150) / 2,
+			'x' : LOGIN_BOARD_POS_X,
 			"y" : (LOGIN_BOARD_POS_Y - 20),
 			"image" : PATH + "window.png",
 			"children" :
@@ -115,19 +100,19 @@ window = {
 				{
 					"name" : "login_button",
 					"type" : "button",
-					"x" : 79, "y" : 60,
+					"x" : 90, "y" : 130,
 					"horizontal_align" : "center", "vertical_align" : "center",
-					"default_image" : PATH + "login/button/button_01.tga", 
-					"over_image" : PATH + "login/button/button_02.tga", 
-					"down_image" : PATH + "login/button/button_03.tga", 
+					"default_image" : PATH + "login/button/button_01.png", 
+					"over_image" : PATH + "login/button/button_02.png", 
+					"down_image" : PATH + "login/button/button_03.png", 
 					"children" : 
 					(
 						{
 							"name" : "login_button_text",
 							"type" : "text",
-							"x" : 38,
-							"y" : 10,
-							"color" : 0xff090406,
+							"x" : 65,
+							"y" : 25,
+							"color" : 0xffcccccc,
 							"fontsize" : "LARGE",
 							"text" : "Login",
 						},
@@ -136,19 +121,19 @@ window = {
 				{
 					"name" : "save_button",
 					"type" : "button",
-					"x" : -79, "y" : 60,
+					"x" : -79, "y" : 130,
 					"horizontal_align" : "center", "vertical_align" : "center",
-					"default_image" : PATH + "login/button/button_01.tga", 
-					"over_image" : PATH + "login/button/button_02.tga", 
-					"down_image" : PATH + "login/button/button_03.tga", 
+					"default_image" : PATH + "login/button/button_01.png", 
+					"over_image" : PATH + "login/button/button_02.png", 
+					"down_image" : PATH + "login/button/button_03.png", 
 					"children" : 
 					(
 						{
 							"name" : "login_button_text",
 							"type" : "text",
-							"x" : 38,
-							"y" : 10,
-							"color" : 0xff090406,
+							"x" : 65,
+							"y" : 25,
+							"color" : 0xffcccccc,
 							"fontsize" : "LARGE",
 							"text" : "Save",
 						},
@@ -367,28 +352,56 @@ window = {
 					"down_image"	: "d:/ymir work/ui/public/Middle_Button_03.sub",
 				},
 				#######################################################
-				## Lang1
-				{
-					"name" : "lang_de_button",
-					"type" : "button",
-					"x" : 500,
-					"y" : 375,
-					"default_image" : CHITRA + "language/language_de_01.png",
-					"over_image" : CHITRA + "language/language_de_02.png",
-					"down_image" : CHITRA + "language/language_de_03.png",
-				},
-				## Lang2
-				{
-					"name" : "lang_en_button",
-					"type" : "button",
-					"x" : 720,
-					"y" : 375,
-					"default_image" : CHITRA + "language/language_en_01.png",
-					"over_image" : CHITRA + "language/language_en_02.png",
-					"down_image" : CHITRA + "language/language_en_03.png",
-				},
-				#######################################
 			),
 		},
+		## Lang1
+		{
+			"name" : "lang_de_button",
+			"type" : "button",
+			"x" : ((SCREEN_WIDTH) / 2) - 230,
+			"y" : (SCREEN_HEIGHT/2) + 300,
+			"default_image" : PATH + "lang/de_01.png",
+			"over_image" : PATH + "lang/de_02.png",
+			"down_image" : PATH + "lang/de_03.png",
+		},
+		## Lang2
+		{
+			"name" : "lang_en_button",
+			"type" : "button",
+			"x" : ((SCREEN_WIDTH) / 2) - 230 + (75),
+			"y" : (SCREEN_HEIGHT/2) + 300,
+			"default_image" : PATH + "lang/en_01.png",
+			"over_image" : PATH + "lang/en_02.png",
+			"down_image" : PATH + "lang/en_03.png",
+		},
+		## Lang2
+		{
+			"name" : "lang_tr_button",
+			"type" : "button",
+			"x" : ((SCREEN_WIDTH) / 2) - 230 + (75+75),
+			"y" : (SCREEN_HEIGHT/2) + 300,
+			"default_image" : PATH + "lang/tr_01.png",
+			"over_image" : PATH + "lang/tr_02.png",
+			"down_image" : PATH + "lang/tr_03.png",
+		},
+		{
+			"name" : "lang_esp_button",
+			"type" : "button",
+			"x" : ((SCREEN_WIDTH) / 2) - 230 + (75+75+75),
+			"y" : (SCREEN_HEIGHT/2) + 300,
+			"default_image" : PATH + "lang/esp_01.png",
+			"over_image" : PATH + "lang/esp_02.png",
+			"down_image" : PATH + "lang/esp_03.png",
+		},
+		{
+			"name" : "discord",
+			"type" : "button",
+			"x" : ((SCREEN_WIDTH) / 2) - 230 + (75+75+75+75),
+			"y" : (SCREEN_HEIGHT/2) + 300,
+			"default_image" : PATH + "lang/dc_01.png",
+			"over_image" : PATH + "lang/dc_02.png",
+			"down_image" : PATH + "lang/dc_03.png",
+		},
+		#######################################
 	),
 }

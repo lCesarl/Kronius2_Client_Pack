@@ -10,6 +10,7 @@ import serverlogindata
 
 if app.ENABLE_LOGIN_PIN_SYSTEM:
 	import uiCommon
+	
 from _weakref import proxy
 
 class LoginWindow(ui.ScriptWindow):
@@ -261,6 +262,8 @@ class LoginWindow(ui.ScriptWindow):
 			self.AccountManager[3][0]	= self.GetChild("saved_accs_acc4_use")
 			self.AccountManager[3][1]	= self.GetChild("saved_accs_acc4_del")
 			self.AccountManager[3][2]	= self.GetChild("saved_accs_acc4")
+
+			self.saveButton = self.GetChild("save_button")
 			
 			self.channelButton = {
 				0 : self.GetChild("ch1"),
@@ -287,12 +290,6 @@ class LoginWindow(ui.ScriptWindow):
 				channelButtons.SetEvent(ui.__mem_func__(self.SetChannel), channelID)
 		
 		self.loginButton.SetEvent(ui.__mem_func__(self.__OnClickLoginButton))
-		#self.exitButton.SetEvent(ui.__mem_func__(self.OnPressExitKey))
-
-		"""self.homepageButton.SetEvent(ui.__mem_func__(self.GoHomepage))
-		self.registerButton.SetEvent(ui.__mem_func__(self.GoRegister))
-		self.forumButton.SetEvent(ui.__mem_func__(self.GoForum))
-		self.changelogButton.SetEvent(ui.__mem_func__(self.GoChangelog))"""
 
 		self.language_de.SetEvent(ui.__mem_func__(self.__AskChangeLangDE))
 		self.language_en.SetEvent(ui.__mem_func__(self.__AskChangeLangEN))
@@ -313,14 +310,12 @@ class LoginWindow(ui.ScriptWindow):
 		self.AccountManager[2][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(2))
 		self.AccountManager[3][1].SetEvent(lambda:ui.__mem_func__(self.__OnClickAccountErase)(3))
 
+		self.saveButton.SetEvent(ui.__mem_func__(self.__OnClickAccountSave))
+
 		if (constinfo.bIsDEV):
 			self.buttonLive.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(0))
 			self.buttonDEV.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(1))
 			self.buttonLocal.SetEvent(lambda:ui.__mem_func__(self.__OnClickServerSelectButton)(2))
-
-		# for i in range(len(self.AccountManager)):
-		# 	self.AccountManager[i][0].Hide()
-		# 	self.AccountManager[i][1].Hide()
 		
 	def SetChannel(self, ch):
 		for key, button in self.channelButton.items():
@@ -449,22 +444,24 @@ class LoginWindow(ui.ScriptWindow):
 
 			self.SetChannel(0)
 
-	def __OnClickAccountSave(self, idx):
+	def __OnClickAccountSave(self):
+		id = self.idEditLine.GetText()
+		pwd = self.pwdEditLine.GetText()
+		
+		if id == "" or pwd == "":
+			return
 
-		if self.AccountManagerData[idx][0] == "":
-			id = self.idEditLine.GetText()
-			pwd = self.pwdEditLine.GetText()
-			
-			if id == "" or pwd == "":
-				return
+		for i in range(len(self.AccountManagerData)):
+			if self.AccountManagerData[i][0] == "":
 
-			self.AccountManagerData[idx][0] = id
-			self.AccountManagerData[idx][1] = pwd
-			self.SaveAccountData()
+				self.AccountManagerData[i][0] = id
+				self.AccountManagerData[i][1] = pwd
+				self.SaveAccountData()
 
-			self.AccountManager[idx][0].Show()
-			self.AccountManager[idx][1].Show()
-			self.AccountManager[idx][2].SetText(str(idx+1) + ". " + id)
+				self.AccountManager[i][0].Show()
+				self.AccountManager[i][1].Show()
+				self.AccountManager[i][2].SetText(str(i+1) + ". " + id)
+				break
 
 	def __OnClickAccountErase(self, idx):
 		self.questionDialog = uiCommon.QuestionDialog()
